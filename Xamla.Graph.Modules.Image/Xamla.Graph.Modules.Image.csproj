@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <RuntimeIdentifiers>win10-x64;osx.10.11-x64;ubuntu.16.04-x64</RuntimeIdentifiers>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn>1701;1702;1705;1591</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <NoWarn>1701;1702;1705;1591</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SkiaSharp" Version="1.60.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Xamla.Graph.Contracts\Xamla.Graph.Contracts.csproj" />
+    <ProjectReference Include="..\Xamla.Graph.Core\Xamla.Graph.Core.csproj" />
+    <ProjectReference Include="..\Xamla.Types\Xamla.Types.csproj" />
+    <ProjectReference Include="..\Xamla.Utilities\Xamla.Utilities.csproj" />
+  </ItemGroup>
+
+</Project>

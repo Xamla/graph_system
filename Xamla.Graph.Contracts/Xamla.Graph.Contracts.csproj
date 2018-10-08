@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <RuntimeIdentifiers>win10-x64;osx.10.11-x64;ubuntu.16.04-x64</RuntimeIdentifiers>
+    <AssemblyName>Xamla.Graph.Contracts</AssemblyName>
+    <PackageId>Xamla.Graph.Contracts</PackageId>
+    <RootNamespace>Xamla.Graph</RootNamespace>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>1.0.1</Version>
+    <!--<PackageTargetFallback>$(PackageTargetFallback);dnxcore50</PackageTargetFallback>-->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Xamla.Types\Xamla.Types.csproj" />
+    <ProjectReference Include="..\Xamla.Utilities\Xamla.Utilities.csproj" />
+  </ItemGroup>
+
+</Project>

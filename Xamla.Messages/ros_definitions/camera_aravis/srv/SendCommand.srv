@@ -1,0 +1,6 @@
+string[] serials         # serial numbers to select specific cameras (emtpy string means all cameras)
+string command_name
+float32 value
+---
+string response
+

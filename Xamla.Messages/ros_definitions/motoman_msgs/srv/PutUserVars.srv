@@ -1,0 +1,5 @@
+UserVarPrimitive[] variables
+---
+bool success
+string message # informational, e.g. for error messages
+int32 err_no

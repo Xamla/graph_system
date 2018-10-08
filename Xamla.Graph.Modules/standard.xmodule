@@ -1,0 +1,1377 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xmodule xmlns="http://schemas.xamla.com/2013/xmodule" xmlns:xamla="http://www.xamla.com/" schemaVersion="2014-1.0">
+
+  <staticModule moduleType="System.Object.Equals" type="System.Object" method="Equals">
+    <summary>Determines whether the specified object instances are considered equal.</summary>
+    <inputs>
+      <pin name="objA" parameterType="System.Object" propertyMode="allow">
+        <description>The first object to compare.</description>
+      </pin>
+      <pin name="objB" parameterType="System.Object" propertyMode="allow">
+        <description>The second object to compare.</description>
+      </pin>
+    </inputs>
+    <outputs>
+      <pin name="return" parameterType="System.Boolean">
+        <description>true if the objects are considered equal; otherwise, false. If both objA and objB are null, the method returns true.</description>
+      </pin>
+    </outputs>
+  </staticModule>
+
+  <staticModule moduleType="System.Object.ReferenceEquals" type="System.Object" method="ReferenceEquals">
+    <summary>Determines whether the specified System.Object instances are the same instance.</summary>
+    <inputs>
+      <pin name="objA" parameterType="System.Object" propertyMode="allow">
+        <description>The first object to compare.</description>
+      </pin>
+      <pin name="objB" parameterType="System.Object" propertyMode="allow">
+        <description>The second object to compare.</description>
+      </pin>
+    </inputs>
+    <outputs>
+      <pin name="return" parameterType="System.Boolean">
+        <description>true if objA is the same instance as objB or if both are null; otherwise, false.</description>
+      </pin>
+    </outputs>
+  </staticModule>
+
+  <instanceModule moduleType="System.Object.GetHashCode" type="System.Object" method="GetHashCode">
+    <summary>Serves as a hash function for a particular type.</summary>
+    <instance name="object" parameterType="System.Object" propertyMode="allow">
+      <description>Object whose hash code is retrieved.</description>
+    </instance>
+    <outputs>
+      <pin name="return" parameterType="System.Int32">
+        <description> A hash code for the current object.</description>
+      </pin>
+    </outputs>
+  </instanceModule>
+
+  <instanceModule moduleType="System.Object.ToString" type="System.Object" method="ToString">
+    <summary>Returns a string that represents the current object.</summary>
+    <instance name="object" parameterType="System.Object" propertyMode="allow">
+      <description>An object to convert to string.</description>
+    </instance>
+    <outputs>
+      <pin name="return" parameterType="System.String">
+        <description>A string that represents the current object.</description>
+      </pin>
+    </outputs>
+  </instanceModule>
+
+  <staticModule moduleType="System.Guid.NewGuid" type="System.Guid" method="NewGuid">
+    <summary>Initializes a new instance of the System.Guid.</summary>
+    <outputs>
+      <pin name="return" parameterType="System.Guid">A new GUID object.</pin>
+    </outputs>
+  </staticModule>
+
+  <staticModule moduleType="System.Guid.Parse" type="System.Guid" method="Parse">
+    <summary> Converts the string representation of a GUID to the equivalent System.Guid.</summary>
+    <inputs>
+      <pin name="input" parameterType="System.String">
+        <description>The GUID to convert.</description>
+      </pin>
+    </inputs>
+    <outputs>
+      <pin name="return" parameterType="System.Guid">
+        <description>A structure that contains the value that was parsed.</description>
+      </pin>
+    </outputs>
+  </staticModule>
+
+  <instanceModule moduleType="System.String.Substring" type="System.String" method="Substring">
+    <summary>
+      Retrieves a substring from this instance. The substring starts at a specified
+      character position and continues to the end of the string.
+    </summary>
+    <instance name="object" parameterType="System.String" propertyMode="allow">
+      <description>An object of type string.</description>
+    </instance>
+    <inputs>
+      <pin name="startIndex" parameterType="System.Int32" propertyMode="default">
+        <description>The zero-based starting character position of a substring in this instance.</description>
+      </pin>
+    </inputs>
+    <outputs>
+      <pin name="return" parameterType="System.String">
+        <description>
+          A string that is equivalent to the substring that begins at startIndex in
+          this instance, or System.String.Empty if startIndex is equal to the length
+          of this instance.
+        </description>
+      </pin>
+    </outputs>
+  </instanceModule>
+
+  <instanceModule moduleType="System.String.Substring`2" type="System.String" method="Substring">
+    <summary>
+      <summary>
+        Retrieves a substring from this instance. The substring starts at a specified
+        character position and continues to the end of the string.
+      </summary>
+    </summary>
+    <instance name="object" parameterType="System.String" propertyMode="allow">
+      <description>An object of type string.</description>
+    </instance>
+    <inputs>
+      <pin name="startIndex" parameterType="System.Int32" propertyMode="default">
+        <description>The zero-based starting character position of a substring in this instance.</description>
+      </pin>
+      <pin name="length" parameterType="System.Int32" propertyMode="default">
+        <description>The number of characters in the substring.</description>
+      </pin>
+    </inputs>
+    <outputs>
+      <pin name="return" parameterType="System.String">
+        <description>
+          A string that is equivalent to the substring of length length that begins
+          at startIndex in this instance, or System.String.Empty if startIndex is equal
+          to the length of this instance and length is zero.
+        </description>
+      </pin>
+    </outputs>
+  </instanceModule>
+
+  <staticModule moduleType="System.String.IsNullOrEmpty" type="System.String" method="IsNullOrEmpty">
+    <summary>Indicates whether the specified string is null or an System.String.Empty string.</summary>
+    <inputs>
+      <pin name="value" parameterType="System.String" propertyMode="allow">
+        <description>The string to test.</description>
+      </pin>
+    </inputs>
+    <outputs>
+      <pin name="return" parameterType="System.Boolean">
+        <description>true if the value parameter is null or an empty string (""); otherwise, false.</description>
+      </pin>
+    </outputs>
+  </staticModule>
+
+  <instanceModule moduleType="System.String.Contains" type="System.String" method="Contains">
+    <summary>
+      Returns a value indicating whether the specified System.String object occurs
+      within this string.
+    </summary>
+    <instance name="object" parameterType="System.String" propertyMode="allow">
+      <description>An object of type string.</description>
+    </instance>
+    <inputs>
+      <pin name="value" parameterType="System.String" propertyMode="default">
+        <description>The string to seek.</description>
+      </pin>
+    </inputs>
+    <outputs>
+      <pin name="return" parameterType="System.Boolean">
+        <description>
+          true if the value parameter occurs within this string, or if value is the
+          empty string (""); otherwise, false.
+        </description>
+      </pin>
+    </outputs>
+  </instanceModule>
+
+  <instanceModule moduleType="System.String.EndsWith" type="System.String" method="EndsWith">
+    <summary>
+      Determines whether the end of this string instance matches the specified
+      string when compared using the specified comparison option.
+    </summary>
+    <instance name="object" parameterType="System.String" propertyMode="allow">
+      <description>An object of type string.</description>
+    </instance>
+    <inputs>
+      <pin name="value" parameterType="System.String" propertyMode="default">
+        <description>The string to compare to the substring at the end of this instance.</description>
+      </pin>
+      <pin name="comparisonType" parameterType="System.StringComparison" propertyMode="default">
+        <description>
+          One of the enumeration values that determines how this string and value are
+          compared.
+        </description>
+      </pin>
+    </inputs>
+    <outputs>
+      <pin name="return" parameterType="System.Boolean">
+        <description>
+          true if value matches the end of this instance; otherwise, false.
+        </description>
+      </pin>
+    </outputs>
+  </instanceModule>
+
+  <instanceModule moduleType="System.String.StartsWith" type="System.String" method="StartsWith">
+    <summary>
+      Determines whether the beginning of this string instance matches the specified
+      string when compared using the specified comparison option.
+    </summary>
+    <instance name="object" parameterType="System.String" propertyMode="allow">
+      <description>An object of type string.</description>
+    </instance>
+    <inputs>
+      <pin name="value" parameterType="System.String" propertyMode="default">
+        <description>The string to compare.</description>
+      </pin>
+      <pin name="comparisonType" parameterType="System.StringComparison" propertyMode="default">
+        <description>
+          One of the enumeration values that determines how this string and value are
+          compared.
+        </description>
+      </pin>
+    </inputs>
+    <outputs>
+      <pin name="return" parameterType="System.Boolean">
+        <description>
+          true if this instance begins with value; otherwise, false.
+        </description>
+      </pin>
+    </outputs>
+  </instanceModule>
+
+  <instanceModule moduleType="System.String.IndexOf" type="System.String" method="IndexOf">
+    <summary>
+      Reports the zero-based index of the first occurrence of the specified string
+      in the current System.String object. Parameters specify the starting search
+      position in the current string and the type of search to use for the specified
+      string.
+    </summary>
+    <instance name="object" parameterType="System.String" propertyMode="allow">
+      <description>An object of type string.</description>
+    </instance>
+    <inputs>
+      <pin name="value" parameterType="System.String" propertyMode="default">
+        <description>The string to seek.</description>
+      </pin>
+      <pin name="startIndex" parameterType="System.Int32" propertyMode="default">
+        <description>The search starting position.</description>
+      </pin>
+      <pin name="comparisonType" parameterType="System.StringComparison" propertyMode="default">
+        <description>
+          One of the enumeration values that specifies the rules for the search.
+        </description>
+      </pin>
+    </inputs>
+    <outputs>
+      <pin name="return" parameterType="System.Int32">
+        <description>
+          The zero-based index position of the value parameter if that string is found,
+          or -1 if it is not. If value is System.String.Empty, the return value is
+          startIndex.
+        </description>
+      </pin>
+    </outputs>
+  </instanceModule>
+
+  <instanceModule moduleType="System.String.ToLower" type="System.String" method="ToLower">
+    <summary>Returns a copy of this string converted to lowercase.</summary>
+    <instance name="object" parameterType="System.String" propertyMode="allow">
+      <description>An object of type string.</description>
+    </instance>
+    <outputs>
+      <pin name="return" parameterType="System.String">
+        <description>A string in lowercase.</description>
+      </pin>
+    </outputs>
+  </instanceModule>
+
+  <instanceModule moduleType="System.String.ToUpper" type="System.String" method="ToUpper">
+    <summary>Returns a copy of this string converted to uppercase.</summary>
+    <instance name="object" parameterType="System.String" propertyMode="allow">
+      <description>An object of type string.</description>
+    </instance>
+    <outputs>
+      <pin name="return" parameterType="System.String">
+        <description>A string in uppercase.</description>
+      </pin>
+    </outputs>
+  </instanceModule>
+
+  <instanceModule moduleType="System.String.Trim" type="System.String" method="Trim">
+    <summary>Removes all leading and trailing white-space characters from the current System.String object.</summary>
+    <instance name="object" parameterType="System.String" propertyMode="allow">
+      <description>An object of type string.</description>
+    </instance>
+    <outputs>
+      <pin name="return" parameterType="System.String">
+        <description>The string that remains after all white-space characters are removed from the start and end of the current string.</description>
+      </pin>
+    </outputs>
+  </instanceModule>
+
+  <instanceModule moduleType="System.String.TrimEnd" type="System.String" method="TrimEnd">
+    <summary>
+      Removes all trailing occurrences of a set of characters specified in an array
+      from the current System.String object.
+    </summary>
+    <instance name="object" parameterType="System.String" propertyMode="allow">
+      <description>An object of type string.</description>
+    </instance>
+    <inputs>
+      <pin name="trimChars" parameterType="System.Char[]" propertyMode="default">
+        <description>An array of Unicode characters to remove, or null.</description>
+      </pin>
+    </inputs>
+    <outputs>
+      <pin name="return" parameterType="System.String">
+        <description>
+          The string that remains after all occurrences of the characters in the trimChars
+          parameter are removed from the end of the current string. If trimChars is
+          null or an empty array, Unicode white-space characters are removed instead.
+        </description>
+      </pin>
+    </outputs>
+  </instanceModule>
+
+  <instanceModule moduleType="System.String.TrimStart" type="System.String" method="TrimStart">
+    <summary>
+      Removes all leading occurrences of a set of characters specified in an array
+      from the current System.String object.
+    </summary>
+    <instance name="object" parameterType="System.String" propertyMode="allow">
+      <description>An object of type string.</description>
+    </instance>
+    <inputs>
+      <pin name="trimChars" parameterType="System.Char[]" propertyMode="default">
+        <description>An array of Unicode characters to remove, or null.</description>
+      </pin>
+    </inputs>
+    <outputs>
+      <pin name="return" parameterType="System.String">
+        <description>
+          The string that remains after all occurrences of characters in the trimChars
+          parameter are removed from the start of the current string. If trimChars
+          is null or an empty array, white-space characters are removed instead.
+        </description>
+      </pin>
+    </outputs>
+  </instanceModule>
+
+  <instanceModule moduleType="System.String.Replace" type="System.String" method="Replace">
+    <summary>
+      Returns a new string in which all occurrences of a specified string in the
+      current instance are replaced with another specified string.
+    </summary>
+    <instance name="object" parameterType="System.String" propertyMode="allow">
+      <description>An object of type string.</description>
+    </instance>
+    <inputs>
+      <pin name="oldValue" parameterType="System.String" propertyMode="default">
+        <description>The string to be replaced.</description>
+      </pin>
+      <pin name="newValue" parameterType="System.String" propertyMode="default">
+        <description>The string to replace all occurrences of oldValue.</description>
+      </pin>
+    </inputs>
+    <outputs>
+      <pin name="return" parameterType="System.String">
+        <description>
+          A string that is equivalent to the current string except that all instances
+          of oldValue are replaced with newValue. If oldValue is not found in the current
+          instance, the method returns the current instance unchanged.
+        </description>
+      </pin>
+    </outputs>
+  </instanceModule>
+
+  <instanceModule moduleType="System.String.Remove" type="System.String" method="Remove">
+    <summary>
+      Returns a new string in which all the characters in the current instance,
+      beginning at a specified position and continuing through the last position,
+      have been deleted.
+    </summary>
+    <instance name="object" parameterType="System.String" propertyMode="allow">
+      <description>An object of type string.</description>
+    </instance>
+    <inputs>
+      <pin name="startIndex" parameterType="System.Int32" propertyMode="default">
+        <description>The zero-based position to begin deleting characters.</description>
+      </pin>
+    </inputs>
+    <outputs>
+      <pin name="return" parameterType="System.String">
+        <description>A new string that is equivalent to this string except for the removed characters.</description>
+      </pin>
+    </outputs>
+  </instanceModule>
+
+  <instanceModule moduleType="System.String.Remove`2" type="System.String" method="Remove">
+    <summary>
+      Returns a new string in which a specified number of characters in the current
+      this instance beginning at a specified position have been deleted.
+    </summary>
+    <instance name="object" parameterType="System.String" propertyMode="allow">
+      <description>An object of type string.</description>
+    </instance>
+    <inputs>
+      <pin name="startIndex" parameterType="System.Int32" propertyMode="default">
+        <description>The zero-based position to begin deleting characters.</description>
+      </pin>
+      <pin name="count" parameterType="System.Int32" propertyMode="default">
+        <description>The number of characters to delete.</description>
+      </pin>
+    </inputs>
+    <outputs>
+      <pin name="return" parameterType="System.String">
+        <description>A new string that is equivalent to this instance except for the removed characters.</description>
+      </pin>
+    </outputs>
+  </instanceModule>
+
+  <staticModule moduleType="System.String.Concat" type="System.String" method="Concat">
+    <summary>Concatenates the elements of a specified System.String array.</summary>
+    <inputs>
+      <pin name="values" propertyMode="never" parameterType="System.String[]" dynamic="true">An array of string instances.</pin>
+    </inputs>
+    <outputs>
+      <pin name="return" parameterType="System.String">The concatenated elements of values.</pin>
+    </outputs>
+  </staticModule>
+
+  <staticModule moduleType="System.String.Concat`2" type="System.String" method="Concat">
+    <summary>Concatenates the members of a System.Collections.Generic.IEnumerable&lt;string&gt; collection.</summary>
+    <inputs>
+      <pin name="values" propertyMode="never" parameterType="System.Collections.Generic.IEnumerable`1[[System.String]]">
+        A collection object that implements System.Collections.Generic.IEnumerable&lt;string&gt;.
+      </pin>
+    </inputs>
+    <outputs>
+      <pin name="return" parameterType="System.String">The concatenated elements of values.</pin>
+    </outputs>
+  </staticModule>
+
+  <staticModule moduleType="System.String.Format" type="System.String" method="Format">
+    <summary>Replaces the format item in a specified string with the string representation of a corresponding object in a specified array.</summary>
+    <inputs>
+      <pin name="format" parameterType="System.String" propertyMode="default">A composite format string.</pin>
+      <pin name="args" propertyMode="never" parameterType="System.Object[]" dynamic="true">An object array that contains zero or more objects to format.</pin>
+    </inputs>
+    <outputs>
+      <pin name="return" parameterType="System.String">A copy of format in which the format items have been replaced by the string representation of the corresponding objects in args.</pin>
+    </outputs>
+  </staticModule>
+
+  <staticModule moduleType="System.String.Join" type="System.String" method="Join">
+    <summary>Replaces the format item in a specified string with the string representation of a corresponding object in a specified array.</summary>
+    <inputs>
+      <pin name="separator" parameterType="System.String" propertyMode="default">
+        <description>The string to use as a separator. separator is included in the returned string only if values has more than one element.</description>
+      </pin>
+      <pin name="values" propertyMode="never" parameterType="System.Object[]" dynamic="true">
+        <description>An array that contains the elements to concatenate.</description>
+      </pin>
+    </inputs>
+    <outputs>
+      <pin name="return" parameterType="System.String">
+        <description>A string that consists of the elements of values delimited by the separator string. If values is an empty array, the method returns System.String.Empty.</description>
+      </pin>
+    </outputs>
+  </staticModule>
+
+  <instanceModule moduleType="System.String.Split" type="System.String" method="Split">
+    <summary>Returns a string array that contains the substrings in this instance that are delimited by elements of a specified Unicode character array.</summary>
+    <instance name="string" parameterType="System.String" propertyMode="allow">
+      <description>String which is splitted.</description>
+    </instance>
+    <inputs>
+      <pin name="separator" pinType="System.String" parameterType="System.Char[]" propertyMode="default">
+        <description>An array of Unicode characters that delimit the substrings in this instance, an empty array that contains no delimiters, or null.</description>
+      </pin>
+    </inputs>
+    <outputs>
+      <pin name="return" parameterType="System.String[]">
+        <description>An array whose elements contain the substrings in this instance that are delimited by one or more characters in separator. For more information, see the Remarks section.</description>
+      </pin>
+    </outputs>
+  </instanceModule>
+
+  <staticModule moduleType="System.Convert.FromBase64String" type="System.Convert" method="FromBase64String">
+    <summary>Converts the specified string, which encodes binary data as base-64 digits, to an equivalent 8-bit unsigned integer array.</summary>
+    <inputs>
+      <pin name="s" parameterType="System.String" propertyMode="allow">
+        <description>The string to convert.</description>
+      </pin>
+    </inputs>
+    <outputs>
+      <pin name="return" parameterType="System.Byte[]">
+        <description>An array of 8-bit unsigned integers that is equivalent to s.</description>
+      </pin>
+    </outputs>
+  </staticModule>
+
+  <staticModule moduleType="System.Convert.ToBase64String" type="System.Convert" method="ToBase64String">
+    <summary>Converts an array of 8-bit unsigned integers to its equivalent string representation that is encoded with base-64 digits.</summary>
+    <inputs>
+      <pin name="inArray" parameterType="System.Byte[]" propertyMode="never">
+        <description>An array of 8-bit unsigned integers.</description>
+      </pin>
+    </inputs>
+    <outputs>
+      <pin name="return" parameterType="System.String">
+        <description>The string representation, in base 64, of the contents of inArray.</description>
+      </pin>
+    </outputs>
+  </staticModule>
+
+  <staticModule moduleType="System.DateTime.Now" type="System.DateTime" method="Now">
+    <summary>Gets a System.DateTime object that is set to the current date and time on this computer, expressed as the local time.</summary>
+    <outputs>
+      <pin name="return" parameterType="System.DateTime">
+        <description>An object whose value is the current local date and time.</description>
+      </pin>
+    </outputs>
+  </staticModule>
+
+  <staticModule moduleType="System.DateTime.UtcNow" name="DateTime.UtcNow" type="System.DateTime" method="UtcNow">
+    <summary>Gets a System.DateTime object that is set to the current date and time on this computer, expressed as the Coordinated Universal Time (UTC).</summary>
+    <outputs>
+      <pin name="return" parameterType="System.DateTime">
+        <description>An object whose value is the current UTC date and time.</description>
+      </pin>
+    </outputs>
+  </staticModule>
+
+  <staticModule moduleType="System.Int32.Parse" type="System.Int32" method="Parse">
+    <summary>Converts the string representation of a number to its 32-bit signed integer equivalent.</summary>
+    <inputs>
+      <pin name="s" parameterType="System.String" propertyMode="allow">
+        <description>A string containing a number to convert.</description>
+      </pin>
+    </inputs>
+    <outputs>
+      <pin name="return" parameterType="System.Int32">
+        <description>A 32-bit signed integer equivalent to the number contained in s.</description>
+      </pin>
+    </outputs>
+  </staticModule>
+
+  <staticModule moduleType="System.Double.Parse" type="System.Double" method="Parse">
+    <summary>Converts the string representation of a number to its double-precision floating-point number equivalent.</summary>
+    <inputs>
+      <pin name="s" parameterType="System.String" propertyMode="allow">
+        <description>A string that contains a number to convert.</description>
+      </pin>
+    </inputs>
+    <outputs>
+      <pin name="return" parameterType="System.Double">
+        <description>A double-precision floating-point number that is equivalent to the numeric value or symbol specified in s.</description>
+      </pin>
+    </outputs>
+  </staticModule>
+
+  <staticModule moduleType="System.Text.RegularExpressions.Regex.IsMatch" type="System.Text.RegularExpressions.Regex, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" method="IsMatch">
+    <summary>Indicates whether the specified regular expression finds a match in the specified input string.</summary>
+    <inputs>
+      <pin name="input" parameterType="System.String" propertyMode="allow">
+        <description>The string to search for a match.</description>
+      </pin>
+      <pin name="pattern" parameterType="System.String" propertyMode="default">
+        <description>The regular expression pattern to match.</description>
+      </pin>
+    </inputs>
+    <outputs>
+      <pin name="return" parameterType="System.Boolean">
+        <description> true if the regular expression finds a match; otherwise, false.</description>
+      </pin>
+    </outputs>
+  </staticModule>
+
+  <staticModule moduleType="System.IO.Path.GetDirectoryName" type="System.IO.Path" method="GetDirectoryName">
+    <summary>Returns the directory information for the specified path string.</summary>
+    <inputs>
+      <pin name="path" parameterType="System.String" propertyMode="allow" resolvePath="true">
+        <description>The path of a file or directory.</description>
+      </pin>
+    </inputs>
+    <outputs>
+      <pin name="return" parameterType="System.String">
+        <description>Directory information for path, or null if path denotes a root directory or is null. Returns System.String.Empty if path does not contain directory information.</description>
+      </pin>
+    </outputs>
+  </staticModule>
+
+  <staticModule moduleType="System.IO.Path.GetExtension" type="System.IO.Path" method="GetExtension">
+    <summary>Returns the extension of the specified path string.</summary>
+    <inputs>
+      <pin name="path" parameterType="System.String" propertyMode="allow" resolvePath="true">
+        <description>The path string from which to get the extension.</description>
+      </pin>
+    </inputs>
+    <outputs>
+      <pin name="return" parameterType="System.String">
+        <description>The extension of the specified path (including the period "."), or null, or System.String.Empty. If path is null, System.IO.Path.GetExtension(System.String) returns null. If path does not have extension information, System.IO.Path.GetExtension(System.String) returns System.String.Empty.</description>
+      </pin>
+    </outputs>
+  </staticModule>
+
+  <staticModule moduleType="System.IO.Path.GetFileName" type="System.IO.Path" method="GetFileName">
+    <summary>Returns the file name and extension of the specified path string.</summary>
+    <inputs>
+      <pin name="path" parameterType="System.String" propertyMode="allow" resolvePath="true">
+        <description>The path string from which to obtain the file name and extension.</description>
+      </pin>
+    </inputs>
+    <outputs>
+      <pin name="return" parameterType="System.String">
+        <description>The characters after the last directory character in path. If the last character of path is a directory or volume separator character, this method returns System.String.Empty. If path is null, this method returns null.</description>
+      </pin>
+    </outputs>
+  </staticModule>
+
+  <staticModule moduleType="System.IO.Path.GetFileNameWithoutExtension" type="System.IO.Path" method="GetFileNameWithoutExtension">
+    <summary>Returns the file name of the specified path string without the extension.</summary>
+    <inputs>
+      <pin name="path" parameterType="System.String" propertyMode="allow" resolvePath="true">
+        <description>The path of the file.</description>
+      </pin>
+    </inputs>
+    <outputs>
+      <pin name="return" parameterType="System.String">
+        <description>The string returned by System.IO.Path.GetFileName(System.String), minus the last period (.) and all characters following it.</description>
+      </pin>
+    </outputs>
+  </staticModule>
+
+  <staticModule moduleType="System.IO.Path.GetFullPath" type="System.IO.Path" method="GetFullPath">
+    <summary>Returns the absolute path for the specified path string.</summary>
+    <inputs>
+      <pin name="path" parameterType="System.String" propertyMode="allow" resolvePath="true">
+        <description>The file or directory for which to obtain absolute path information.</description>
+      </pin>
+    </inputs>
+    <outputs>
+      <pin name="return" parameterType="System.String">
+        <description>The fully qualified location of path, such as "C:\MyFile.txt".</description>
+      </pin>
+    </outputs>
+  </staticModule>
+
+  <staticModule moduleType="System.IO.Path.CombineMany" type="System.IO.Path" method="Combine">
+    <summary>Combines an array of strings into a path.</summary>
+    <inputs>
+      <pin name="paths" parameterType="System.String[]" propertyMode="never" dynamic="true">
+        <description>An array of parts of the path.</description>
+      </pin>
+    </inputs>
+    <outputs>
+      <pin name="return" parameterType="System.String">
+        <description>The combined paths.</description>
+      </pin>
+    </outputs>
+  </staticModule>
+
+  <staticModule moduleType="System.IO.File.Exists" type="System.IO.File, System.IO.FileSystem" method="Exists">
+    <summary>Determines whether the specified file exists.</summary>
+    <inputs>
+      <pin name="path" parameterType="System.String" propertyMode="allow" resolvePath="true">
+        <description>The file to check.</description>
+      </pin>
+    </inputs>
+    <outputs>
+      <pin name="return" parameterType="System.Boolean">
+        <description>
+          true if the caller has the required permissions and path contains the name
+          of an existing file; otherwise, false. This method also returns false if
+          path is null, an invalid path, or a zero-length string. If the caller does
+          not have sufficient permissions to read the specified file, no exception
+          is thrown and the method returns false regardless of the existence of path.
+        </description>
+      </pin>
+    </outputs>
+  </staticModule>
+
+  <staticModule moduleType="System.IO.Directory.GetCurrentDirectory" type="System.IO.Directory, System.IO.FileSystem" method="GetCurrentDirectory">
+    <summary>Gets the current working directory of the application.</summary>
+    <outputs>
+      <pin name="return" parameterType="System.IO.DirectoryInfo">
+        <description>A string that contains the path of the current working directory, and does not end with a backslash (\).</description>
+      </pin>
+    </outputs>
+  </staticModule>
+
+  <staticModule moduleType="System.IO.Directory.CreateDirectory" type="System.IO.Directory, System.IO.FileSystem" method="CreateDirectory">
+    <summary>Creates all directories and subdirectories in the specified path.</summary>
+    <inputs>
+      <pin name="path" parameterType="System.String" propertyMode="allow" resolvePath="true">
+        <description>The directory path to create.</description>
+      </pin>
+    </inputs>
+    <outputs>
+      <pin name="return" parameterType="System.IO.DirectoryInfo">
+        <description>An object that represents the directory for the specified path.</description>
+      </pin>
+    </outputs>
+  </staticModule>
+
+  <staticModule moduleType="System.IO.Directory.Delete" type="System.IO.Directory, System.IO.FileSystem" method="Delete">
+    <summary>Deletes the specified directory and, if indicated, any subdirectories and files in the directory.</summary>
+    <inputs>
+      <pin name="path" parameterType="System.String" propertyMode="allow" resolvePath="true">
+        <description>The name of the directory to remove.</description>
+      </pin>
+      <pin name="recursive" parameterType="System.Boolean" propertyMode="default">
+        <description>true to remove directories, subdirectories, and files in path; otherwise, false.</description>
+      </pin>
+    </inputs>
+  </staticModule>
+
+  <staticModule moduleType="System.IO.Directory.Exists" type="System.IO.Directory, System.IO.FileSystem" method="Exists">
+    <summary>Determines whether the given path refers to an existing directory on disk.</summary>
+    <inputs>
+      <pin name="path" parameterType="System.String" propertyMode="allow" resolvePath="true">
+        <description>The file to check.</description>
+      </pin>
+    </inputs>
+    <outputs>
+      <pin name="return" parameterType="System.Boolean">
+        <description>true if path refers to an existing directory; otherwise, false.</description>
+      </pin>
+    </outputs>
+  </staticModule>
+
+  <staticModule moduleType="System.IO.Directory.EnumerateFiles" type="System.IO.Directory, System.IO.FileSystem" method="EnumerateFiles">
+    <summary>
+      Returns an enumerable collection of file names that match a search pattern
+      in a specified path, and optionally searches subdirectories.
+    </summary>
+    <inputs>
+      <pin name="path" parameterType="System.String" propertyMode="default" resolvePath="true">
+        <description>The directory to search.</description>
+      </pin>
+      <pin name="searchPattern" parameterType="System.String" propertyMode="default">
+        <description>The search string to match against the names of directories in path.</description>
+      </pin>
+      <pin name="searchOption" parameterType="System.IO.SearchOption, System.IO.FileSystem" propertyMode="default">
+        <description>
+          One of the enumeration values that specifies whether the search operation
+          should include only the current directory or should include all subdirectories.The
+          default value is System.IO.SearchOption.TopDirectoryOnly.
+        </description>
+      </pin>
+    </inputs>
+    <outputs>
+      <pin name="return" parameterType="System.Collections.Generic.IEnumerable`1[[System.String]]">
+        <description>
+          An enumerable collection of the full names (including paths) for the files
+          in the directory specified by path and that match the specified search pattern
+          and option.
+        </description>
+      </pin>
+    </outputs>
+  </staticModule>
+
+  <staticModule moduleType="System.IO.Directory.EnumerateDirectories" type="System.IO.Directory, System.IO.FileSystem" method="EnumerateDirectories">
+    <summary>
+      Returns an enumerable collection of directory names that match a search pattern
+      in a specified path, and optionally searches subdirectories.
+    </summary>
+    <inputs>
+      <pin name="path" parameterType="System.String" propertyMode="default" resolvePath="true">
+        <description>The directory to search.</description>
+      </pin>
+      <pin name="searchPattern" parameterType="System.String" propertyMode="default">
+        <description>The search string to match against the names of directories in path.</description>
+      </pin>
+      <pin name="searchOption" parameterType="System.IO.SearchOption, System.IO.FileSystem" propertyMode="default">
+        <description>
+          One of the enumeration values that specifies whether the search operation
+          should include only the current directory or should include all subdirectories.The
+          default value is System.IO.SearchOption.TopDirectoryOnly.
+        </description>
+      </pin>
+    </inputs>
+    <outputs>
+      <pin name="return" parameterType="System.Collections.Generic.IEnumerable`1[[System.String]]">
+        <description>
+          An enumerable collection of the full names (including paths) for the directories
+          in the directory specified by path and that match the specified search pattern
+          and option.
+        </description>
+      </pin>
+    </outputs>
+  </staticModule>
+
+  <staticModule moduleType="System.IO.Directory.Move" type="System.IO.Directory, System.IO.FileSystem" method="Move">
+    <summary>Moves a file or a directory and its contents to a new location.</summary>
+    <inputs>
+      <pin name="sourceDirName" parameterType="System.String" propertyMode="default" resolvePath="true">
+        <description>The path of the file or directory to move.</description>
+      </pin>
+      <pin name="destDirName" parameterType="System.String" propertyMode="default" resolvePath="true">
+        <description>
+          The path to the new location for sourceDirName. If sourceDirName is a file,
+          then destDirName must also be a file name.
+        </description>
+      </pin>
+    </inputs>
+  </staticModule>
+
+  <staticModule moduleType="System.IO.Directory.GetDirectories" type="System.IO.Directory, System.IO.FileSystem" method="GetDirectories">
+    <summary>
+      Gets the names of the subdirectories (including their paths) that match the
+      specified search pattern in the current directory, and optionally searches
+      subdirectories.
+    </summary>
+    <inputs>
+      <pin name="path" parameterType="System.String" propertyMode="default" resolvePath="true">
+        <description>The directory to search.</description>
+      </pin>
+      <pin name="searchPattern" parameterType="System.String" propertyMode="default">
+        <description>
+          The search string to match against the names of files in path. The parameter
+          cannot end in two periods ("..") or contain two periods ("..") followed by
+          System.IO.Path.DirectorySeparatorChar or System.IO.Path.AltDirectorySeparatorChar,
+          nor can it contain any of the characters in System.IO.Path.InvalidPathChars.
+        </description>
+      </pin>
+      <pin name="searchOption" parameterType="System.IO.SearchOption, System.IO.FileSystem" propertyMode="default">
+        <description>
+          One of the enumeration values that specifies whether the search operation
+          should include all subdirectories or only the current directory.
+        </description>
+      </pin>
+    </inputs>
+    <outputs>
+      <pin name="return" parameterType="System.String[]">
+        <description>
+          An array of the full names (including paths) of the subdirectories that match
+          the search pattern.
+        </description>
+      </pin>
+    </outputs>
+  </staticModule>
+
+  <staticModule moduleType="System.IO.Directory.GetFiles" type="System.IO.Directory, System.IO.FileSystem" method="GetFiles">
+    <summary>
+      Returns the names of files (including their paths) that match the specified
+      search pattern in the specified directory, using a value to determine whether
+      to search subdirectories.
+    </summary>
+    <inputs>
+      <pin name="path" parameterType="System.String" propertyMode="default" resolvePath="true">
+        <description>The directory to search.</description>
+      </pin>
+      <pin name="searchPattern" parameterType="System.String" propertyMode="default">
+        <description>
+          The search string to match against the names of files in path. The parameter
+          cannot end in two periods ("..") or contain two periods ("..") followed by
+          System.IO.Path.DirectorySeparatorChar or System.IO.Path.AltDirectorySeparatorChar,
+          nor can it contain any of the characters in System.IO.Path.InvalidPathChars.
+        </description>
+      </pin>
+      <pin name="searchOption" parameterType="System.IO.SearchOption, System.IO.FileSystem" propertyMode="default">
+        <description>
+          One of the enumeration values that specifies whether the search operation
+          should include all subdirectories or only the current directory.
+        </description>
+      </pin>
+    </inputs>
+    <outputs>
+      <pin name="return" parameterType="System.String[]">
+        <description>
+          An array of the full names (including paths) for the files in the specified
+          directory that match the specified search pattern and option.
+        </description>
+      </pin>
+    </outputs>
+  </staticModule>
+
+  <staticModule moduleType="System.IO.Directory.GetFileSystemEntries" type="System.IO.Directory, System.IO.FileSystem" method="GetFileSystemEntries">
+    <summary>
+      Gets an array of all the file names and directory names that match a search
+      pattern in a specified path, and optionally searches subdirectories.
+    </summary>
+    <inputs>
+      <pin name="path" parameterType="System.String" propertyMode="default" resolvePath="true">
+        <description>The directory to search.</description>
+      </pin>
+      <pin name="searchPattern" parameterType="System.String" propertyMode="default">
+        <description>
+          The string used to search for all files or directories that match its search
+          pattern. The default pattern is for all files and directories: "*"
+        </description>
+      </pin>
+      <pin name="searchOption" parameterType="System.IO.SearchOption, System.IO.FileSystem" propertyMode="default">
+        <description>
+          One of the enumeration values that specifies whether the search operation
+          should include only the current directory or should include all subdirectories.The
+          default value is System.IO.SearchOption.TopDirectoryOnly.
+        </description>
+      </pin>
+    </inputs>
+    <outputs>
+      <pin name="return" parameterType="System.String[]">
+        <description>
+          An array of file system entries that match the specified search criteria.
+        </description>
+      </pin>
+    </outputs>
+  </staticModule>
+
+  <staticModule moduleType="System.IO.File.Copy" type="System.IO.File, System.IO.FileSystem" method="Copy">
+    <summary>Copies an existing file to a new file. Overwriting a file of the same name is allowed.</summary>
+    <inputs>
+      <pin name="sourceFileName" parameterType="System.String" propertyMode="allow">
+        <description>The file to copy.</description>
+      </pin>
+      <pin name="destFileName" parameterType="System.String" propertyMode="allow">
+        <description>The name of the destination file. This cannot be a directory.</description>
+      </pin>
+      <pin name="overwrite" parameterType="System.Boolean" propertyMode="default">
+        <description>true if the destination file can be overwritten; otherwise, false.</description>
+      </pin>
+    </inputs>
+  </staticModule>
+
+  <staticModule moduleType="System.IO.File.Delete" type="System.IO.File, System.IO.FileSystem" method="Delete">
+    <summary>Deletes the specified file.</summary>
+    <inputs>
+      <pin name="path" parameterType="System.String" propertyMode="allow" resolvePath="true">
+        <description>The name of the file to be deleted. Wildcard characters are not supported.</description>
+      </pin>
+    </inputs>
+  </staticModule>
+
+  <staticModule moduleType="System.IO.File.Move" type="System.IO.File, System.IO.FileSystem" method="Move">
+    <summary>Moves a specified file to a new location, providing the option to specify a new file name.</summary>
+    <inputs>
+      <pin name="sourceFileName" parameterType="System.String" propertyMode="allow">
+        <description>The name of the file to move.</description>
+      </pin>
+      <pin name="destFileName" parameterType="System.String" propertyMode="default">
+        <description>The new path for the file.</description>
+      </pin>
+    </inputs>
+  </staticModule>
+
+  <staticModule moduleType="System.IO.File.ReadAllText" type="System.IO.File, System.IO.FileSystem" method="ReadAllText">
+    <summary>Opens a text file, reads all lines of the file, and then closes the file.</summary>
+    <inputs>
+      <pin name="path" parameterType="System.String" propertyMode="default" resolvePath="true">
+        <description>The file to open for reading.</description>
+      </pin>
+    </inputs>
+    <outputs>
+      <pin name="return" parameterType="System.String">
+        <description>A string containing all lines of the file.</description>
+      </pin>
+    </outputs>
+  </staticModule>
+
+  <staticModule moduleType="System.IO.File.ReadAllLines" type="System.IO.File, System.IO.FileSystem" method="ReadAllLines">
+    <summary>Opens a text file, reads all lines of the file, and then closes the file.</summary>
+    <inputs>
+      <pin name="path" parameterType="System.String" propertyMode="default" resolvePath="true">
+        <description>The file to open for reading.</description>
+      </pin>
+    </inputs>
+    <outputs>
+      <pin name="return" parameterType="System.String[]">
+        <description>A string array containing all lines of the file.</description>
+      </pin>
+    </outputs>
+  </staticModule>
+
+  <staticModule moduleType="System.IO.File.ReadAllBytes" type="System.IO.File, System.IO.FileSystem" method="ReadAllBytes">
+    <summary>Opens a binary file, reads the contents of the file into a byte array, and then closes the file.</summary>
+    <inputs>
+      <pin name="path" parameterType="System.String" propertyMode="default" resolvePath="true">
+        <description>The file to open for reading.</description>
+      </pin>
+    </inputs>
+    <outputs>
+      <pin name="return" parameterType="System.Byte[]">
+        <description>A byte array containing the contents of the file.</description>
+      </pin>
+    </outputs>
+  </staticModule>
+
+  <staticModule moduleType="System.IO.File.AppendAllLines" type="System.IO.File, System.IO.FileSystem" method="AppendAllLines">
+    <summary>
+      Appends lines to a file, and then closes the file. If the specified file Opens does not exist,
+      this method creates a file, writes the specified lines to binary file, reads the contents of
+      the file into a byte array, and then closes the file.
+    </summary>
+    <inputs>
+        <pin name="path" parameterType="System.String" propertyMode="default" resolvePath="true">
+        <description>The file to append the lines to. The file is created if it doesn't already exist.</description>
+      </pin>
+        <pin name="contents" parameterType="System.Collections.Generic.IEnumerable`1[[System.String]]" propertyMode="never">
+          <description>The lines to append to the file.</description>
+        </pin>
+    </inputs>
+    <outputs />
+  </staticModule>
+
+  <staticModule moduleType="System.IO.File.AppendAllText" type="System.IO.File, System.IO.FileSystem" method="AppendAllText">
+    <summary>
+      Opens a file, appends the specified string to the file, and then closes the
+      file. If the file does not exist, this method creates a file, writes the
+      specified string to the file, then closes the file.
+    </summary>
+    <inputs>
+      <pin name="path" parameterType="System.String" propertyMode="default" resolvePath="true">
+        <description>The file to append the specified string to.</description>
+      </pin>
+      <pin name="contents" parameterType="System.String" propertyMode="allow">
+        <description>The string to append to the file.</description>
+      </pin>
+    </inputs>
+    <outputs />
+  </staticModule>
+
+  <staticModule moduleType="System.IO.File.ReadLines" type="System.IO.File, System.IO.FileSystem" method="ReadLines">
+    <summary>
+      Reads the lines of a file.
+    </summary>
+    <inputs>
+      <pin name="path" parameterType="System.String" propertyMode="default" resolvePath="true">
+        <description>The file to read.</description>
+      </pin>
+    </inputs>
+    <outputs>
+      <pin name="lines" parameterType="System.Collections.Generic.IEnumerable`1[[System.String]]">
+        <description>All the lines of the file, or the lines that are the result of a query.</description>
+      </pin>
+    </outputs>
+  </staticModule>
+
+  <staticModule moduleType="System.IO.Path.Combine" type="System.IO.Path" method="Combine">
+    <summary>Combines two strings into a path.</summary>
+    <inputs>
+      <pin name="path1" parameterType="System.String" propertyMode="allow">
+        <description>The first path to combine.</description>
+      </pin>
+      <pin name="path2" parameterType="System.String" propertyMode="allow">
+        <description>The second path to combine.</description>
+      </pin>
+    </inputs>
+    <outputs>
+      <pin name="combinedPath" parameterType="System.String">
+        <description>The combined paths. If one of the specified paths is a zero-length string, this method returns the other path. If path2 contains an absolute path, this method returns path2.</description>
+      </pin>
+    </outputs>
+  </staticModule>
+
+  <constructorModule moduleType="Xamla.Types.Int2" type="Xamla.Types.Int2, Xamla.Types">
+    <summary>Creates a new Int2 object.</summary>
+    <inputs>
+      <pin name="x" parameterType="System.Int32" propertyMode="default">
+        <description>The value of the x component of the Int2.</description>
+      </pin>
+      <pin name="y" parameterType="System.Int32" propertyMode="default">
+        <description>The value of the y component of the Int2.</description>
+      </pin>
+    </inputs>
+    <outputs>
+      <pin name="Int2" parameterType="Xamla.Types.Int2, Xamla.Types">
+        <description>The created Int2 object.</description>
+      </pin>
+    </outputs>
+  </constructorModule>
+
+  <constructorModule moduleType="Xamla.Types.Int3" type="Xamla.Types.Int3, Xamla.Types">
+    <summary>Creates a new Int3 object.</summary>
+    <inputs>
+      <pin name="x" parameterType="System.Int32" propertyMode="default">
+        <description>The value of the x component of the Int3.</description>
+      </pin>
+      <pin name="y" parameterType="System.Int32" propertyMode="default">
+        <description>The value of the y component of the Int3.</description>
+      </pin>
+      <pin name="z" parameterType="System.Int32" propertyMode="default">
+        <description>The value of the z component of the Int3.</description>
+      </pin>
+    </inputs>
+    <outputs>
+      <pin name="Int3" parameterType="Xamla.Types.Int3, Xamla.Types">
+        <description>The created Int3 object.</description>
+      </pin>
+    </outputs>
+  </constructorModule>
+
+  <constructorModule moduleType="Xamla.Types.IntRect" type="Xamla.Types.IntRect, Xamla.Types">
+    <summary>Creates a new IntRect from left, top, right, bottom values.</summary>
+    <inputs>
+      <pin name="left" parameterType="System.Int32" propertyMode="default"></pin>
+      <pin name="top" parameterType="System.Int32" propertyMode="default"></pin>
+      <pin name="right" parameterType="System.Int32" propertyMode="default"></pin>
+      <pin name="bottom" parameterType="System.Int32" propertyMode="default"></pin>
+    </inputs>
+    <outputs>
+      <pin name="IntRect" parameterType="Xamla.Types.IntRect, Xamla.Types">
+        <description>The created IntRect object.</description>
+      </pin>
+    </outputs>
+  </constructorModule>
+
+  <staticModule moduleType="Xamla.Types.IntRect.FromLeftTopWidthHeight" type="Xamla.Types.IntRect, Xamla.Types" method="FromLeftTopWidthHeight">
+    <summary>
+      Creates a new IntRect from left, top, width, height values.
+    </summary>
+    <inputs>
+      <pin name="left" parameterType="System.Int32" propertyMode="default"></pin>
+      <pin name="top" parameterType="System.Int32" propertyMode="default"></pin>
+      <pin name="width" parameterType="System.Int32" propertyMode="default"></pin>
+      <pin name="height" parameterType="System.Int32" propertyMode="default"></pin>
+    </inputs>
+    <outputs>
+      <pin name="IntRect" parameterType="Xamla.Types.IntRect, Xamla.Types">
+        <description>The created IntRect.</description>
+      </pin>
+    </outputs>
+  </staticModule>
+
+  <staticModule moduleType="Xamla.Types.IntRect.Union" type="Xamla.Types.IntRect, Xamla.Types" method="Union">
+    <summary>
+      Returns the smallest IntRect that contains the two specified IntRects.
+    </summary>
+    <inputs>
+      <pin name="a" parameterType="Xamla.Types.IntRect, Xamla.Types" propertyMode="allow"></pin>
+      <pin name="b" parameterType="Xamla.Types.IntRect, Xamla.Types" propertyMode="allow"></pin>
+    </inputs>
+    <outputs>
+      <pin name="rect" parameterType="Xamla.Types.IntRect, Xamla.Types">
+        <description>The created IntRect.</description>
+      </pin>
+    </outputs>
+  </staticModule>
+
+  <staticModule moduleType="Xamla.Types.IntRect.Intersect" type="Xamla.Types.IntRect, Xamla.Types" method="Intersect">
+    <summary>
+      Returns the intersection of the specified IntRects.
+    </summary>
+    <inputs>
+      <pin name="a" parameterType="Xamla.Types.IntRect, Xamla.Types" propertyMode="allow"></pin>
+      <pin name="b" parameterType="Xamla.Types.IntRect, Xamla.Types" propertyMode="allow"></pin>
+    </inputs>
+    <outputs>
+      <pin name="rect" parameterType="Xamla.Types.IntRect, Xamla.Types">
+        <description>The created IntRect.</description>
+      </pin>
+    </outputs>
+  </staticModule>
+
+  <instanceModule moduleType="Xamla.Types.IntRect.IntersectsWith" type="Xamla.Types.IntRect, Xamla.Types" method="IntersectsWith">
+    <summary>
+      Tests whether two IntRects intersect each other.
+    </summary>
+    <instance name="a" parameterType="Xamla.Types.IntRect, Xamla.Types" propertyMode="allow">
+      <description>The First IntRect for the intersection test.</description>
+    </instance>
+    <inputs>
+      <pin name="b" parameterType="Xamla.Types.IntRect, Xamla.Types" propertyMode="allow">
+        <description>The second IntRect for the intersection test.</description>
+      </pin>
+    </inputs>
+    <outputs>
+      <pin name="result" parameterType="System.Boolean">
+        <description>A boolean return value indicating whether the two IntRects intersect.</description>
+      </pin>
+    </outputs>
+  </instanceModule>
+
+  <instanceModule moduleType="Xamla.Types.IntRect.Normalize" type="Xamla.Types.IntRect, Xamla.Types" method="Normalize">
+    <summary>Ensures that left &lt;= right and top &lt;= bottom.</summary>
+    <instance name="rect" parameterType="Xamla.Types.IntRect, Xamla.Types" propertyMode="allow">
+      <description>IntRect to normalize.</description>
+    </instance>
+    <outputs>
+      <pin name="rect" parameterType="Xamla.Types.IntRect, Xamla.Types">
+        <description>The normalized IntRect.</description>
+      </pin>
+    </outputs>
+  </instanceModule>
+
+  <instanceModule moduleType="Xamla.Types.IntRect.Clip" type="Xamla.Types.IntRect, Xamla.Types" method="Clip">
+    <summary>Clips an IntRect.</summary>
+    <instance name="rect" parameterType="Xamla.Types.IntRect, Xamla.Types" propertyMode="allow">
+      <description>IntRect to clip.</description>
+    </instance>
+    <inputs>
+      <pin name="clipArea" parameterType="Xamla.Types.IntRect, Xamla.Types" propertyMode="allow">
+        <description>An IntRect defining the minimum and maximum values for the clipping operation.</description>
+      </pin>
+    </inputs>
+    <outputs>
+      <pin name="IntRect" parameterType="Xamla.Types.IntRect, Xamla.Types">
+        <description>The clipped IntRect.</description>
+      </pin>
+    </outputs>
+  </instanceModule>
+
+  <instanceModule moduleType="Xamla.Types.IntRect.Contains" type="Xamla.Types.IntRect, Xamla.Types" method="Contains">
+    <summary>Tests whether a point lies inside an IntRect.</summary>
+    <instance name="rect" parameterType="Xamla.Types.IntRect, Xamla.Types" propertyMode="allow" />
+    <inputs>
+      <pin name="p" parameterType="Xamla.Types.Int2, Xamla.Types" propertyMode="allow">
+        <description>The Int2 point to test.</description>
+      </pin>
+    </inputs>
+    <outputs>
+      <pin name="result" parameterType="System.Boolean">
+        <description>True if the point lies inside the IntRect.</description>
+      </pin>
+    </outputs>
+  </instanceModule>
+
+  <constructorModule moduleType="Xamla.Types.Float2" type="Xamla.Types.Float2, Xamla.Types">
+    <summary>Creates a new Float2 object.</summary>
+    <inputs>
+      <pin name="x" parameterType="System.Double" propertyMode="default">
+        <description>The value of the x component of the Float2.</description>
+      </pin>
+      <pin name="y" parameterType="System.Double" propertyMode="default">
+        <description>The value of the y component of the Float2.</description>
+      </pin>
+    </inputs>
+    <outputs>
+      <pin name="Float2" parameterType="Xamla.Types.Float2, Xamla.Types">
+        <description>The created Float2 object.</description>
+      </pin>
+    </outputs>
+  </constructorModule>
+
+  <constructorModule moduleType="Xamla.Types.Float3" type="Xamla.Types.Float3, Xamla.Types">
+    <summary>Creates a new Float3 object.</summary>
+    <inputs>
+      <pin name="x" parameterType="System.Double" propertyMode="default">
+        <description>The value of the x component of the Float3.</description>
+      </pin>
+      <pin name="y" parameterType="System.Double" propertyMode="default">
+        <description>The value of the y component of the Float3.</description>
+      </pin>
+      <pin name="z" parameterType="System.Double" propertyMode="default">
+        <description>The value of the z component of the Float3.</description>
+      </pin>
+    </inputs>
+    <outputs>
+      <pin name="Float3" parameterType="Xamla.Types.Float3, Xamla.Types">
+        <description>The created Float3 object.</description>
+      </pin>
+    </outputs>
+  </constructorModule>
+
+  <constructorModule moduleType="Xamla.Types.FloatRect" type="Xamla.Types.FloatRect, Xamla.Types">
+    <summary>Creates a new FloatRect object from left, top, right, bottom values.</summary>
+    <inputs>
+      <pin name="left" parameterType="System.Double" propertyMode="default"></pin>
+      <pin name="top" parameterType="System.Double" propertyMode="default"></pin>
+      <pin name="right" parameterType="System.Double" propertyMode="default"></pin>
+      <pin name="bottom" parameterType="System.Double" propertyMode="default"></pin>
+    </inputs>
+    <outputs>
+      <pin name="FloatRect" parameterType="Xamla.Types.FloatRect, Xamla.Types">
+        <description>The created FloatRect object.</description>
+      </pin>
+    </outputs>
+  </constructorModule>
+
+  <staticModule moduleType="Xamla.Types.FloatRect.FromLeftTopWidthHeight" type="Xamla.Types.FloatRect, Xamla.Types" method="FromLeftTopWidthHeight">
+    <summary>
+      Creates a new FloatRect object from left, top, width, height values.
+    </summary>
+    <inputs>
+      <pin name="left" parameterType="System.Double" propertyMode="default"></pin>
+      <pin name="top" parameterType="System.Double" propertyMode="default"></pin>
+      <pin name="width" parameterType="System.Double" propertyMode="default"></pin>
+      <pin name="height" parameterType="System.Double" propertyMode="default"></pin>
+    </inputs>
+    <outputs>
+      <pin name="FloatRect" parameterType="Xamla.Types.FloatRect, Xamla.Types">
+        <description>The created FloatRect object.</description>
+      </pin>
+    </outputs>
+  </staticModule>
+
+  <staticModule moduleType="Xamla.Types.FloatRect.Union" type="Xamla.Types.FloatRect, Xamla.Types" method="Union">
+    <summary>
+      Returns the smallest FloatRect that contains the two specified FloatRects.
+    </summary>
+    <inputs>
+      <pin name="a" parameterType="Xamla.Types.FloatRect, Xamla.Types" propertyMode="allow"></pin>
+      <pin name="b" parameterType="Xamla.Types.FloatRect, Xamla.Types" propertyMode="allow"></pin>
+    </inputs>
+    <outputs>
+      <pin name="rect" parameterType="Xamla.Types.FloatRect, Xamla.Types">
+        <description>The created FloatRect.</description>
+      </pin>
+    </outputs>
+  </staticModule>
+
+  <staticModule moduleType="Xamla.Types.FloatRect.Intersect" type="Xamla.Types.FloatRect, Xamla.Types" method="Intersect">
+    <summary>
+      Returns the intersection of the specified FloatRects.
+    </summary>
+    <inputs>
+      <pin name="a" parameterType="Xamla.Types.FloatRect, Xamla.Types" propertyMode="allow"></pin>
+      <pin name="b" parameterType="Xamla.Types.FloatRect, Xamla.Types" propertyMode="allow"></pin>
+    </inputs>
+    <outputs>
+      <pin name="rect" parameterType="Xamla.Types.FloatRect, Xamla.Types">
+        <description>The created FloatRect.</description>
+      </pin>
+    </outputs>
+  </staticModule>
+
+  <instanceModule moduleType="Xamla.Types.FloatRect.IntersectsWith" type="Xamla.Types.FloatRect, Xamla.Types" method="IntersectsWith">
+    <summary>
+      Tests whether two FloatRects intersect each other.
+    </summary>
+    <instance name="a" parameterType="Xamla.Types.FloatRect, Xamla.Types" propertyMode="allow">
+      <description>The First FloatRect for the intersection test.</description>
+    </instance>
+    <inputs>
+      <pin name="b" parameterType="Xamla.Types.FloatRect, Xamla.Types" propertyMode="allow">
+        <description>The second FloatRect for the intersection test.</description>
+      </pin>
+    </inputs>
+    <outputs>
+      <pin name="result" parameterType="System.Boolean">
+        <description>A boolean return value indicating whether the two FloatRects intersect.</description>
+      </pin>
+    </outputs>
+  </instanceModule>
+
+  <instanceModule moduleType="Xamla.Types.FloatRect.Normalize" type="Xamla.Types.FloatRect, Xamla.Types" method="Normalize">
+    <summary>Ensures that left &lt;= right and top &lt;= bottom.</summary>
+    <instance name="rect" parameterType="Xamla.Types.FloatRect, Xamla.Types" propertyMode="allow">
+      <description>FloatRect to normalize.</description>
+    </instance>
+    <outputs>
+      <pin name="rect" parameterType="Xamla.Types.FloatRect, Xamla.Types">
+        <description>The normalized FloatRect.</description>
+      </pin>
+    </outputs>
+  </instanceModule>
+
+  <instanceModule moduleType="Xamla.Types.FloatRect.Clip" type="Xamla.Types.FloatRect, Xamla.Types" method="Clip">
+    <summary>Clips an FloatRect.</summary>
+    <instance name="rect" parameterType="Xamla.Types.FloatRect, Xamla.Types" propertyMode="allow">
+      <description>FloatRect to clip.</description>
+    </instance>
+    <inputs>
+      <pin name="clipArea" parameterType="Xamla.Types.FloatRect, Xamla.Types" propertyMode="allow">
+        <description>An FloatRect defining the minimum and maximum values for the clipping operation.</description>
+      </pin>
+    </inputs>
+    <outputs>
+      <pin name="rect" parameterType="Xamla.Types.FloatRect, Xamla.Types">
+        <description>The clipped FloatRect.</description>
+      </pin>
+    </outputs>
+  </instanceModule>
+
+  <instanceModule moduleType="Xamla.Types.FloatRect.Contains" type="Xamla.Types.FloatRect, Xamla.Types" method="Contains">
+    <summary>Tests whether a point lies inside an FloatRect.</summary>
+    <instance name="rect" parameterType="Xamla.Types.FloatRect, Xamla.Types" propertyMode="allow" />
+    <inputs>
+      <pin name="p" parameterType="Xamla.Types.Float2, Xamla.Types" propertyMode="allow">
+        <description>The Float2 point to test.</description>
+      </pin>
+    </inputs>
+    <outputs>
+      <pin name="result" parameterType="System.Boolean">
+        <description>True if the point lies inside the FloatRect.</description>
+      </pin>
+    </outputs>
+  </instanceModule>
+
+</xmodule>

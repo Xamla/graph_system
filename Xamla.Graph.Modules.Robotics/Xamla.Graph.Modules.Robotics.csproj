@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <RuntimeIdentifiers>win10-x64;osx.10.11-x64;ubuntu.16.04-x64</RuntimeIdentifiers>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn>1701;1702;1705;1591</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <NoWarn>1701;1702;1705;1591</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Rosvita.RestApi\Rosvita.RestApi.csproj" />
+    <ProjectReference Include="..\Rosvita.RosGardener.Contracts\Rosvita.RosGardener.Contracts.csproj" />
+    <ProjectReference Include="..\Rosvita.RosMonitor\Rosvita.RosMonitor.csproj" />
+    <ProjectReference Include="..\ThirdParty\ROS.NET\Uml.Robotics.Ros.Transforms\Uml.Robotics.Ros.Transforms.csproj" />
+    <ProjectReference Include="..\Xamla.Graph.Contracts\Xamla.Graph.Contracts.csproj" />
+    <ProjectReference Include="..\Xamla.Graph.Core\Xamla.Graph.Core.csproj" />
+    <ProjectReference Include="..\Xamla.MessageRouter.Client\Xamla.MessageRouter.Client.csproj" />
+    <ProjectReference Include="..\Xamla.Robotics.Motion\Xamla.Robotics.Motion.csproj" />
+    <ProjectReference Include="..\Xamla.Robotics.Types\Xamla.Robotics.Types.csproj" />
+    <ProjectReference Include="..\Xamla.Robotics.Motoman\Xamla.Robotics.Motoman.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Xamla.Graph.Modules.Robotics.xmodule">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

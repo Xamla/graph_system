@@ -1,0 +1,8 @@
+trajectory_msgs/JointTrajectory trajectory
+bool check_collision
+---
+#result definition
+int32 result
+---
+#feedback
+bool isconverged

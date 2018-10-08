@@ -1,0 +1,45 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <RuntimeIdentifiers>win10-x64;osx.10.11-x64;ubuntu.16.04-x64</RuntimeIdentifiers>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn>1701;1702;1705;1591;1998</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <NoWarn>1701;1702;1705;1591;1998</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Xamla.Graph.Contracts\Xamla.Graph.Contracts.csproj" />
+    <ProjectReference Include="..\Xamla.Graph.Core\Xamla.Graph.Core.csproj" />
+    <ProjectReference Include="..\Xamla.Types\Xamla.Types.csproj" />
+    <ProjectReference Include="..\Xamla.Robotics.Types\Xamla.Robotics.Types.csproj" />
+    <ProjectReference Include="..\Xamla.Utilities\Xamla.Utilities.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Python.Runtime" Condition=" '$(OS)' != 'Unix' ">
+      <HintPath>..\ThirdParty\pythonnet_build\lib.win-amd64-3.6\netcoreapp2.0\Python.Runtime.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="Python.Runtime" Condition=" '$(OS)' == 'Unix' ">
+      <HintPath>..\ThirdParty\pythonnet_build\lib.linux-x86_64-3.5\netcoreapp2.1\Python.Runtime.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Xamla.Graph.Modules.Python.xmodule">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Xamla.Graph.Modules.Python3.xmodule">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

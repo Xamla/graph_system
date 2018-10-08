@@ -1,0 +1,6 @@
+string command
+---
+int32 return_code
+string std_out
+string std_err
+---
