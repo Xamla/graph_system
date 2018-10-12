@@ -61,7 +61,7 @@ namespace Xamla.Robotics.Motion
         }
 
         /// <summary>
-        /// Creates a MoveGroup for manually specifued joint set. Since the mapping between ROS move-groups
+        /// Creates a MoveGroup for manually specified joint set. Since the mapping between ROS move-groups
         /// and the specified joint set is not know nor analysed it is not possible to execute end-effector
         /// related functions (e.g. inverse kinematics).
         /// </summary>
