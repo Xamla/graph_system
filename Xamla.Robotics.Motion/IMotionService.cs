@@ -64,27 +64,45 @@ namespace Xamla.Robotics.Motion
         /// Query joint states 
         /// </summary>
         /// <param name="joints">Set of joint for which the limits are queried</param>
-        /// <returns></returns>
+        /// <returns>Returns a instance of <c>JointStates</c> which contains the joint states of all joints defined in <c>joints</c>.</returns>
         JointStates QueryJointStates(JointSet joints);
 
         /// <summary>
-        /// 
+        /// Computes the pose by applying forward kinematics
         /// </summary>
-        /// <param name="moveGroupName"></param>
-        /// <param name="jointPositions"></param>
-        /// <param name="endEffectorLink"></param>
-        /// <returns></returns>
+        /// <param name="moveGroupName">Name of the move group from which the pose is queried</param>
+        /// <param name="jointPositions">Joint values from which the pose is calculated</param>
+        /// <param name="endEffectorLink">End effector link is necessary if end effector is not part of the move group but pose should be computed for the end effector.</param>
+        /// <returns>Returns the computed <c>Pose</c> object.</returns>
         Pose QueryPose(string moveGroupName, JointValues jointPositions, string endEffectorLink = "");
         
         /// <summary>
-        /// 
+        /// Query the poses from joint path points by applying forward kinematics
         /// </summary>
-        /// <param name="moveGroupName"></param>
-        /// <param name="waypoints"></param>
-        /// <param name="endEffectorLink"></param>
-        /// <returns></returns>
+        /// <param name="moveGroupName">Name of the move group from which the pose is queried</param>
+        /// <param name="waypoints">Joint path from which the poses are calculated</param>
+        /// <param name="endEffectorLink">End effector link is necessary if end effector is not part of the move group but pose should be computed for the end effector.</param>
+        /// <returns>Returns an object which implements <c>IList</c> and contains the computed poses.</returns>
         IList<Pose> QueryPoseMany(string moveGroupName, IJointPath waypoints, string endEffectorLink = "");
+
+
+        /// <summary>
+        /// Query a collision free joint path from defined joint path
+        /// </summary>
+        /// <param name="moveGroupName">Name of the move group for which the collision free joint is queried</param>
+        /// <param name="waypoints">Joint path which may contain collisions</param>
+        /// <returns>New reference to object implementing <c>IJointPath</c>, which is now collision free.</returns>
         IJointPath QueryCollisionFreeJointPath(string moveGroupName, IJointPath waypoints);
+
+        /// <summary>
+        /// Query a joint trajectory from joint path
+        /// </summary>
+        /// <param name="waypoints">Defines the key joint positions the trajectory must reach</param>
+        /// <param name="maxVelocity">Defines the maximal velocity for every joint</param>
+        /// <param name="maxAcceleration">Defines the maximal acceleration for every joint</param>
+        /// <param name="maxDeviation"> Defines the maximal deviation of the joints to the defined key points while executing the trajectory</param>
+        /// <param name="dt">Sampling points frequency or time if value is create as 1.0 the value is interpreted as a value in seconds else the value is interpreted as a value in Hz. TODO: Verify this</param>
+        /// <returns>An object which implements <c>IJointTrajectory</c>.</returns>
         IJointTrajectory QueryJointTrajectory(
             IJointPath waypoints,
             double[] maxVelocity = null,
@@ -94,57 +112,57 @@ namespace Xamla.Robotics.Motion
         );
 
         /// <summary>
-        /// 
+        /// Query collisions in joint path
         /// </summary>
-        /// <param name="moveGroupName"></param>
-        /// <param name="points"></param>
-        /// <returns></returns>
+        /// <param name="moveGroupName">Name of the move group for which a path should be checked for collisions</param>
+        /// <param name="points">The path that should be check for collisions</param>
+        /// <returns>Returns an object which implements <c>IList</c> and contains all the instances of <c>JointValuesCollision</c> found.</returns>
         IList<JointValuesCollision> QueryJointPathCollisions(string moveGroupName, IJointPath points);
 
         /// <summary>
-        /// 
+        /// Creates an instance of <c>TakesSpacePlanParameters</c> from user defined or queried inputs
         /// </summary>
-        /// <param name="endEffectorName"></param>
-        /// <param name="maxXYZVelocity"></param>
-        /// <param name="maxXYZAcceleration"></param>
-        /// <param name="maxAngularVelocity"></param>
-        /// <param name="maxAngularAcceleration"></param>
-        /// <param name="sampleResolution"></param>
-        /// <param name="ikJumpThreshold"></param>
-        /// <param name="maxDeviation"></param>
-        /// <param name="checkCollision"></param>
-        /// <param name="velocityScaling"></param>
-        /// <returns></returns>
+        /// <param name="endEffectorName">Name of the end effector</param>
+        /// <param name="maxXYZVelocity">Defines the maximal xyz velocity [m/s]</param>
+        /// <param name="maxXYZAcceleration">Defines the maximal xyz acceleration [m/s^2]</param>
+        /// <param name="maxAngularVelocity">Defines the maximal angular velocity [rad/s]</param>
+        /// <param name="maxAngularAcceleration">Defines the maximal angular acceleration [rad/s^2]</param>
+        /// <param name="sampleResolution">Sample points frequency</param>
+        /// <param name="ikJumpThreshold">Maximal inverse kinematic jump</param>
+        /// <param name="maxDeviation">Maximal deviation from fly by points</param>
+        /// <param name="checkCollision">Check for collision if True</param>
+        /// <param name="velocityScaling">Scale query or user defined max acceleration. Values between 0.0 and 1.0.</param>
+        /// <returns>Returns instance of <c>TaskSpacePlanParameters</c>.</returns>
         TaskSpacePlanParameters CreateTaskSpacePlanParameters(string endEffectorName = null, double maxXYZVelocity = 0.01, double maxXYZAcceleration = 0.04, double maxAngularVelocity = 0.017453292519943, double maxAngularAcceleration = 0.069813170079773, double sampleResolution = 0.05, double ikJumpThreshold = 0.1, double maxDeviation = 0.0, bool checkCollision = true, double velocityScaling = 1);
         
         /// <summary>
-        /// 
+        /// Create <c>PlanParameters</c> from user defined and/or quried inputs. TODO: Verify this
         /// </summary>
-        /// <param name="moveGroupName"></param>
-        /// <param name="joints"></param>
-        /// <param name="maxVelocity"></param>
-        /// <param name="maxAcceleration"></param>
-        /// <param name="sampleResolution"></param>
-        /// <param name="checkCollision"></param>
-        /// <param name="velocityScaling"></param>
-        /// <returns></returns>
+        /// <param name="moveGroupName">Name of the move group for which plan parameters should be created</param>
+        /// <param name="joints"><c>JointSet</c> instance for wjich plan parameters should be created</param>
+        /// <param name="maxVelocity">Defines the maximal velocity for every joint</param>
+        /// <param name="maxAcceleration">Defines the maximal acceleration for every joint</param>
+        /// <param name="sampleResolution">Sample points frequency</param>
+        /// <param name="checkCollision">Check for collision if True</param>
+        /// <param name="velocityScaling">Scale query or user defined max acceleration. Values between 0.0 and 1.0.</param>
+        /// <returns>Instance of <c>PlanParameters</c> with automatically queried and/or user defined values.</returns>
         PlanParameters CreatePlanParameters(string moveGroupName = null, JointSet joints = null, double[] maxVelocity = null, double[] maxAcceleration = null, double sampleResolution = 0.05, bool checkCollision = true, double velocityScaling = 1);
         
         /// <summary>
-        /// 
+        /// Plans a collision free joint path by querying it
         /// </summary>
-        /// <param name="start"></param>
-        /// <param name="goal"></param>
-        /// <param name="parameters"></param>
-        /// <returns></returns>
+        /// <param name="start">Starting joint configurations</param>
+        /// <param name="goal">Target joint configuration</param>
+        /// <param name="parameters">Plan parameters which defines the limits and move group.</param>
+        /// <returns>Returns An object implementing <c>IJointPath</c> defining a collision free joint path.</returns>
         IJointPath PlanCollisionFreeJointPath(JointValues start, JointValues goal, PlanParameters parameters);
 
         /// <summary>
-        /// 
+        /// Plans a collision free joint path by querying it
         /// </summary>
-        /// <param name="waypoints"></param>
-        /// <param name="parameters"></param>
-        /// <returns></returns>
+        /// <param name="waypoints">Joint path which should be replanned to be collision free</param>
+        /// <param name="parameters">Defines the limits and move group</param>
+        /// <returns>Returns An object implementing <c>IJointPath</c> defining a replanned collision free joint path.</returns>
         IJointPath PlanCollisionFreeJointPath(IJointPath waypoints,  PlanParameters parameters);
 
         /// <summary>
@@ -198,7 +216,7 @@ namespace Xamla.Robotics.Motion
         /// <param name="pose"></param>
         /// <param name="parameters"></param>
         /// <param name="jointPositionSeed"></param>
-        /// <param name="endEffectorLink"></param>
+        /// <param name="endEffectorLink">End effector link is necessary if end effector is not part of the move group but pose should be computed for the end effector.</param>
         /// <param name="timeout"></param>
         /// <param name="attempts"></param>
         /// <returns></returns>
@@ -236,7 +254,7 @@ namespace Xamla.Robotics.Motion
         /// <param name="points"></param>
         /// <param name="parameters"></param>
         /// <param name="jointPositionSeed"></param>
-        /// <param name="endEffectorLink"></param>
+        /// <param name="endEffectorLink">End effector link is necessary if end effector is not part of the move group but pose should be computed for the end effector.</param>
         /// <param name="timeout"></param>
         /// <param name="attempts"></param>
         /// <param name="constSeed"></param>
@@ -285,7 +303,7 @@ namespace Xamla.Robotics.Motion
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="waypoints"></param>
+        /// <param name="waypoints">Joint path from which the poses are calculated</param>
         /// <param name="numSteps"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
@@ -318,7 +336,7 @@ namespace Xamla.Robotics.Motion
         /// 
         /// </summary>
         /// <param name="target"></param>
-        /// <param name="endEffectorLink"></param>
+        /// <param name="endEffectorLink">End effector link is necessary if end effector is not part of the move group but pose should be computed for the end effector.</param>
         /// <param name="seed"></param>
         /// <param name="parameters"></param>
         /// <param name="cancel">CancellationToken</param>
@@ -329,7 +347,7 @@ namespace Xamla.Robotics.Motion
         /// 
         /// </summary>
         /// <param name="target"></param>
-        /// <param name="endEffectorLink"></param>
+        /// <param name="endEffectorLink">End effector link is necessary if end effector is not part of the move group but pose should be computed for the end effector.</param>
         /// <param name="seed"></param>
         /// <param name="parameters"></param>
         /// <param name="cancel">CancellationToken</param>
