@@ -7,7 +7,7 @@ using Xamla.Robotics.Types;
 namespace Xamla.Robotics.Motion
 {
     /// <summary>
-    /// Implementations of <c>IMoveGroup</c> encapsulate move functionality for a specific move group.
+    /// Implementations of <c>IMoveGroup</c> encapsulate move functionality.
     /// </summary> 
     public interface IMoveGroup : IDisposable
     {
@@ -56,7 +56,7 @@ namespace Xamla.Robotics.Motion
         /// <summary>
         /// Get an <c>IEndEffector</c> instance. 
         /// </summary>  
-        /// <param name="endEffectorName">Name of the <c>IEndEffector</c> instance. The default end effectors is used when null.</param>  
+        /// <param name="endEffectorName">Name of the <c>IEndEffector</c> instance. The default end effector is used when null.</param>  
         /// <returns>Returns the <c>IEndEffector</c> instance referenced by  <c>endEffectorName</c>.</returns>  
         IEndEffector GetEndEffector(string endEffectorName = null);
         /// <summary>
@@ -66,7 +66,7 @@ namespace Xamla.Robotics.Motion
         /// <summary>
         /// Get the current <c>Pose</c> of and end effector.  
         /// </summary>  
-        /// <param name="endEffectorName">Name of the <c>IEndEffector</c> instance. The default end effectors is used when null.</param>  
+        /// <param name="endEffectorName">Name of the <c>IEndEffector</c> instance. The default end effector is used when null.</param>  
         /// <returns>Returns the current <c>Pose</c> of the end effector referenced by  <c>endEffectorName</c>.</returns>  
         Pose GetCurrentPose(string endEffectorName = null);
         /// <summary>
