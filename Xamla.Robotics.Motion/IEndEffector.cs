@@ -95,7 +95,7 @@ namespace Xamla.Robotics.Motion
         Task MovePoseAsync(Pose target, JointValues seed = null, double? velocityScaling = null, bool? collisionCheck = null, double? accelerationScaling = null, CancellationToken cancel = default(CancellationToken));
       
         /// <summary>
-        /// Move using cartesian path asynchronously.
+        /// Move asynchronously using cartesian path.
         /// </summary>
         /// <param name="waypoints">The cartesian path as an object implementing <c>ICartesianPath</c></param>   
         /// <param name="seed">TODO: add definition</param>  
@@ -104,7 +104,7 @@ namespace Xamla.Robotics.Motion
         Task MoveCartesianPathAsync(ICartesianPath waypoints, JointValues seed = null, CancellationToken cancel = default(CancellationToken));
       
         /// <summary>
-        /// Move using cartesian path asynchronously.
+        /// Move asynchronously using cartesian path.
         /// </summary>
         /// <param name="waypoints">The cartesian path as an object implementing <c>ICartesianPath</c></param>   
         /// <param name="seed">TODO: add definition</param>  
@@ -143,7 +143,7 @@ namespace Xamla.Robotics.Motion
         ISteppedMotionClient MovePoseCollisionFreeSupervisedAsync(Pose target, JointValues seed = null, CancellationToken cancel = default(CancellationToken));
      
         /// <summary>
-        /// Move using cartesian path asynchronously.
+        /// Move asynchronously using cartesian path.
         /// </summary>
         /// <param name="waypoints">The cartesian path as an object implementing <c>ICartesianPath</c></param>    
         /// <param name="seed">TODO: add definition</param>  
@@ -152,7 +152,7 @@ namespace Xamla.Robotics.Motion
         ISteppedMotionClient MoveCartesianPathSupervisedAsync(ICartesianPath waypoints, JointValues seed = null, CancellationToken cancel = default(CancellationToken));
      
         /// <summary>
-        /// Move using cartesian path asynchronously.
+        /// Move asynchronously using cartesian path.
         /// </summary>
         /// <param name="waypoints">The cartesian path as an object implementing <c>ICartesianPath</c></param>    
         /// <param name="seed">TODO: add definition</param>  
@@ -214,7 +214,7 @@ namespace Xamla.Robotics.Motion
         (IJointTrajectory, TaskSpacePlanParameters) PlanMovePoseLinearWaypoints(ICartesianPath waypoints, TaskSpacePlanParameters parameters);
     
         /// <summary>
-         /// Move using cartesian path asynchronously.
+         /// Move asynchronously using cartesian path.
         /// </summary>  
         /// <param name="waypoints">The cartesian path as an object implementing <c>ICartesianPath</c></param>    
         /// <param name="cancel">CancellationToken</param>  
@@ -222,7 +222,7 @@ namespace Xamla.Robotics.Motion
         Task MoveCartesianPathLinearAsync(ICartesianPath waypoints, CancellationToken cancel = default(CancellationToken));
      
         /// <summary>
-        /// Move using cartesian path asynchronously.
+        /// Move asynchronously using cartesian path.
         /// </summary>  
         /// <param name="waypoints">The cartesian path as an object implementing <c>ICartesianPath</c></param>    
         /// <param name="velocityScaling">Scaling factor which is applied on the maximal possible joint velocities</param>  
@@ -253,7 +253,7 @@ namespace Xamla.Robotics.Motion
         ISteppedMotionClient MovePoseLinearSupervisedAsync(Pose target, double? velocityScaling = null, bool? collisionCheck = null, double? accelerationScaling = null, CancellationToken cancel = default(CancellationToken));
    
         /// <summary>
-        /// Move using cartesian path asynchronously.
+        /// Move asynchronously using cartesian path.
         /// </summary>  
         /// <param name="waypoints">The cartesian path as an object implementing <c>ICartesianPath</c></param>    
         /// <param name="cancel">CancellationToken</param>  
@@ -261,7 +261,7 @@ namespace Xamla.Robotics.Motion
         ISteppedMotionClient MoveCartesianPathLinearSupervisedAsync(ICartesianPath waypoints, CancellationToken cancel = default(CancellationToken));
     
         /// <summary>
-        /// Move with linear movement using cartesian path asynchronously.
+        /// Move with linear movement asynchronously using cartesian path.
         /// </summary>  
         /// <param name="waypoints">The cartesian path as an object implementing <c>ICartesianPath</c></param>    
         /// <param name="velocityScaling">Scaling factor which is applied on the maximal possible joint velocities</param>  
