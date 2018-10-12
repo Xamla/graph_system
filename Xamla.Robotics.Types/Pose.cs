@@ -26,7 +26,7 @@ namespace Xamla.Robotics.Types
         /// <summary>
         /// Creates a new <c>Pose</c> from a translation vector and a rotation quaternion.
         /// </summary>
-        /// <param name="translation">Translation in X, Y and Z axis.</param>
+        /// <param name="translation">Translation in X, Y and Z axis in meters.</param>
         /// <param name="rotation">Rotation as quaternion.</param>
         /// <param name="frame">Name of the ROS TF parent frame. Default: empty string.</param>
         /// <param name="normalizeRotation">If true the rotation quaternion gets normalized.</param>
@@ -58,7 +58,7 @@ namespace Xamla.Robotics.Types
         public string Frame { get; }
 
         /// <summary>
-        /// The translation in X, Y and Z axis.
+        /// The translation in X, Y and Z axis in meters.
         /// </summary>
         public Vector3 Translation { get; }
 
@@ -89,9 +89,9 @@ namespace Xamla.Robotics.Types
         /// <summary>
         /// Creates a new <c>Pose</c> translated in the axes x, y and z.
         /// </summary>
-        /// <param name="x">Translation in X</param>
-        /// <param name="y">Translation in Y</param>
-        /// <param name="z">Translation in Z</param>
+        /// <param name="x">Translation in X in meters.</param>
+        /// <param name="y">Translation in Y in meters.</param>
+        /// <param name="z">Translation in Z in meters.</param>
         /// <returns>A new <c>Pose</c></returns>
         public Pose Translate(float x, float y, float z) =>
             Translate(new Vector3(x, y, z));
@@ -99,7 +99,7 @@ namespace Xamla.Robotics.Types
         /// <summary>
         /// Creates a new <c>Pose</c> translated by the given vector.
         /// </summary>
-        /// <param name="offset">Translation in X, Y and Z given as <c>Vector3</c>.</param>
+        /// <param name="offset">Translation in X, Y and Z given as <c>Vector3</c> in meters.</param>
         /// <returns>A new <c>Pose</c></returns>
         public Pose Translate(Vector3 offset) =>
             new Pose(this.Translation + offset, this.Rotation, this.Frame);

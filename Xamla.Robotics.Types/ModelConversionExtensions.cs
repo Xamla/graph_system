@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Linq;
+﻿using System.Linq;
 using System.Numerics;
 using System.Collections.Immutable;
 
 namespace Xamla.Robotics.Types
 {
+    /// <summary>
+    /// Extensions for serialization and deserialization of <c>Xamla.Robotics.Types</c>
+    /// </summary>
     public static class ModelConversionExtensions
     {
         public static double[] ToModel(this Vector3 v) =>
@@ -118,7 +118,8 @@ namespace Xamla.Robotics.Types
                     new Quaternion(float.NaN, float.NaN, float.NaN, float.NaN),
                     model.Frame
                 );
-            } else
+            }
+            else
             {
                 return new Pose(
                     new Vector3((float)model.Translation[0], (float)model.Translation[1], (float)model.Translation[2]),
@@ -146,7 +147,8 @@ namespace Xamla.Robotics.Types
             new CartesianPath(model.Points.Select(x => x.ToPose()));
 
         public static IKResultModel ToModel(this IKResult result) =>
-            new IKResultModel {
+            new IKResultModel
+            {
                 Suceeded = result.Suceeded,
                 Path = result.Path?.ToModel(),
                 ErrorCodes = result.ErrorCodes.Cast<int>().ToArray(),

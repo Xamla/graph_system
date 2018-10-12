@@ -7,7 +7,7 @@ using Xamla.Utilities;
 namespace Xamla.Robotics.Types
 {
     /// <summary>
-    /// <c>JointValues</c> assign a numeric value to each joint name of a <c>JointSet</c>. The meaning of the value depends on the context where the <c>JointValues</c> are used. It could for example be used for joint positions or joint velocity limits.
+    /// <c>JointValues</c> assign a numeric value to each joint name of a <c>JointSet</c>. The meaning of the value depends on the context where the <c>JointValues</c> are used. It could for example be used for joint positions or joint velocity limits. The values of <c>JointValues</c> are interpreted as radians.
     /// </summary>
     /// <seealso cref="JointSet"/>
     public class JointValues
@@ -31,7 +31,7 @@ namespace Xamla.Robotics.Types
         /// Creates a new instance of <c>JointValues</c> with the given joint set and the collection of values. The first value is assigned the first name in the joint set, the second value is assigned the second name and so on.
         /// </summary>
         /// <param name="jointSet">The names of joint that get values assigned.</param>
-        /// <param name="values">The values that should be assigned to the <c>JointSet</c>.</param>
+        /// <param name="values">The values (in radians) that should be assigned to the <c>JointSet</c>.</param>
         /// <exception cref="Exception">Thrown when the amount of joint names in <paramref name="jointSet"/> does not match the length of values in <paramref name="values"/>.</exception>
         public JointValues(JointSet jointSet, IEnumerable<double> values)
             : this(jointSet, values.ToArray())
@@ -42,7 +42,7 @@ namespace Xamla.Robotics.Types
         /// Creates a new instance of <c>JointValues</c> with the given joint set and the collection of values. The first value is assigned the first name in the joint set, the second value is assigned the second name and so on.
         /// </summary>
         /// <param name="jointSet">The names of joint that get values assigned.</param>
-        /// <param name="values">The values that should be assigned to the <c>JointSet</c>.</param>
+        /// <param name="values">The values (in radians) that should be assigned to the <c>JointSet</c>.</param>
         /// <exception cref="Exception">Thrown when the amount of joint names in <paramref name="jointSet"/> does not match the length of values in <paramref name="values"/>.</exception>
         public JointValues(JointSet jointSet, double[] values)
         {
@@ -69,7 +69,7 @@ namespace Xamla.Robotics.Types
         public JointSet JointSet { get; }
 
         /// <summary>
-        /// Gets the values array of the current <c>JointValues</c>.
+        /// Gets the values array of the current <c>JointValues</c>. The values are in radians.
         /// </summary>
         public double[] Values { get; }
 
@@ -83,7 +83,7 @@ namespace Xamla.Robotics.Types
         /// Tries to get the numeric value assigned to the given joint name.
         /// </summary>
         /// <param name="jointName">The name of the joint for which the value should be returned.</param>
-        /// <param name="jointValue">The variable where the value of the joint name is stored, if it exists.</param>
+        /// <param name="jointValue">The variable where the value (in radians) of the joint name is stored, if it exists.</param>
         /// <returns>True when a value was found for the given joint value, False otherwise.</returns>
         public bool TryGetValue(string jointName, out double jointValue)
         {
@@ -98,14 +98,14 @@ namespace Xamla.Robotics.Types
         /// Gets the numeric value assigned to the given joint name.
         /// </summary>
         /// <param name="jointName">The name of the joint for which the value should be returned.</param>
-        /// <returns>The value assigned to the given joint name.</returns>
+        /// <returns>The value (in radians) assigned to the given joint name.</returns>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="jointName"/> is null.</exception>
         /// <exception cref="Exception">Thrown when the given <paramref name="jointName"/> is not part of the <c>JointSet</c>.</exception>
         public double GetValue(string jointName) =>
             Values[JointSet.GetIndexOf(jointName)];
 
         /// <summary>
-        /// Returns the value for the given joint name.
+        /// Returns the value (in radians) for the given joint name.
         /// </summary>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="jointName"/> is null.</exception>
         /// <exception cref="Exception">Thrown when the given <paramref name="jointName"/> is not part of the <c>JointSet</c>.</exception>
@@ -113,7 +113,7 @@ namespace Xamla.Robotics.Types
             this.GetValue(jointName);
 
         /// <summary>
-        /// Returns the value at the given index.
+        /// Returns the value (in radians) at the given index.
         /// </summary>
         public double this[int index] =>
             Values[index];
@@ -129,7 +129,7 @@ namespace Xamla.Robotics.Types
         /// <summary>
         /// Applies the given transform function to all joint values in the current <c>JointSet</c>.
         /// </summary>
-        /// <param name="transform">A function that receives each joint value with its corresponding index and should return a new joint value.</param>
+        /// <param name="transform">A function that receives each joint value (in radians) with its corresponding index and should return a new joint value.</param>
         /// <returns>A new instance of <c>JointSet</c>.</returns>
         public JointValues Transform(Func<double, int, double> transform) =>
             new JointValues(this.JointSet, this.Values.Select(transform));
