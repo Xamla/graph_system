@@ -16,23 +16,32 @@ namespace Xamla.Robotics.Types
         JointSet JointSet { get; }
 
         /// <summary>
-        /// Concatenates two <c>IJointTrajectory</c>.
+        /// Concatenates the current joint trajectory and the given other joint trajectory.
         /// </summary>
+        /// <param name="other">The joint trajectory that the current joint trajectory should be concatenated with.</param>
+        /// <returns>A new instance of <c>IJointTrajectory</c>.</returns>
         IJointTrajectory Concat(IJointTrajectory other);
 
         /// <summary>
         /// Appends the given collection of <c>JointTrajectoryPoint</c>s to the current <c>IJointTrajectory</c>.
         /// </summary>
+        /// <param name="source">The collection of points that should be appended to the current trajectory. The points need to fulfill the same criteria as described in the constructor of <see cref="JointTrajectory"/>.</param>
+        /// <returns>A new instance of <c>IJointTrajectory</c>.</returns>
         IJointTrajectory Append(IEnumerable<JointTrajectoryPoint> source);
 
         /// <summary>
         /// Returns the sub trajectory defined by the given start index and end index.
         /// </summary>
+        /// <param name="startIndex">The index where the sub trajectory should begin.</param>
+        /// <param name="endIndex">The index where the sub trajectory should end.</param>
+        /// <returns>A new instance of <c>IJointTrajectory</c></returns>
         IJointTrajectory Sub(int startIndex, int endIndex);
 
         /// <summary>
         /// Applies the given transform function to all poses in the current trajectory.
         /// </summary>
+        /// <param name="transform">A function that receives each point on the trajectory together with its index and that should return a new <c>JointTrajectoryPoint</c>.</param>
+        /// <returns>A new instance of <c>IJointTrajectory</c>.</returns>
         IJointTrajectory Transform(Func<JointTrajectoryPoint, int, JointTrajectoryPoint> transform);
 
         /// <summary>
