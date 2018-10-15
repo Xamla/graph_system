@@ -35,7 +35,7 @@
     public class WsgResult
     {
         /// <summary>
-        /// contains code of which <c>WsgState</c> the Gripper is currently in.
+        /// Contains code of which <c>WsgState</c> the Gripper is currently in.
         /// </summary>
         public int State { get; }
         /// <summary>
@@ -43,21 +43,21 @@
         /// </summary>
         public double Width { get; }
         /// <summary>
-        /// Force currently exerted by the Gripper
+        /// Force currently exerted by the Gripper.
         /// </summary>
         public double Force { get; }
         /// <summary>
-        /// A string message explaining current status
+        /// A string message explaining current status.
         /// </summary>
         public string Status { get; }
 
         /// <summary>
-        /// Creat a new <c>WsgResult</c> object
+        /// Creat a new <c>WsgResult</c> object.
         /// </summary>
-        /// <param name="state">contains code of which <c>WsgState</c> the Gripper is currently in.</param>
+        /// <param name="state">Contains code of which <c>WsgState</c> the Gripper is currently in.</param>
         /// <param name="width">Width between the two Gripping fingers.</param>
         /// <param name="force">Force currently exerted by the Gripper</param>
-        /// <param name="status">A string message explaining current status</param>
+        /// <param name="status">A string message explaining current status.</param>
         public WsgResult(int state, double width, double force, string status)
         {
             this.State = state;

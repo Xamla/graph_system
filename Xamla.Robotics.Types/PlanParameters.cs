@@ -18,7 +18,7 @@ namespace Xamla.Robotics.Types
             /// </summary>
             public string MoveGroupName { get; set; }
             /// <summary>
-            /// Collection of The Move Group Joint set in a certain order.
+            /// Collection of The Move Group Joints set in a certain order.
             /// </summary>
             public JointSet JointSet { get; set; }
             /// <summary>
@@ -69,10 +69,10 @@ namespace Xamla.Robotics.Types
                 new PlanParameters(this);
 
             /// <summary>
-            /// Scale the Acceleration of all joints by the factor parameter.
+            /// Scale the max acceleration of all joints by the factor parameter.
             /// </summary>
             /// <param name="factor">Factor to scale acceleration with, Must lie in range (0,1].</param>
-            /// <returns>A Builder Object with the acceleration scaled.</returns>
+            /// <returns>A <c>Builder</c> Object with the same values as this but with accelerations scaled.</returns>
             /// <exception cref="ArgumentOutOfRangeException">throw when the factor parameter lie outside of the range (0,1].</exception>
             public Builder ScaleAcceleration(double factor)
             {
@@ -87,10 +87,10 @@ namespace Xamla.Robotics.Types
             }
 
             /// <summary>
-            /// Scale the Velocity of all joints by the factor parameter.
+            /// Scale the max velocity of all joints by the factor parameter.
             /// </summary>
             /// <param name="factor">Factor to scale velocity with, Must lie in range (0,1].</param>
-            /// <returns>A Builder Object with the acceleration scaled.</returns>
+            /// <returns>A <c>Builder</c> Object with the same values as this but with velocity scaled.</returns>
             /// <exception cref="ArgumentOutOfRangeException">throw when the factor parameter lie outside of the range (0,1].</exception>
             public Builder ScaleVelocity(double factor)
             {
@@ -114,11 +114,11 @@ namespace Xamla.Robotics.Types
         /// </summary>
         public JointSet JointSet { get; }
         /// <summary>
-        /// Array of Maximum Velocities for each joint in the <c>JointSet</c> in the Move Group [in m/s].
+        /// Array of maximum velocities for each joint in the <c>JointSet</c> in the Move Group [in m/s].
         /// </summary>
         public double[] MaxVelocity { get; }
         /// <summary>
-        /// Array of Maximum Accelerations for each joint in the <c>JointSet</c> in the Move Group [in m/s^2].
+        /// Array of maximum accelerations for each joint in the <c>JointSet</c> in the Move Group [in m/s^2].m
         /// </summary>
         public double[] MaxAcceleration { get; }
         /// <summary>
@@ -143,9 +143,9 @@ namespace Xamla.Robotics.Types
         /// Creates a new <c>PlanParameters</c> object in Joint Space for a MoveGroup
         /// </summary>
         /// <param name="moveGroupName">The name of the planning group to control and plan for.</param>
-        /// <param name="joints">Collection of The Move Group Joint set in a certain order.</param>
-        /// <param name="maxVelocity">Array of Maximum Velocities for each joint in the <c>JointSet</c> in the Move Group [in m/s].</param>
-        /// <param name="maxAcceleration">Array of Maximum Accelerations for each joint in the <c>JointSet</c> in the Move Group [in m/s^2].</param>
+        /// <param name="joints">Collection of The Move Group Joints set in a certain order.</param>
+        /// <param name="maxVelocity">Array of maximum velocities for each joint in the <c>JointSet</c> in the Move Group [in m/s].</param>
+        /// <param name="maxAcceleration">Array of maximum accelerations for each joint in the <c>JointSet</c> in the Move Group [in m/s^2].</param>
         /// <param name="sampleResolution">The time resolution for trajectory generation (dt) [in Second].</param>
         /// <param name="collisionCheck">Indicates whether generated trajectories should be tested for collision.</param>
         /// <param name="maxDeviation">In case waypoints are used, this parameter will allow blending between the segments.</param>
@@ -186,7 +186,7 @@ namespace Xamla.Robotics.Types
         }
 
         /// <summary>
-        /// returns a <c>PlanParameters</c> object with the specified CollisionCheck value.
+        /// Returns a <c>PlanParameters</c> object with the same values as this but with the specified CollisionCheck value.
         /// </summary>
         public PlanParameters WithCollisionCheck(bool value)
         {
@@ -198,7 +198,7 @@ namespace Xamla.Robotics.Types
         }
 
         /// <summary>
-        /// returns a <c>PlanParameters</c> object with the specified SampleResolution value.
+        /// Returns a <c>PlanParameters</c> object with the same values as this but with the specified SampleResolution value.
         /// </summary>
         public PlanParameters WithSampleResolution(double value)
         {
@@ -210,7 +210,7 @@ namespace Xamla.Robotics.Types
         }
 
         /// <summary>
-        /// returns a <c>PlanParameters</c> object with the specified MaxDeviation value.
+        /// Returns a <c>PlanParameters</c> object with the same values as this but with the specified MaxDeviation value.
         /// </summary>
         public PlanParameters WithMaxDeviation(double value)
         {

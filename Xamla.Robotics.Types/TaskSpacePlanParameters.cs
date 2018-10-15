@@ -18,19 +18,19 @@ namespace Xamla.Robotics.Types
             /// </summary>
             public string EndEffectorName { get; set; }
             /// <summary>
-            /// Max Linear velocity of the end effector in Task Space xyz.
+            /// Max linear velocity of the end effector in Task Space xyz.
             /// </summary>
             public double MaxXYZVelocity { get; set; }
             /// <summary>
-            /// Max Linear Acceleration of the end effector in Task Space xyz.
+            /// Max linear Acceleration of the end effector in Task Space xyz.
             /// </summary>
             public double MaxXYZAcceleration { get; set; }
             /// <summary>
-            /// Maximum Angular velocity of the end effector in Task Space xyz.
+            /// Maximum angular velocity of the end effector in Task Space xyz.
             /// </summary>
             public double MaxAngularVelocity { get; set; }
             /// <summary>
-            /// Maximum Angular Acceleration of the end effector in Task Space xyz.
+            /// Maximum angular acceleration of the end effector in Task Space xyz.
             /// </summary>
             public double MaxAngularAcceleration { get; set; }
             /// <summary>
@@ -82,8 +82,8 @@ namespace Xamla.Robotics.Types
             /// Scale the Linear and Angular Accelerations of the End Effector by the factor parameter.
             /// </summary>
             /// <param name="factor">Factor to scale accelerations with, Must lie in range (0,1].</param>
-            /// <returns>A Builder Object with the acceleration scaled.</returns>
-            /// <exception cref="ArgumentOutOfRangeException">throw when the factor parameter lie outside of the range (0,1].</exception>
+            /// <returns>A <c>Builder</c> Object with same values as this but with the acceleration scaled.</returns>
+            /// <exception cref="ArgumentOutOfRangeException">Thrown when the factor parameter lie outside of the range (0,1].</exception>
             public Builder ScaleAcceleration(double factor)
             {
                 if (!(factor > 0 && factor <= 1))
@@ -97,8 +97,8 @@ namespace Xamla.Robotics.Types
             /// <summary>
             /// Scale the Linear and Angular Velocities of the End Effector by the factor parameter.
             /// </summary>
-            /// <param name="factor">Factor to scale accelerations with, Must lie in range (0,1].</param>
-            /// <returns>A Builder Object with the acceleration scaled.</returns>
+            /// <param name="factor">Factor to scale velocity with, Must lie in range (0,1].</param>
+            /// <returns>A <c>Builder</c> Object with same values as this but with the velocity scaled.</returns>
             /// <exception cref="ArgumentOutOfRangeException">throw when the factor parameter lie outside of the range (0,1].</exception>
             public Builder ScaleVelocity(double factor)
             {
@@ -116,19 +116,19 @@ namespace Xamla.Robotics.Types
         /// </summary>
         public string EndEffectorName { get; }
         /// <summary>
-        /// Max Linear velocity of the end effector in Task Space xyz.
+        /// Max linear velocity of the end effector in Task Space xyz.
         /// </summary>
         public double MaxXYZVelocity { get; }
         /// <summary>
-        /// Max Linear Acceleration of the end effector in Task Space xyz.
+        /// Max linear acceleration of the end effector in Task Space xyz.
         /// </summary>
         public double MaxXYZAcceleration { get; }
         /// <summary>
-        /// Maximum Angular velocity of the end effector in Task Space xyz.
+        /// Maximum angular velocity of the end effector in Task Space xyz.
         /// </summary>
         public double MaxAngularVelocity { get; }
         /// <summary>
-        /// Maximum Angular Acceleration of the end effector in Task Space xyz.
+        /// Maximum angular acceleration of the end effector in Task Space xyz.
         /// </summary>
         public double MaxAngularAcceleration { get; }
         /// <summary>
@@ -154,13 +154,13 @@ namespace Xamla.Robotics.Types
         }
 
         /// <summary>
-        /// Creates a new <c>TaskSpacePlanParameters</c> object in Task Space
+        /// Creates a new <c>TaskSpacePlanParameters</c> object in Task Space.
         /// </summary>
         /// <param name="endEffectorName">The name of the End Effector Frame.</param>
-        /// <param name="maxXYZVelocity">Max Linear velocity of the end effector in Task Space xyz. </param>
-        /// <param name="maxXYZAcceleration">Max Linear Acceleration of the end effector in Task Space xyz. </param>
-        /// <param name="maxAngularVelocity">Maximum Angular velocity of the end effector in Task Space xyz.</param>
-        /// <param name="maxAngularAcceleration">Maximum Angular Acceleration of the end effector in Task Space xyz.</param>
+        /// <param name="maxXYZVelocity">Max linear velocity of the end effector in Task Space xyz. </param>
+        /// <param name="maxXYZAcceleration">Max linear acceleration of the end effector in Task Space xyz. </param>
+        /// <param name="maxAngularVelocity">Maximum angular velocity of the end effector in Task Space xyz.</param>
+        /// <param name="maxAngularAcceleration">Maximum angular acceleration of the end effector in Task Space xyz.</param>
         /// <param name="sampleResolution">The time resolution for trajectory generation (dt) [in Second].</param>
         /// <param name="collisionCheck">Indicates whether generated trajectories should be tested for collision.</param>
         /// <param name="maxDeviation">In case waypoints are used, this parameter will allow blending between the segments.</param>
@@ -197,7 +197,7 @@ namespace Xamla.Robotics.Types
         }
 
         /// <summary>
-        /// returns a <c>TaskSpacePlanParameters</c> object with the specified CollisionCheck value.
+        /// Returns a <c>TaskSpacePlanParameters</c> object with same values as this but with the specified CollisionCheck value.
         /// </summary>
         public TaskSpacePlanParameters WithCollisionCheck(bool value)
         {
@@ -209,7 +209,7 @@ namespace Xamla.Robotics.Types
         }
 
         /// <summary>
-        /// returns a <c>TaskSpacePlanParameters</c> object with the specified SampleResolution value.
+        /// Returns a <c>TaskSpacePlanParameters</c> object with same values as this but with the specified SampleResolution value.
         /// </summary>
         public TaskSpacePlanParameters WithSampleResolution(double value)
         {
@@ -221,7 +221,7 @@ namespace Xamla.Robotics.Types
         }
 
         /// <summary>
-        /// returns a <c>TaskSpacePlanParameters</c> object with the specified IkJumpThreshold value.
+        /// Returns a <c>TaskSpacePlanParameters</c> object with same values as this but with the specified IkJumpThreshold value.
         /// </summary>
         public TaskSpacePlanParameters WithIkJumpThreshold(double value)
         {
@@ -233,7 +233,7 @@ namespace Xamla.Robotics.Types
         }
 
         /// <summary>
-        /// returns a <c>TaskSpacePlanParameters</c> object with the specified MaxDeviation value.
+        /// Returns a <c>TaskSpacePlanParameters</c> object with same values as this but with the specified MaxDeviation value.
         /// </summary>
         public TaskSpacePlanParameters WithMaxDeviation(double value)
         {

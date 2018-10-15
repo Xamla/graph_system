@@ -8,12 +8,12 @@ namespace Xamla.Robotics.Types
     /// <c>Twist</c> class contains Linear velocity in m/s and Angular velocity in rad/s described in a specific ROS TF frame.
     /// </summary>
     /// <remarks>
-    /// The class also offer a method to compare the equality of two TF frames.
+    /// The class also offer a method to compare the equality of two Twist objects.
     /// </remarks>
     public class Twist : IEquatable<Twist>
     {
         /// <summary>
-        /// the frame of Linear and Angular velocities.
+        /// The frame of Linear and Angular velocities.
         /// </summary>
         public string Frame { get; }
         /// <summary>
