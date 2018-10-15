@@ -16,10 +16,12 @@ namespace Xamla.Robotics.Types
         /// The frame of Linear and Angular velocities.
         /// </summary>
         public string Frame { get; }
+
         /// <summary>
         /// Linear Velocity in m/s.
         /// </summary>
         public Vector3 Linear { get; }
+
         /// <summary>
         /// Angular velocity in rad/s.
         /// </summary>

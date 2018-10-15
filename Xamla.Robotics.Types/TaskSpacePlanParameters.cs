@@ -14,37 +14,45 @@ namespace Xamla.Robotics.Types
         public class Builder
         {
             /// <summary>
-            /// The name of the End Effector Frame.
+            /// The name of the End Effector.
             /// </summary>
             public string EndEffectorName { get; set; }
+
             /// <summary>
             /// Max linear velocity of the end effector in Task Space xyz.
             /// </summary>
             public double MaxXYZVelocity { get; set; }
+
             /// <summary>
             /// Max linear Acceleration of the end effector in Task Space xyz.
             /// </summary>
             public double MaxXYZAcceleration { get; set; }
+
             /// <summary>
             /// Maximum angular velocity of the end effector in Task Space xyz.
             /// </summary>
             public double MaxAngularVelocity { get; set; }
+
             /// <summary>
             /// Maximum angular acceleration of the end effector in Task Space xyz.
             /// </summary>
             public double MaxAngularAcceleration { get; set; }
+
             /// <summary>
             /// Indicates whether generated trajectories should be tested for collision.
             /// </summary>
             public bool CollisionCheck { get; set; } = true;
+
             /// <summary>
             /// The time resolution for trajectory generation (dt) [in Second].
             /// </summary>
             public double SampleResolution { get; set; } = 0.008;       // 125 Hz
+
             /// <summary>
             /// In case waypoints are used, this parameter will allow blending between the segments.
             /// </summary>
             public double MaxDeviation { get; set; } = 0.2;
+
             /// <summary>
             /// Safty parameter to check if the redundancy resolution switches during the trajectory generation process.
             /// </summary>
@@ -112,37 +120,45 @@ namespace Xamla.Robotics.Types
         }
 
         /// <summary>
-        /// The name of the End Effector Frame.
+        /// The name of the End Effector.
         /// </summary>
         public string EndEffectorName { get; }
+
         /// <summary>
         /// Max linear velocity of the end effector in Task Space xyz.
         /// </summary>
         public double MaxXYZVelocity { get; }
+
         /// <summary>
         /// Max linear acceleration of the end effector in Task Space xyz.
         /// </summary>
         public double MaxXYZAcceleration { get; }
+
         /// <summary>
         /// Maximum angular velocity of the end effector in Task Space xyz.
         /// </summary>
         public double MaxAngularVelocity { get; }
+
         /// <summary>
         /// Maximum angular acceleration of the end effector in Task Space xyz.
         /// </summary>
         public double MaxAngularAcceleration { get; }
+
         /// <summary>
         /// Indicates whether generated trajectories should be tested for collision.
         /// </summary>
         public bool CollisionCheck { get; }
+
         /// <summary>
         /// The time resolution for trajectory generation (dt) [in Second].
         /// </summary>
         public double SampleResolution { get; }
+
         /// <summary>
         /// In case waypoints are used, this parameter will allow blending between the segments.
         /// </summary>
         public double MaxDeviation { get; }
+
         /// <summary>
         /// Safty parameter to check if the redundancy resolution switches during the trajectory generation process.
         /// </summary>
@@ -156,7 +172,7 @@ namespace Xamla.Robotics.Types
         /// <summary>
         /// Creates a new <c>TaskSpacePlanParameters</c> object in Task Space.
         /// </summary>
-        /// <param name="endEffectorName">The name of the End Effector Frame.</param>
+        /// <param name="endEffectorName">The name of the End Effector.</param>
         /// <param name="maxXYZVelocity">Max linear velocity of the end effector in Task Space xyz. </param>
         /// <param name="maxXYZAcceleration">Max linear acceleration of the end effector in Task Space xyz. </param>
         /// <param name="maxAngularVelocity">Maximum angular velocity of the end effector in Task Space xyz.</param>

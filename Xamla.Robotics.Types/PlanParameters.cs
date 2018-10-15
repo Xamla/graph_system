@@ -17,26 +17,32 @@ namespace Xamla.Robotics.Types
             /// The name of the planning group to control and plan for.
             /// </summary>
             public string MoveGroupName { get; set; }
+
             /// <summary>
             /// Collection of The Move Group Joints set in a certain order.
             /// </summary>
             public JointSet JointSet { get; set; }
+
             /// <summary>
             /// Array of Maximum Velocities for each joint in the <c>JointSet</c> in the Move Group [in m/s].
             /// </summary>
             public double[] MaxVelocity { get; set; }
+
             /// <summary>
             /// Array of Maximum Accelerations for each joint in the <c>JointSet</c> in the Move Group [in m/s^2].
             /// </summary>
             public double[] MaxAcceleration { get; set; }
+
             /// <summary>
             /// Indicates whether generated trajectories should be tested for collision.
             /// </summary>
             public bool CollisionCheck { get; set; } = true;
+
             /// <summary>
             /// The time resolution for trajectory generation (dt) [in Second].
             /// </summary>
             public double SampleResolution { get; set; } = 0.008;       // 125 Hz
+
             /// <summary>
             /// In case waypoints are used, this parameter will allow blending between the segments.
             /// </summary>
@@ -109,26 +115,32 @@ namespace Xamla.Robotics.Types
         /// The name of the planning group to control and plan for.
         /// </summary>
         public string MoveGroupName { get; }
+
         /// <summary>
         /// Collection of The Move Group Joint set in a certain order.
         /// </summary>
         public JointSet JointSet { get; }
+
         /// <summary>
         /// Array of maximum velocities for each joint in the <c>JointSet</c> in the Move Group [in m/s].
         /// </summary>
         public double[] MaxVelocity { get; }
+
         /// <summary>
         /// Array of maximum accelerations for each joint in the <c>JointSet</c> in the Move Group [in m/s^2].m
         /// </summary>
         public double[] MaxAcceleration { get; }
+
         /// <summary>
         /// Indicates whether generated trajectories should be tested for collision.
         /// </summary>
         public bool CollisionCheck { get; }
+
         /// <summary>
         /// The time resolution for trajectory generation (dt) [in Second].
         /// </summary>
         public double SampleResolution { get; }
+        
         /// <summary>
         /// In case waypoints are used, this parameter will allow blending between the segments.
         /// </summary>
