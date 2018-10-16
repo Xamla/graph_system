@@ -928,6 +928,7 @@ namespace Xamla.Robotics.Motion
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="points"/> is null.</exception>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="parameters"/> is null.</exception>
         /// <exception cref="ArgumentException">Thrown when plan parameters joint set does not match joint seed.</exception>
+        /// <exception cref="ServiceCallFailedException">Thrown when TODO: definition.</exception>
         public IKResult InverseKinematicMany(
             IEnumerable<Pose> points,
             PlanParameters parameters,
@@ -1025,6 +1026,10 @@ namespace Xamla.Robotics.Motion
         /// <param name="numSteps">TODO: Definition</param>
         /// <param name="parameters">Plan parameters which defines the limits, settings and move group name</param>
         /// <returns>Returns joint trajectory as an object implementing <c>IJointPath</c> which reaches defined poses of path under the constrains in parameters</returns>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="start"/> is null.</exception>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="goal"/> is null.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="goal"/> < 0.</exception>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="parameters"/> is null.</exception>
         public IJointPath PlanCartesianPath(Pose start, Pose goal, int numSteps, PlanParameters parameters)
         {
             if (start == null)
@@ -1061,6 +1066,7 @@ namespace Xamla.Robotics.Motion
         /// </summary>
         /// <param name="enable">Activates emergency stop if true; resets emergency stop if false</param>
         /// <returns>Return a tuple of bool and string. The former value indicates success (true), the second is a respond/error message.</returns>
+        /// <exception cref="ServiceCallFailedException">Thrown when TODO: definition.</exception>
         public (bool, string) EmergencyStop(bool enable = true)
         {
             const string serviceName = "EmergencySTOP/query_emergency_stop";
@@ -1106,6 +1112,7 @@ namespace Xamla.Robotics.Motion
         /// <param name="parameters">Plan parameters which defines the limits, settings and move group name</param>
         /// <param name="cancel">CancellationToken</param>
         /// <returns>Returns an instance of <c>Task</c>.</returns>
+        /// <exception cref="Exception">Thrown when MoveGroup not available.</exception>
         public async Task MovePose(Pose target, string endEffectorLink, JointValues seed, PlanParameters parameters, CancellationToken cancel = default(CancellationToken))
         {
             if (seed == null)
@@ -1137,6 +1144,7 @@ namespace Xamla.Robotics.Motion
         /// <param name="parameters">An instance of TaskSpacePlanParameters which defines the limits, settings and end effector name</param>
         /// <param name="cancel">CancellationToken</param>
         /// <returns>Returns an instance of <c>Task</c>.</returns>
+        /// <exception cref="Exception">Thrown when MoveGroup not available.</exception>
         public async Task MovePoseLinear(Pose target, string endEffectorLink, JointValues seed, TaskSpacePlanParameters parameters, CancellationToken cancel = default(CancellationToken))
         {
             var moveGroup = QueryAvailableMoveGroups().FirstOrDefault(x => x.EndEffectorNames.Any(y => y == parameters.EndEffectorName));
@@ -1162,6 +1170,7 @@ namespace Xamla.Robotics.Motion
         /// <param name="maxEffort">Force which should be applied [N]</param>
         /// <param name="cancel">CancellationToken</param>
         /// <returns>Returns an instance of <c>Task</c>, which produces the result as a value of type <c>MoveGripperResult</c> .</returns>
+        /// <exception cref="Exception">Thrown when Unexpected null result received by ActionClient.</exception>
         public async Task<MoveGripperResult> MoveGripper(string actionName, double position, double maxEffort, CancellationToken cancel = default(CancellationToken))
         {
             var actionClient = GetActionClient<control_msg.GripperCommandGoal, control_msg.GripperCommandResult, control_msg.GripperCommandFeedback>(actionName);
@@ -1188,7 +1197,9 @@ namespace Xamla.Robotics.Motion
         /// <param name="maxEffort">Maximal force which should be applied [N]</param>
         /// <param name="stopOnBlock">If true stop if maximal force is applied</param>
         /// <param name="cancel">CancellationToken</param>
-        /// <returns></returns>
+        /// <returns>Instance of <c>Task</c>.</returns>
+        /// <exception cref="ArgumentException">Thrown when unsupported gripper command.</exception>
+        /// <exception cref="Exception">Thrown when unexpected null result received by ActionClient.</exception>
         public async Task<WsgResult> WsgGripperCommand(
             string actionName,
             WsgCommand command,
