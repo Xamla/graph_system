@@ -21,7 +21,7 @@ namespace Xamla.Robotics.Motion
         public string ErrorMessage { get; }
 
         /// <summary>
-        /// Numerical representation if the error
+        /// Numerical representation of the error
         /// </summary>
         public int ErrorCode { get; }
 
@@ -35,7 +35,7 @@ namespace Xamla.Robotics.Motion
         /// </summary>
         /// <param name="goalId">Goal id of the ROS action which is used to perform the stepped motion operation</param>
         /// <param name="errorMessage">String representation of the error</param>
-        /// <param name="errorCode">Numerical representation if the error</param>
+        /// <param name="errorCode">Numerical representation of the error</param>
         /// <param name="progress">Progress of the stepped motion operation in range [0.0 - 1.0]</param>
         internal SteppedMotionState(string goalId, string errorMessage, int errorCode, double progress)
         {
@@ -45,7 +45,6 @@ namespace Xamla.Robotics.Motion
             this.Progress = progress;
         }
     }
-
 
 
     /// <summary>
