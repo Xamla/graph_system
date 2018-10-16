@@ -53,7 +53,7 @@ namespace Xamla.Robotics.Motion
         /// <param name="moveGroupName">The name of the move group represented by this instance</param>
         /// <param name="defaultEndEffectorName">Name of the default end effector</param>
         /// <exception cref="Exception">Thrown when current name does not exist.  </exception>
-        /// <exception cref="ArgumentNullException">Thrown when <paramref name="motionService"/> is Null.</exception>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="motionService"/> is null.</exception>
         public MoveGroup(IMotionService motionService, string moveGroupName = null, string defaultEndEffectorName = null)
         {
             this.motionService = motionService ?? throw new ArgumentNullException(nameof(motionService));
@@ -78,7 +78,7 @@ namespace Xamla.Robotics.Motion
         /// </summary>
         /// <param name="motionService">An object implementing <c>IMotionService</c> which is used to communicate with the motion server.</param>
         /// <param name="jointSet">A joint set</param>
-        /// <exception cref="ArgumentNullException">Thrown when <paramref name="motionService"/> is Null.</exception>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="motionService"/> is null.</exception>
         public MoveGroup(IMotionService motionService, JointSet jointSet)
         {
             this.motionService = motionService ?? throw new ArgumentNullException(nameof(motionService));
@@ -168,7 +168,7 @@ namespace Xamla.Robotics.Motion
         /// <summary>
         /// Default end effector name
         /// </summary>  
-        /// <exception cref="ArgumentNullException">Thrown when <c>value</c> is Null.</exception>
+        /// <exception cref="ArgumentNullException">Thrown when <c>value</c> is null.</exception>
         /// <exception cref="Exception">Thrown when end efector of name <c>value</c> does not exist in move group.</exception>
         public string DefaultEndEffectorName
         {
