@@ -10,6 +10,9 @@ using Xamla.Robotics.Types;
 
 namespace Xamla.Robotics.Motion
 {
+    /// <summary>
+    /// TODO: Desc
+    /// </summary>
     public class JoggingClient
         : IJoggingClient
         , IDisposable
@@ -48,12 +51,19 @@ namespace Xamla.Robotics.Motion
         Subscriber joggingFeedback;
         Subject<JoggingControllerStatusModel> whenJoggingFeedback;
 
+        /// <summary>
+        /// Creates a jogging client
+        /// </summary>
+        /// <param name="nodeHandle">Handle of a ROS node</param>
         public JoggingClient(NodeHandle nodeHandle)
         {
             this.nodeHandle = nodeHandle;
             whenJoggingFeedback = new Subject<JoggingControllerStatusModel>();
         }
 
+        /// <summary>
+        /// Initialize the jogging client
+        /// </summary>
         public void Initialize()
         {
             publisherJoggingCommand = nodeHandle.Advertise<trajectory_msgs.JointTrajectory>(TOPIC_JOGGING_COMMAND, 5, false);
@@ -72,6 +82,9 @@ namespace Xamla.Robotics.Motion
             joggingFeedback = nodeHandle.Subscribe<xamlamoveit.ControllerState>(TOPIC_JOGGING_FEEDBACK, 1, HandleJoggingFeedback, false);
         }
 
+        /// <summary>
+        /// Clean up
+        /// </summary>
         public void Dispose()
         {
             whenJoggingFeedback.Dispose();
@@ -91,9 +104,16 @@ namespace Xamla.Robotics.Motion
             joggingFeedback?.Dispose();
         }
 
+        /// <summary>
+        /// An object implementing IObservable<JoggingControllerStatusModel>
+        /// </summary>
         public IObservable<JoggingControllerStatusModel> WhenJoggingFeedback =>
             whenJoggingFeedback;
 
+        /// <summary>
+        /// Send velocities to TODO: Where to? Publisher?
+        /// </summary>
+        /// <param name="velocities">Velocities to sent [m/s]</param>
         public void SendVelocities(JointValues velocities)
         {
             var point = new trajectory_msgs.JointTrajectoryPoint()
@@ -110,12 +130,21 @@ namespace Xamla.Robotics.Motion
             publisherJoggingCommand.Publish(trajectory);
         }
 
+        /// <summary>
+        /// Send points to TODO: Where to?
+        /// </summary>
+        /// <param name="setpoint">The setpoint to be sent</param>
         public void SendSetpoint(Pose setpoint)
         {
             var pose = setpoint.ToPoseStampedMessage();
             publisherSetpointJoggingCommand.Publish(pose);
         }
 
+        /// <summary>
+        /// Get the name of the move group
+        /// </summary>
+        /// <returns>Returns a list of strings containing the names TODO: More precise</returns>
+        /// <exception cref="ServiceCallFailedException">Thrown when TODO: description.</exception>
         public string[] GetMoveGroupName()
         {
             var srv = new xamlamoveit.GetSelected();
@@ -124,6 +153,11 @@ namespace Xamla.Robotics.Motion
             return srv.resp.collection;
         }
 
+        /// <summary>
+        /// Set the name of the move group
+        /// </summary>
+        /// <param name="value">The name to be set</param>
+        /// <exception cref="ServiceCallFailedException">Thrown when TODO: description.</exception>
         public void SetMoveGroupName(string value)
         {
             var srv = new xamlamoveit.SetString();
@@ -132,6 +166,11 @@ namespace Xamla.Robotics.Motion
                 throw new ServiceCallFailedException(SERVICE_SET_MOVEGROUP_NAME);
         }
 
+        /// <summary>
+        /// Get the name of the endeffector
+        /// </summary>
+        /// <returns>Returns a list of strings containing the names of the endeffector TODO: More precise</returns>
+        /// <exception cref="ServiceCallFailedException">Thrown when TODO: description.</exception>
         public string[] GetEndEffectorName()
         {
             var srv = new xamlamoveit.GetSelected();
@@ -140,6 +179,11 @@ namespace Xamla.Robotics.Motion
             return srv.resp.collection;
         }
 
+        /// <summary>
+        /// Set the name of the endeffector
+        /// </summary>
+        /// <param name="value">The name of the endeffector</param>
+        /// <exception cref="ServiceCallFailedException">Thrown when TODO: description.</exception>
         public void SetEndEffectorName(string value)
         {
             var srv = new xamlamoveit.SetString();
@@ -148,6 +192,11 @@ namespace Xamla.Robotics.Motion
                 throw new ServiceCallFailedException(SERVICE_SET_ENDEFFECTOR_NAME);
         }
 
+        /// <summary>
+        /// Get the controller status
+        /// </summary>
+        /// <returns>Returns the controller status as an instance of <c>ControllerStatusModel</c>.</returns>
+        /// <exception cref="ServiceCallFailedException">Thrown when TODO: description.</exception>
         public ControllerStatusModel GetStatus()
         {
             var srv = new xamlamoveit.StatusController();
@@ -165,6 +214,11 @@ namespace Xamla.Robotics.Motion
             };
         }
 
+        /// <summary>
+        /// Get the velocity scaling 
+        /// </summary>
+        /// <returns>Returns the velocity scaling</returns>
+        /// <exception cref="ServiceCallFailedException">Thrown when TODO: description.</exception>
         public double GetVelocityScaling()
         {
             var srv = new xamlamoveit.GetFloat();
@@ -173,6 +227,11 @@ namespace Xamla.Robotics.Motion
             return srv.resp.data;
         }
 
+        /// <summary>
+        /// Set the velocity scaling factor
+        /// </summary>
+        /// <param name="value">Scaling factor to be set</param>
+        /// <exception cref="ServiceCallFailedException">Thrown when TODO: description.</exception>
         public void SetVelocityScaling(double value)
         {
             var srv = new xamlamoveit.SetFloat();
@@ -181,6 +240,12 @@ namespace Xamla.Robotics.Motion
                 throw new ServiceCallFailedException(SERVICE_SET_VELOCITY_SCALING);
         }
 
+        /// <summary>
+        /// Get flag by name
+        /// </summary>
+        /// <param name="name">Name of the flag</param>
+        /// <returns>Returns true if flag is set, false otherwise</returns>
+        /// <exception cref="ServiceCallFailedException">Thrown when TODO: description.</exception>
         public bool GetFlag(string name)
         {
             var srv = new xamlamoveit.GetFlag();
@@ -190,6 +255,12 @@ namespace Xamla.Robotics.Motion
             return srv.resp.value;
         }
 
+        /// <summary>
+        /// Set flag of given name
+        /// </summary>
+        /// <param name="name">Name of the flag</param>
+        /// <param name="value">The value the flag should be set</param>
+        /// <exception cref="ServiceCallFailedException">Thrown when TODO: description.</exception>
         public void SetFlag(string name, bool value)
         {
             var srv = new xamlamoveit.SetFlag();
@@ -199,6 +270,11 @@ namespace Xamla.Robotics.Motion
                 throw new ServiceCallFailedException(SERVICE_SET_FLAG);
         }
 
+        /// <summary>
+        /// Toggles tracking
+        /// </summary>
+        /// <param name="activate">If true, activates tracking; deactivates otherwise</param>
+        /// <exception cref="ServiceCallFailedException">Thrown when TODO: description.</exception>
         private void ToggleTracking(bool activate)
         {
             var srv = new std_srvs.SetBool();
@@ -207,22 +283,36 @@ namespace Xamla.Robotics.Motion
                 throw new ServiceCallFailedException(SERVICE_TOGGLE_TRACKING);
         }
 
+        /// <summary>
+        /// Start TODO: Definition
+        /// </summary>
         public void Start()
         {
             ToggleTracking(true);
         }
 
+        /// <summary>
+        /// Stop TODO: Definition
+        /// </summary>
         public void Stop()
         {
             ToggleTracking(false);
         }
 
+        /// <summary>
+        /// Send twist to TODO: Where to?
+        /// </summary>
+        /// <param name="twist">The twist to be sent</param>
         public void SendTwist(Twist twist)
         {
             var twistStamped = twist.ToTwistStampedMessage();
             publisherTwistJoggingCommand.Publish(twistStamped);
         }
 
+        /// <summary>
+        /// Handle feedback
+        /// </summary>
+        /// <param name="state">TODO: Definition</param>
         void HandleJoggingFeedback(xamlamoveit.ControllerState state)
         {
             var model = new JoggingControllerStatusModel

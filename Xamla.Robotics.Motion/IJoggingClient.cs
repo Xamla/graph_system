@@ -2,6 +2,9 @@
 
 namespace Xamla.Robotics.Motion
 {
+    /// <summary>
+    /// Enumeration of every jogging error code 
+    /// </summary>
     public enum JoggingErrorCode
     {
         OK = 1,
@@ -16,17 +19,50 @@ namespace Xamla.Robotics.Motion
         TASK_SPACE_JUMP_DETECTED = -9,
     }
 
+    /// <summary>
+    /// Model of the jogging controller
+    /// </summary>
     public class JoggingControllerStatusModel
     {
+        /// <summary>
+        /// The distance of the joints [m]
+        /// </summary>
         public double[] JointDistance { get; set; }
+
+        /// <summary>
+        /// The cartesian Distance [m]
+        /// </summary>
         public double[] CartesianDistance { get; set; }
+
+        /// <summary>
+        /// The current error code
+        /// </summary>
         public JoggingErrorCode ErrorCode { get; set; }
+
+        /// <summary>
+        /// True when converged
+        /// </summary>
         public bool Converged { get; set; }
+
+        /// <summary>
+        /// True if check for self-collision is enabled
+        /// </summary>
         public bool SelfCollisionCheckEnabled { get; set; }
+        
+        /// <summary>
+        /// True if check for joint limits is enabled
+        /// </summary>
         public bool JointLimitsCheckEnabled { get; set; }
+
+        /// <summary>
+        /// True if check for scene collision is enabled
+        /// </summary>
         public bool SceneCollisionCheckEnabled { get; set; }
     }
 
+    /// <summary>
+    /// Parameter class containing strings  TODO: Is this deprecated? I could not find any usage
+    /// </summary>
     public static class JoggingFlagName
     {
         public const string SelfCollisionCheckEnabled = "self_collision_check_enabled";
@@ -36,7 +72,7 @@ namespace Xamla.Robotics.Motion
 
 
     /// <summary>
-    /// Implementations of <c>IWeissWsgServices</c>  TODO: description
+    /// Implementations of <c>IJoggingClient</c> offer jogging functionality
     /// </summary>
     public interface IJoggingClient
     {
@@ -49,7 +85,7 @@ namespace Xamla.Robotics.Motion
         /// <summary>
         /// Send velocities to TODO: Where to?
         /// </summary>
-        /// <param name="velocities">Velocities to sent</param>
+        /// <param name="velocities">Velocities to sent [m/s]</param>
         void SendVelocities(JointValues velocities);
 
         /// <summary>
