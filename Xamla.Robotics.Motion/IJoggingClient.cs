@@ -34,23 +34,82 @@ namespace Xamla.Robotics.Motion
         public const string JointLimitsCheckEnabled = "joint_limits_check_enabled";
     }
 
+
+    /// <summary>
+    /// Implementations of <c>IWeissWsgServices</c>  TODO: description
+    /// </summary>
     public interface IJoggingClient
     {
+        /// <summary>
+        /// Get the status of the controller 
+        /// </summary>
+        /// <returns>Returns an instance of <c>ControllerStatusModel</c>.</returns>
         ControllerStatusModel GetStatus();
+
+        /// <summary>
+        /// Send velocities to TODO: Where to?
+        /// </summary>
+        /// <param name="velocities">Velocities to sent</param>
         void SendVelocities(JointValues velocities);
+
+        /// <summary>
+        /// Send points to TODO: Where to?
+        /// </summary>
+        /// <param name="setpoint">The setpoint to be sent</param>
         void SendSetpoint(Pose setpoint);
+
+        /// <summary>
+        /// Send twist to TODO: Where to?
+        /// </summary>
+        /// <param name="twist">The twist to be sent</param>
         void SendTwist(Twist twist);
 
+        /// <summary>
+        /// Get the name of the move group
+        /// </summary>
+        /// <returns>Returns a list of strings containing the names TODO: More precise</returns>
         string[] GetMoveGroupName();
+
+        /// <summary>
+        /// Set the name of the move group
+        /// </summary>
+        /// <param name="value">The name to be set</param>
         void SetMoveGroupName(string value);
 
+        /// <summary>
+        /// Get the velocity scaling 
+        /// </summary>
+        /// <returns>Returns the velocity scaling</returns>
         double GetVelocityScaling();
+       
+        /// <summary>
+        /// Set the velocity scaling factor
+        /// </summary>
+        /// <param name="value">Scaling factor to be set</param>
         void SetVelocityScaling(double value);
 
+        /// <summary>
+        /// Get flag by name
+        /// </summary>
+        /// <param name="name">Name of the flag</param>
+        /// <returns>Returns true if flag is set, false otherwise</returns>
         bool GetFlag(string name);
+
+        /// <summary>
+        /// Set flag of given name
+        /// </summary>
+        /// <param name="name">Name of the flag</param>
+        /// <param name="value">The value the flag should be set</param>
         void SetFlag(string name, bool value);
 
+        /// <summary>
+        /// Start TODO: Definition
+        /// </summary>
         void Start();
+
+        /// <summary>
+        /// Stop TODO: Definition
+        /// </summary>
         void Stop();
     }
 }
