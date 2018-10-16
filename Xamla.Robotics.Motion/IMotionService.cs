@@ -17,7 +17,6 @@ namespace Xamla.Robotics.Motion
         /// Handle of a ROS node
         /// </summary>  
         NodeHandle NodeHandle { get; }
-     
 
         /// <summary>
         /// Creates a move group.
@@ -64,11 +63,11 @@ namespace Xamla.Robotics.Motion
         /// Query joint states 
         /// </summary>
         /// <param name="joints">Set of joint for which the limits are queried</param>
-        /// <returns>Returns a instance of <c>JointStates</c> which contains the joint states of all joints defined in <c>joints</c>.</returns>
+        /// <returns>Returns a instance of <c>JointStates</c> which contains the current positions the joints defined in  <paramref name="joints"/>.</returns>
         JointStates QueryJointStates(JointSet joints);
 
         /// <summary>
-        /// Computes the pose by applying forward kinematics
+        /// Evaluate the forward kinematic for given joint positions to get the pose of a MoveGroup.
         /// </summary>
         /// <param name="moveGroupName">Name of the move group from which the pose is queried</param>
         /// <param name="jointPositions">Joint values from which the pose is calculated</param>
@@ -136,10 +135,10 @@ namespace Xamla.Robotics.Motion
         TaskSpacePlanParameters CreateTaskSpacePlanParameters(string endEffectorName = null, double maxXYZVelocity = 0.01, double maxXYZAcceleration = 0.04, double maxAngularVelocity = 0.017453292519943, double maxAngularAcceleration = 0.069813170079773, double sampleResolution = 0.05, double ikJumpThreshold = 0.1, double maxDeviation = 0.0, bool checkCollision = true, double velocityScaling = 1);
         
         /// <summary>
-        /// Create <c>PlanParameters</c> from user defined and/or quried inputs. TODO: Verify this
+        /// Create <c>PlanParameters</c> from user defined and/or queried inputs. TODO: Verify this
         /// </summary>
         /// <param name="moveGroupName">Name of the move group for which plan parameters should be created</param>
-        /// <param name="joints"><c>JointSet</c> instance for wjich plan parameters should be created</param>
+        /// <param name="joints"><c>JointSet</c> instance for which plan parameters should be created</param>
         /// <param name="maxVelocity">Defines the maximal velocity for every joint</param>
         /// <param name="maxAcceleration">Defines the maximal acceleration for every joint</param>
         /// <param name="sampleResolution">Sample points frequency</param>
@@ -291,7 +290,7 @@ namespace Xamla.Robotics.Motion
         );
 
         /// <summary>
-        /// 
+        /// Plan a joint trajectory from start and end pose
         /// </summary>
         /// <param name="start">Starting pose</param>
         /// <param name="goal">Target pose</param>
