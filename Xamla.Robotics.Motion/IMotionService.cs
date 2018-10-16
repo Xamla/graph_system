@@ -166,60 +166,60 @@ namespace Xamla.Robotics.Motion
         IJointPath PlanCollisionFreeJointPath(IJointPath waypoints,  PlanParameters parameters);
 
         /// <summary>
-        /// 
+        /// Plan a joint path from a cartesian path and plan parameters TODO: Verify this, could be wrong
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="numSteps"></param>
-        /// <param name="parameters"></param>
-        /// <returns></returns>
+        /// <param name="path">Poses the planned trajectory must reach</param>
+        /// <param name="numSteps">TODO: Define this</param>
+        /// <param name="parameters">Plan parameters which defines the limits, settings and move group name</param>
+        /// <returns>An object implementing <c>ICartesianPath</c>.</returns>
         ICartesianPath PlanMoveCartesian(ICartesianPath path, int numSteps, PlanParameters parameters);
 
         /// <summary>
-        /// 
+        /// Plans trajectory with linear movements from a cartesian path
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="seed"></param>
-        /// <param name="parameters"></param>
-        /// <returns></returns>
+        /// <param name="path">Cartesian path with poses the trajectory must reach</param>
+        /// <param name="seed">Numerical seed to control configuration</param>
+        /// <param name="parameters">Plan parameters which defines the limits, settings and end effector name.</param>
+        /// <returns>Returns planned joint trajectory which reach the poses defined in path under the constraints of parameters.</returns>
         IJointTrajectory PlanMovePoseLinear(ICartesianPath path, JointValues seed, TaskSpacePlanParameters parameters);
 
         /// <summary>
-        /// 
+        /// Plans trajectory from a joint path
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="parameters"></param>
-        /// <returns></returns>
+        /// <param name="path">Joint path with positions the trajectory must reach</param>
+        /// <param name="parameters">Plan parameters which defines the limits, settings and move group name</param>
+        /// <returns> Planned joint trajectory which reach the positions defined in path under the constraints of parameters</returns>
         IJointTrajectory PlanMoveJoints(IJointPath path, PlanParameters parameters);
 
         /// <summary>
-        /// 
+        /// Executes a joint trajectory  asynchronously
         /// </summary>
-        /// <param name="trajectory"></param>
-        /// <param name="velocityScaling"></param>
-        /// <param name="checkCollision"></param>
+        /// <param name="trajectory">Joint trajectory which should be executed</param>
+        /// <param name="velocityScaling">Scale query or user defined max acceleration. Values between 0.0 and 1.0.</param>
+        /// <param name="checkCollision">Check for collision if True</param>
         /// <param name="cancel">CancellationToken</param>
-        /// <returns></returns>
+        /// <returns> Returns an object implementing <c>ISteppedMotionClient</c>.</returns>
         ISteppedMotionClient ExecuteJointTrajectorySupervised(IJointTrajectory trajectory, double velocityScaling = 1.0, bool checkCollision = true, CancellationToken cancel = default(CancellationToken));
 
         /// <summary>
-        /// 
+        /// Executes a joint trajectory asynchronously
         /// </summary>
-        /// <param name="trajectory"></param>
-        /// <param name="checkCollision"></param>
+        /// <param name="trajectory">Joint trajectory which should be executed</param>
+        /// <param name="checkCollision">Check for collision if True</param>
         /// <param name="cancel">CancellationToken</param>
-        /// <returns></returns>
+        /// <returns>Returns a Task instance which returns the result as <c>int</c>.</returns>
         Task<int> ExecuteJointTrajectory(IJointTrajectory trajectory, bool checkCollision, CancellationToken cancel = default(CancellationToken));
 
         /// <summary>
-        /// 
+        /// Get the joint configuration based on pose
         /// </summary>
-        /// <param name="pose"></param>
-        /// <param name="parameters"></param>
-        /// <param name="jointPositionSeed"></param>
-        /// <param name="endEffectorLink">End effector link is necessary if end effector is not part of the move group but pose should be computed for the end effector.</param>
-        /// <param name="timeout"></param>
-        /// <param name="attempts"></param>
-        /// <returns></returns>
+        /// <param name="pose">Pose to transform to joint space</param>
+        /// <param name="parameters">Plan parameters which defines the limits, settings and move group name</param>
+        /// <param name="jointPositionSeed">Optional numerical seed to control joint configuration</param>
+        /// <param name="endEffectorLink">Necessary if poses are defined for end effector link</param>
+        /// <param name="timeout">Timeout</param>
+        /// <param name="attempts">Attempts to find a solution or each pose</param>
+        /// <returns>Returns an instance of <c>JointValues</c> with the joint configuration.</returns>
         JointValues InverseKinematic(
             Pose pose,
             PlanParameters parameters,
@@ -230,15 +230,15 @@ namespace Xamla.Robotics.Motion
         );
 
         /// <summary>
-        /// 
+        /// Get the joint configuration based on pose
         /// </summary>
-        /// <param name="pose"></param>
-        /// <param name="endEffectorName"></param>
-        /// <param name="avoidCollision"></param>
-        /// <param name="jointPositionSeed"></param>
-        /// <param name="timeout"></param>
-        /// <param name="attempts"></param>
-        /// <returns></returns>
+        /// <param name="pose">Pose to transform to joint space</param>
+        /// <param name="endEffectorName">Name of the end effector</param>
+        /// <param name="avoidCollision">Indicates if collision should be avoided</param>
+        /// <param name="jointPositionSeed">Optional numerical seed to control joint configuration</param>
+        /// <param name="timeout">Timeout</param>
+        /// <param name="attempts">Attempts to find a solution or each pose</param>
+        /// <returns>Returns an instance of <c>JointValues</c> with the joint configuration.</returns>
         JointValues InverseKinematic(
             Pose pose,
             string endEffectorName,
@@ -249,16 +249,16 @@ namespace Xamla.Robotics.Motion
         );
 
         /// <summary>
-        /// 
+        /// Inverse kinematic solutions for several points
         /// </summary>
-        /// <param name="points"></param>
-        /// <param name="parameters"></param>
-        /// <param name="jointPositionSeed"></param>
-        /// <param name="endEffectorLink">End effector link is necessary if end effector is not part of the move group but pose should be computed for the end effector.</param>
-        /// <param name="timeout"></param>
-        /// <param name="attempts"></param>
-        /// <param name="constSeed"></param>
-        /// <returns></returns>
+        /// <param name="points">Poses to be transformed to joint space</param>
+        /// <param name="parameters">Plan parameters which defines the limits, settings and move group name</param>
+        /// <param name="jointPositionSeed">Optional numerical seed to control joint configuration</param>
+        /// <param name="endEffectorLink">Necessary if poses are defined for end effector link</param>
+        /// <param name="timeout">Timeout</param>
+        /// <param name="attempts">Attempts to find a solution or each pose</param>
+        /// <param name="constSeed">TODO: Definition</param>
+        /// <returns>Returns the results as an instance of <c>IKResult</c>.</returns>
         IKResult InverseKinematicMany(
             IEnumerable<Pose> points,
             PlanParameters parameters,
@@ -270,16 +270,16 @@ namespace Xamla.Robotics.Motion
         );
 
         /// <summary>
-        /// 
+        /// Inverse kinematic solutions for several points
         /// </summary>
         /// <param name="points"></param>
-        /// <param name="endEffectorName"></param>
-        /// <param name="avoidCollision"></param>
-        /// <param name="jointPositionSeed"></param>
-        /// <param name="timeout"></param>
-        /// <param name="attempts"></param>
-        /// <param name="constSeed"></param>
-        /// <returns></returns>
+        /// <param name="endEffectorName">Poses to be transformed to joint space</param>
+        /// <param name="avoidCollision">Indicates if collision should be avoided</param>
+        /// <param name="jointPositionSeed">Optional numerical seed to control joint configuration</param>
+        /// <param name="timeout">Timeout</param>
+        /// <param name="attempts">Attempts to find a solution or each pose</param>
+        /// <param name="constSeed">TODO: Definition</param>
+        /// <returns>Returns the results as an instance of <c>IKResult</c>.</returns>
         IKResult InverseKinematicMany(
             IEnumerable<Pose> points,
             string endEffectorName,
@@ -293,75 +293,75 @@ namespace Xamla.Robotics.Motion
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="start"></param>
-        /// <param name="goal"></param>
-        /// <param name="numSteps"></param>
-        /// <param name="parameters"></param>
-        /// <returns></returns>
+        /// <param name="start">Starting pose</param>
+        /// <param name="goal">Target pose</param>
+        /// <param name="numSteps">TODO: Definition</param>
+        /// <param name="parameters">Plan parameters which defines the limits, settings and move group name</param>
+        /// <returns>Returns joint trajectory as an object implementing <c>IJointPath</c> which reaches defined poses of path under the constrains in parameters</returns>
         IJointPath PlanCartesianPath(Pose start, Pose goal, int numSteps, PlanParameters parameters);
 
         /// <summary>
-        /// 
+        /// Plan a joint trajectory from a cartesian path and plan parameters
         /// </summary>
-        /// <param name="waypoints">Joint path from which the poses are calculated</param>
-        /// <param name="numSteps"></param>
-        /// <param name="parameters"></param>
-        /// <returns></returns>
+        /// <param name="waypoints">Poses the planned trajectory must reach</param>
+        /// <param name="numSteps">TODO: Definition</param>
+        /// <param name="parameters">Plan parameters which defines the limits, settings and move group name</param>
+        /// <returns>Returns joint trajectory as an object implementing <c>IJointPath</c> which reaches defined poses of path under the constrains in parameters</returns>
         IJointPath PlanCartesianPath(ICartesianPath waypoints, int numSteps, PlanParameters parameters);
 
         /// <summary>
-        /// 
+        /// Sets and resets emergency stop
         /// </summary>
-        /// <param name="enable"></param>
-        /// <returns></returns>
+        /// <param name="enable">Activates emergency stop if true; resets emergency stop if false</param>
+        /// <returns>Return a tuple of bool and string. The former value indicates success (true), the second is a respond/error message.</returns>
         (bool, string) EmergencyStop(bool enable = true);
 
         /// <summary>
-        /// 
+        /// Query the current joint positions of all joints
         /// </summary>
-        /// <param name="joints"></param>
-        /// <returns></returns>
+        /// <param name="joints">The joints for which the positions are requested</param>
+        /// <returns>Returns a instance of JointValues with the positions of the requested joint set.</returns>
         JointValues GetCurrentJointValues(JointSet joints);
 
         /// <summary>
-        /// 
+        /// Moves joints to target joint positions
         /// </summary>
-        /// <param name="target"></param>
-        /// <param name="parameters"></param>
+        /// <param name="target">Target joint positions</param>
+        /// <param name="parameters">Plan parameters which defines the limits, settings and move group name</param>
         /// <param name="cancel">CancellationToken</param>
-        /// <returns></returns>
+        /// <returns>Returns an instance of <c>Task</c>.</returns>
         Task MoveJoints(JointValues target, PlanParameters parameters, CancellationToken cancel = default(CancellationToken));
 
         /// <summary>
-        /// 
+        /// Moves to target Pose asynchronously
         /// </summary>
-        /// <param name="target"></param>
-        /// <param name="endEffectorLink">End effector link is necessary if end effector is not part of the move group but pose should be computed for the end effector.</param>
-        /// <param name="seed"></param>
-        /// <param name="parameters"></param>
+        /// <param name="target">Target pose</param>
+        /// <param name="endEffectorLink">Specifies for which link the pose is defined.</param>
+        /// <param name="seed">Numerical seed to control configuration</param>
+        /// <param name="parameters">Plan parameters which defines the limits, settings and move group name</param>
         /// <param name="cancel">CancellationToken</param>
-        /// <returns></returns>
+        /// <returns>Returns an instance of <c>Task</c>.</returns>
         Task MovePose(Pose target, string endEffectorLink, JointValues seed, PlanParameters parameters, CancellationToken cancel = default(CancellationToken));
 
         /// <summary>
-        /// 
+        /// Move to pose with linear movement asynchronously
         /// </summary>
-        /// <param name="target"></param>
-        /// <param name="endEffectorLink">End effector link is necessary if end effector is not part of the move group but pose should be computed for the end effector.</param>
-        /// <param name="seed"></param>
-        /// <param name="parameters"></param>
+        /// <param name="target">Target Pose</param>
+        /// <param name="endEffectorLink">Specifies for which link the pose is defined</param>
+        /// <param name="seed">Numerical seed to control configuration</param>
+        /// <param name="parameters">An instance of TaskSpacePlanParameters which defines the limits, settings and end effector name</param>
         /// <param name="cancel">CancellationToken</param>
-        /// <returns></returns>
+        /// <returns>Returns an instance of <c>Task</c>.</returns>
         Task MovePoseLinear(Pose target, string endEffectorLink, JointValues seed, TaskSpacePlanParameters parameters, CancellationToken cancel = default(CancellationToken));
 
         /// <summary>
-        /// 
+        /// Moves a gripper via the general ros interface <c>GripperCommandAction</c>
         /// </summary>
-        /// <param name="actionName"></param>
-        /// <param name="position"></param>
-        /// <param name="maxEffort"></param>
+        /// <param name="actionName">Name of the action to control a specific gripper</param>
+        /// <param name="position">Requested position of the gripper [m]</param>
+        /// <param name="maxEffort">Force which should be applied [N]</param>
         /// <param name="cancel">CancellationToken</param>
-        /// <returns></returns>
+        /// <returns>Returns an instance of <c>Task</c>, which produces the result as a value of type <c>MoveGripperResult</c> .</returns>
         Task<MoveGripperResult> MoveGripper(
             string actionName,
             double position,
@@ -370,14 +370,14 @@ namespace Xamla.Robotics.Motion
         );
 
         /// <summary>
-        /// 
+        /// Controls a WeissWsg gripper via the the specific action WsgCommandAction
         /// </summary>
-        /// <param name="actionName"></param>
-        /// <param name="command"></param>
-        /// <param name="position"></param>
-        /// <param name="speed"></param>
-        /// <param name="maxEffort"></param>
-        /// <param name="stopOnBlock"></param>
+        /// <param name="actionName">Name of the action to control a specific gripper</param>
+        /// <param name="command">Specifies which kind of action should be performed</param>
+        /// <param name="position">Requested position of the gripper [m]</param>
+        /// <param name="speed">Requested speed [m/s]</param>
+        /// <param name="maxEffort">Force which should be applied [N]</param>
+        /// <param name="stopOnBlock">Indicates that the gripper should stop when blocked TODO: Improve Definition</param>
         /// <param name="cancel">CancellationToken</param>
         /// <returns></returns>
         Task<WsgResult> WsgGripperCommand(

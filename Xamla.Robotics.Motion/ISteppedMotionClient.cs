@@ -24,6 +24,11 @@ namespace Xamla.Robotics.Motion
         }
     }
 
+
+
+    /// <summary>
+    /// Implementations of <c>ISteppedMotionClient</c>  TODO: explain.
+    /// </summary> 
     public interface ISteppedMotionClient
         : IDisposable
     {

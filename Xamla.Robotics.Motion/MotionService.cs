@@ -78,8 +78,9 @@ namespace Xamla.Robotics.Motion
             var moveGroup = this.CreateMoveGroup(endEffectorDescription.MoveGroupName, endEffectorDescription.Name);
             return moveGroup.DefaultEndEffector;
         }
-
-        /// get Avalable move groups
+        /// <summary>
+        /// Get Avalable move groups.
+        /// </summary>  
         public IList<MoveGroupDescription> QueryAvailableMoveGroups()
         {
             const string serviceName = "xamlaMoveGroupServices/query_move_group_interface";
@@ -98,7 +99,9 @@ namespace Xamla.Robotics.Motion
             return groups;
         }
 
-        /// get Avalable EndEffectors
+        /// <summary>
+        /// Get Avalable EndEffectors.
+        /// </summary> 
         public IList<EndEffectorDescription> QueryAvailableEndEffectors()
         {
             var moveGroups = QueryAvailableMoveGroups();

@@ -63,7 +63,7 @@ namespace Xamla.Robotics.Motion
         /// <param name="jointPositionSeed">Optional numerical seed to control joint configuration</param>  
         /// <param name="timeout">Timeout</param>     
         /// <param name="attempts">Attempts</param>
-        /// <returns>Returns the results as an object implementing <c>IKResult</c>.</returns>  
+        /// <returns>Returns the results as an instance of <c>IKResult</c>.</returns>  
         IKResult InverseKinematicMany(
             IEnumerable<Pose> poses,
             bool avoidCollision,
