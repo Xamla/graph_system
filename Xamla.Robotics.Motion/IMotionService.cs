@@ -376,8 +376,8 @@ namespace Xamla.Robotics.Motion
         /// <param name="command">Specifies which kind of action should be performed</param>
         /// <param name="position">Requested position of the gripper [m]</param>
         /// <param name="speed">Requested speed [m/s]</param>
-        /// <param name="maxEffort">Force which should be applied [N]</param>
-        /// <param name="stopOnBlock">Indicates that the gripper should stop when blocked TODO: Improve Definition</param>
+        /// <param name="maxEffort">Maximal force which should be applied [N]</param>
+        /// <param name="stopOnBlock">If true stop if maximal force is applied</param>
         /// <param name="cancel">CancellationToken</param>
         /// <returns></returns>
         Task<WsgResult> WsgGripperCommand(
