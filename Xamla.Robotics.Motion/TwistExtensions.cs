@@ -11,8 +11,16 @@ namespace Xamla.Robotics.Motion
     using trajectory_msgs = Messages.trajectory_msgs;
     using xamlamoveit = Messages.xamlamoveit_msgs;
 
+    /// <summary>
+    /// Extensions of the <c>Twist</c> type
+    /// </summary>
     public static class TwistExtensions
     {
+        /// <summary>
+        /// Extends the type <c>Twist</c> with a method <c>ToTwistMessage</c>, which creates an twist message.
+        /// </summary>
+        /// <param name="twist">Twist</c> object to be extended</param>
+        /// <returns>Returns an instance of <c>geometry_msgs.Twist</c>.</returns>
         public static geometry_msgs.Twist ToTwistMessage(this Twist twist)
         {
             return new geometry_msgs.Twist()
@@ -22,6 +30,12 @@ namespace Xamla.Robotics.Motion
             };
         }
 
+        /// <summary>
+        /// Extends the type <c>Twist</c> with a method <c>ToTwistMessage</c>, which creates an time stamped twist message.
+        /// </summary>
+        /// <param name="twist">Twist</c> object to be extended</param>
+        /// <param name="stamp">A time message</param>
+        /// <returns>Returns an instance of <c>geometry_msgs.TwistStamped</c>.</returns>
         public static geometry_msgs.TwistStamped ToTwistStampedMessage(this Twist twist, std_msgs.Time stamp = null)
         {
             return new geometry_msgs.TwistStamped()
