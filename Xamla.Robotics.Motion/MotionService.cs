@@ -18,7 +18,7 @@ namespace Xamla.Robotics.Motion
 
 
     /// <summary>
-    /// TODO: description
+    /// Expose a range of functionality to be used by clients
     /// </summary>
     public class MotionService
         : IMotionService
@@ -115,7 +115,7 @@ namespace Xamla.Robotics.Motion
         /// Query all currently available move groups.
         /// </summary>
         /// <returns>Returns an object implementing IList, which contains instances of <c>MoveGroupDescription</c> of all the available move groups.</returns>        
-        /// <exception cref="ServiceCallFailedException">Thrown when TODO: description.</exception>
+        /// <exception cref="ServiceCallFailedException">Thrown when call to service failed.</exception>
         public IList<MoveGroupDescription> QueryAvailableMoveGroups()
         {
             const string serviceName = "xamlaMoveGroupServices/query_move_group_interface";
@@ -245,7 +245,7 @@ namespace Xamla.Robotics.Motion
         /// </summary>
         /// <param name="joints">Set of joint for which the limits are queried</param>
         /// <returns>Returns a instance of <c>JointStates</c> which contains the current positions the joints defined in  <paramref name="joints"/>.</returns>ld be returned.</param>
-        /// <exception cref="ServiceCallFailedException">Thrown when TODO: description.</exception>
+        /// <exception cref="ServiceCallFailedException">Thrown when call to service failed.</exception>
         public JointStates QueryJointStates(JointSet joints)
         {
             const string serviceName = "xamlaMoveGroupServices/query_move_group_current_position";
@@ -287,7 +287,7 @@ namespace Xamla.Robotics.Motion
         /// <returns>Returns an object which implements <c>IList</c> and contains the computed poses.</returns>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="moveGroupName"/> is null.</exception>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="waypoints"/> is null.</exception>
-        /// <exception cref="ServiceCallFailedException">Thrown when TODO: description.</exception>
+        /// <exception cref="ServiceCallFailedException">Thrown when call to service failed.</exception>
         public IList<Pose> QueryPoseMany(string moveGroupName, IJointPath waypoints, string endEffectorLink = "")
         {
             if (string.IsNullOrEmpty(moveGroupName))
@@ -351,7 +351,7 @@ namespace Xamla.Robotics.Motion
         /// <param name="moveGroupName">Name of the move group for which the collision free joint is queried</param>
         /// <param name="waypoints">Joint path which may contain collisions</param>
         /// <returns>New reference to object implementing <c>IJointPath</c>, which is now collision free.</returns>
-        /// <exception cref="ServiceCallFailedException">Thrown when TODO: description.</exception>
+        /// <exception cref="ServiceCallFailedException">Thrown when call to service failed.</exception>
         public IJointPath QueryCollisionFreeJointPath(string moveGroupName, IJointPath waypoints)
         {
             const string serviceName = "xamlaPlanningServices/query_joint_path";
@@ -366,16 +366,16 @@ namespace Xamla.Robotics.Motion
         }
 
         /// <summary>
-        /// Query a cartesian path TODO: overall description might be ogg
+        /// Query a cartesian path
         /// </summary>
         /// <param name="moveGroupName">Name of the move group from which the poses are queried</param>
-        /// <param name="jointNames">TODO: description</param>
+        /// <param name="jointNames">TODO: unused parameter</param>
         /// <param name="endEffectorLink">Name of the endeffector link</param>
         /// <param name="waypoints">The path to be queried</param>
-        /// <param name="numberOfSteps">TODO: description</param>
-        /// <param name="maxDeviation">Defines the maximal deviation of the joints to the defined key points while executing the trajectory TODO: might be false description</param>
+        /// <param name="numberOfSteps"></param>
+        /// <param name="maxDeviation">Defines the maximal deviation of the joints to the defined key points while executing the trajectory</param>
         /// <returns>Returns object implementing <c>ICartesianPath</c>.</returns>
-        /// <exception cref="ServiceCallFailedException">Thrown when TODO: description.</exception>
+        /// <exception cref="ServiceCallFailedException">Thrown when call to service failed.</exception>
         public ICartesianPath QueryCartesianPath(
             string moveGroupName,
             JointSet jointNames,
@@ -407,9 +407,9 @@ namespace Xamla.Robotics.Motion
         /// <param name="maxVelocity">Defines the maximal velocity for every joint</param>
         /// <param name="maxAcceleration">Defines the maximal acceleration for every joint</param>
         /// <param name="maxDeviation"> Defines the maximal deviation of the joints to the defined key points while executing the trajectory</param>
-        /// <param name="dt">Sampling points frequency or time if value is create as 1.0 the value is interpreted as a value in seconds else the value is interpreted as a value in Hz. TODO: Verify this</param>
+        /// <param name="dt">Sampling points frequency or time if value is create as 1.0 the value is interpreted as a value in seconds else the value is interpreted as a value in Hz.</param>
         /// <returns>An object which implements <c>IJointTrajectory</c>.</returns>
-        /// <exception cref="ServiceCallFailedException">Thrown when TODO: description.</exception>
+        /// <exception cref="ServiceCallFailedException">Thrown when call to service failed.</exception>
         public IJointTrajectory QueryJointTrajectory(
             IJointPath waypoints,
             double[] maxVelocity,
@@ -469,9 +469,9 @@ namespace Xamla.Robotics.Motion
         /// <param name="ikJumpThreshold">Maximal inverse kinematic jump</param>
         /// <param name="maxDeviation">Defines the maximal deviation of the joints to the defined key points while executing the trajectory</param>
         /// <param name="collisionCheck">If true check the trajectory is collision free</param>
-        /// <param name="dt">Sampling points frequency or time. If value is greater than 1.0 it is interpreted in seconds,  else it is interpreted in Hz. TODO: Verify this</param>
+        /// <param name="dt">Sampling points frequency or time. If value is greater than 1.0 it is interpreted in seconds,  else it is interpreted in Hz.
         /// <returns>Returns an object implementing <c>IJointTrajectory</c>.</returns>
-        /// <exception cref="ServiceCallFailedException">Thrown when TODO: description.</exception>
+        /// <exception cref="ServiceCallFailedException">Thrown when call to service failed.</exception>
         public IJointTrajectory QueryTaskSpaceTrajectory(
             string endEffectorName,
             ICartesianPath waypoints,
@@ -538,7 +538,7 @@ namespace Xamla.Robotics.Motion
         /// <returns>Returns an object which implements <c>IList</c> and contains all the instances of <c>JointValuesCollision</c> found.</returns>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="moveGroupName"/> is null.</exception>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="points"/> is null.</exception>
-        /// <exception cref="ServiceCallFailedException">Thrown when TODO: description.</exception>
+        /// <exception cref="ServiceCallFailedException">Thrown when call to service failed.</exception>
         public IList<JointValuesCollision> QueryJointPathCollisions(string moveGroupName, IJointPath points)
         {
             if (moveGroupName == null)
@@ -579,7 +579,8 @@ namespace Xamla.Robotics.Motion
             return result;
         }
 
-        /// Create <c>PlanParameters</c> from user defined and/or queried inputs. TODO: Verify this
+        /// <summary>
+        /// Create <c>PlanParameters</c> from user defined and/or queried inputs.
         /// </summary>
         /// <param name="moveGroupName">Name of the move group for which plan parameters should be created</param>
         /// <param name="joints"><c>JointSet</c> instance for which plan parameters should be created</param>
@@ -728,10 +729,10 @@ namespace Xamla.Robotics.Motion
         }
 
         /// <summary>
-        /// Plan a joint path from a cartesian path and plan parameters TODO: Verify this, could be wrong
+        /// Plan a joint path from a cartesian path and plan parameters 
         /// </summary>
         /// <param name="path">Poses the planned trajectory must reach</param>
-        /// <param name="numSteps">TODO: Define this</param>
+        /// <param name="numSteps"></param>
         /// <param name="parameters">Plan parameters which defines the limits, settings and move group name</param>
         /// <returns>An object implementing <c>ICartesianPath</c>.</returns>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="path"/> is null.</exception>
@@ -923,12 +924,12 @@ namespace Xamla.Robotics.Motion
         /// <param name="endEffectorLink">Necessary if poses are defined for end effector link</param>
         /// <param name="timeout">Timeout</param>
         /// <param name="attempts">Attempts to find a solution or each pose</param>
-        /// <param name="constSeed">TODO: Definition</param>
+        /// <param name="constSeed">If true, a the same seed is used for every iteration</param>
         /// <returns>Returns the results as an instance of <c>IKResult</c>.</returns>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="points"/> is null.</exception>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="parameters"/> is null.</exception>
         /// <exception cref="ArgumentException">Thrown when plan parameters joint set does not match joint seed.</exception>
-        /// <exception cref="ServiceCallFailedException">Thrown when TODO: definition.</exception>
+        /// <exception cref="ServiceCallFailedException">Thrown when called to service failed.</exception>
         public IKResult InverseKinematicMany(
             IEnumerable<Pose> points,
             PlanParameters parameters,
@@ -1002,7 +1003,7 @@ namespace Xamla.Robotics.Motion
         /// <param name="jointPositionSeed">Optional numerical seed to control joint configuration</param>
         /// <param name="timeout">Timeout</param>
         /// <param name="attempts">Attempts to find a solution or each pose</param>
-        /// <param name="constSeed">TODO: Definition</param>
+        /// <param name="constSeed">If true, a the same seed is used for every iteration</param>
         /// <returns>Returns the results as an instance of <c>IKResult</c>.</returns>
         public IKResult InverseKinematicMany(
             IEnumerable<Pose> poses,
@@ -1066,7 +1067,7 @@ namespace Xamla.Robotics.Motion
         /// </summary>
         /// <param name="enable">Activates emergency stop if true; resets emergency stop if false</param>
         /// <returns>Return a tuple of bool and string. The former value indicates success (true), the second is a respond/error message.</returns>
-        /// <exception cref="ServiceCallFailedException">Thrown when TODO: definition.</exception>
+        /// <exception cref="ServiceCallFailedException">Thrown when call to service failed.</exception>
         public (bool, string) EmergencyStop(bool enable = true)
         {
             const string serviceName = "EmergencySTOP/query_emergency_stop";

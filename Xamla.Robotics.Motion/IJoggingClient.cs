@@ -61,7 +61,7 @@ namespace Xamla.Robotics.Motion
     }
 
     /// <summary>
-    /// Parameter class containing strings  TODO: Is this deprecated? I could not find any usage
+    /// Parameter class containing names of jogging flags for collision and joint limits
     /// </summary>
     public static class JoggingFlagName
     {
@@ -83,19 +83,19 @@ namespace Xamla.Robotics.Motion
         ControllerStatusModel GetStatus();
 
         /// <summary>
-        /// Send velocities to TODO: Where to?
+        /// Send velocities to service
         /// </summary>
         /// <param name="velocities">Velocities to sent [m/s]</param>
         void SendVelocities(JointValues velocities);
 
         /// <summary>
-        /// Send points to TODO: Where to?
+        /// Send points to service
         /// </summary>
         /// <param name="setpoint">The setpoint to be sent</param>
         void SendSetpoint(Pose setpoint);
 
         /// <summary>
-        /// Send twist to TODO: Where to?
+        /// Send twist to service
         /// </summary>
         /// <param name="twist">The twist to be sent</param>
         void SendTwist(Twist twist);
@@ -103,7 +103,7 @@ namespace Xamla.Robotics.Motion
         /// <summary>
         /// Get the name of the move group
         /// </summary>
-        /// <returns>Returns a list of strings containing the names TODO: More precise</returns>
+        /// <returns>Returns a list of strings containing the names of move group</returns>
         string[] GetMoveGroupName();
 
         /// <summary>
@@ -139,12 +139,12 @@ namespace Xamla.Robotics.Motion
         void SetFlag(string name, bool value);
 
         /// <summary>
-        /// Start TODO: Definition
+        /// Starts tracking
         /// </summary>
         void Start();
 
         /// <summary>
-        /// Stop TODO: Definition
+        /// Stops tracking
         /// </summary>
         void Stop();
     }

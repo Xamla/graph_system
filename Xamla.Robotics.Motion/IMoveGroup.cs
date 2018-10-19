@@ -127,7 +127,7 @@ namespace Xamla.Robotics.Motion
         /// <param name="velocityScaling">Scaling factor which is applied on the maximal possible joint velocities</param>  
         /// <param name="sampleResolution">Trajectory point sampling frequency</param>  
         /// <param name="cancel">CancellationToken</param>  
-        // <returns>Returns a tuple of <c>(IJointTrajectory, PlanParameters)</c> instances.</returns>  
+        /// <returns>Returns a tuple of <c>(IJointTrajectory, PlanParameters)</c> instances.</returns>  
         (IJointTrajectory, PlanParameters) PlanMoveJointsCollisionFreeAsync(JointValues target, double? velocityScaling, double? sampleResolution, CancellationToken cancel = default(CancellationToken));
        
         /// <summary>
@@ -167,7 +167,7 @@ namespace Xamla.Robotics.Motion
         /// <param name="velocityScaling">Scaling factor which is applied on the maximal possible joint velocities</param>  
         /// <param name="sampleResolution">Trajectory point sampling frequency</param>  
         /// <param name="cancel">CancellationToken</param>  
-        // <returns>Returns a <c>Task</c> instance.</returns>  
+        /// <returns>Returns a <c>Task</c> instance.</returns>  
         Task MoveJointsCollisionFreeAsync(JointValues target, double? velocityScaling, double? sampleResolution, CancellationToken cancel = default(CancellationToken));
       
         /// <summary>
@@ -255,7 +255,7 @@ namespace Xamla.Robotics.Motion
         /// <param name="velocityScaling">Scaling factor which is applied on the maximal possible joint velocities</param>  
         /// <param name="sampleResolution">Trajectory point sampling frequency</param>  
         /// <param name="cancel">CancellationToken</param>  
-        // <returns>Returns an object implementing <c>ISteppedMotionClient</c>.</returns>  
+        /// <returns>Returns an object implementing <c>ISteppedMotionClient</c>.</returns>  
         ISteppedMotionClient MoveJointsCollisionFreeSupervisedAsync(JointValues target, double? velocityScaling, double? sampleResolution, CancellationToken cancel = default(CancellationToken));
     }
 }

@@ -12,7 +12,7 @@ namespace Xamla.Robotics.Motion
     using rosgardener = Messages.rosgardener;
 
     /// <summary>
-    /// A Ros Client to communicate with a Ros node 
+    /// A Ros Client to send messages and commands RosRoboChar
     /// </summary>
     public class RosRoboChatActionClient
         : IDisposable
@@ -28,7 +28,7 @@ namespace Xamla.Robotics.Motion
         /// <summary>
         /// Creates a instance of <c>RosRoboChatActionClient</c>
         /// </summary>
-        /// <param name="nodeHandle">A Ros node handle</param>
+        /// <param name="nodeHandle">A node handle</param>
         public RosRoboChatActionClient(NodeHandle nodeHandle)
         {
             channelCommandService = nodeHandle.ServiceClient<rosgardener.SetChannelCommand>(ROBOCHAT_CHANNEL_SERVICE_NAME);
@@ -60,7 +60,7 @@ namespace Xamla.Robotics.Motion
         /// <param name="messageId">A message id</param>
         /// <param name="arguments">A list of arguments for the command</param>
         /// <returns>The response of the message call.</returns>
-        /// <exception cref="ServiceCallFailedException">Thrown when  TODO: description.</exception>
+        /// <exception cref="ServiceCallFailedException">Thrown when call to service failed.</exception>
         public string CallMessageCommand(string channelName, string command, string messageBody, string messageId = null, params string[] arguments)
         {
             var srv = new rosgardener.SetMessageCommand();
@@ -121,7 +121,7 @@ namespace Xamla.Robotics.Motion
             CallChannelCommand(name, "list");
 
         /// <summary>
-        /// Resets the the topic of a chat 
+        /// Sets the the topic of a chat 
         /// </summary>
         /// <param name="name">Name of the chat</param>
         /// <param name="topic">The topic name</param>

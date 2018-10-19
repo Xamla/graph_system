@@ -51,7 +51,6 @@ namespace Xamla.Robotics.Motion
         /// <param name="cancel">CancellationToken</param>
         /// <returns>An instance of <c>StepMotionClient</c>.</returns>
         /// <exception cref="Exception">Thrown when ActionSever is not available.</exception>
-        /// TODO: might throw more exceptions
         public SteppedMotionClient(NodeHandle nodeHandle, IJointTrajectory trajectory, double velocityScaling, bool checkCollision, CancellationToken cancel = default(CancellationToken))
         {
             this.nodeHandle = nodeHandle;

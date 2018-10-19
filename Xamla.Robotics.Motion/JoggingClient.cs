@@ -11,7 +11,7 @@ using Xamla.Robotics.Types;
 namespace Xamla.Robotics.Motion
 {
     /// <summary>
-    /// TODO: Desc
+    /// Jogging client offering jogging functionality
     /// </summary>
     public class JoggingClient
         : IJoggingClient
@@ -111,7 +111,7 @@ namespace Xamla.Robotics.Motion
             whenJoggingFeedback;
 
         /// <summary>
-        /// Send velocities to TODO: Where to? Publisher?
+        /// Send velocities to service
         /// </summary>
         /// <param name="velocities">Velocities to sent [m/s]</param>
         public void SendVelocities(JointValues velocities)
@@ -131,7 +131,7 @@ namespace Xamla.Robotics.Motion
         }
 
         /// <summary>
-        /// Send points to TODO: Where to?
+        /// Send points to service
         /// </summary>
         /// <param name="setpoint">The setpoint to be sent</param>
         public void SendSetpoint(Pose setpoint)
@@ -143,8 +143,8 @@ namespace Xamla.Robotics.Motion
         /// <summary>
         /// Get the name of the move group
         /// </summary>
-        /// <returns>Returns a list of strings containing the names TODO: More precise</returns>
-        /// <exception cref="ServiceCallFailedException">Thrown when TODO: description.</exception>
+        /// <returns>Returns a list of strings containing the names of move group</returns>
+        /// <exception cref="ServiceCallFailedException">Thrown when call to service failed.</exception>
         public string[] GetMoveGroupName()
         {
             var srv = new xamlamoveit.GetSelected();
@@ -157,7 +157,7 @@ namespace Xamla.Robotics.Motion
         /// Set the name of the move group
         /// </summary>
         /// <param name="value">The name to be set</param>
-        /// <exception cref="ServiceCallFailedException">Thrown when TODO: description.</exception>
+        /// <exception cref="ServiceCallFailedException">Thrown when call to service failed.</exception>
         public void SetMoveGroupName(string value)
         {
             var srv = new xamlamoveit.SetString();
@@ -169,8 +169,8 @@ namespace Xamla.Robotics.Motion
         /// <summary>
         /// Get the name of the endeffector
         /// </summary>
-        /// <returns>Returns a list of strings containing the names of the endeffector TODO: More precise</returns>
-        /// <exception cref="ServiceCallFailedException">Thrown when TODO: description.</exception>
+        /// <returns>Returns a list of strings containing the names of the endeffector</returns>
+        /// <exception cref="ServiceCallFailedException">Thrown when call to service failed.</exception>
         public string[] GetEndEffectorName()
         {
             var srv = new xamlamoveit.GetSelected();
@@ -183,7 +183,7 @@ namespace Xamla.Robotics.Motion
         /// Set the name of the endeffector
         /// </summary>
         /// <param name="value">The name of the endeffector</param>
-        /// <exception cref="ServiceCallFailedException">Thrown when TODO: description.</exception>
+        /// <exception cref="ServiceCallFailedException">Thrown when call to service failed.</exception>
         public void SetEndEffectorName(string value)
         {
             var srv = new xamlamoveit.SetString();
@@ -196,7 +196,7 @@ namespace Xamla.Robotics.Motion
         /// Get the controller status
         /// </summary>
         /// <returns>Returns the controller status as an instance of <c>ControllerStatusModel</c>.</returns>
-        /// <exception cref="ServiceCallFailedException">Thrown when TODO: description.</exception>
+        /// <exception cref="ServiceCallFailedException">Thrown when call to service failed.</exception>
         public ControllerStatusModel GetStatus()
         {
             var srv = new xamlamoveit.StatusController();
@@ -218,7 +218,7 @@ namespace Xamla.Robotics.Motion
         /// Get the velocity scaling 
         /// </summary>
         /// <returns>Returns the velocity scaling</returns>
-        /// <exception cref="ServiceCallFailedException">Thrown when TODO: description.</exception>
+        /// <exception cref="ServiceCallFailedException">Thrown when call to service failed.</exception>
         public double GetVelocityScaling()
         {
             var srv = new xamlamoveit.GetFloat();
@@ -231,7 +231,7 @@ namespace Xamla.Robotics.Motion
         /// Set the velocity scaling factor
         /// </summary>
         /// <param name="value">Scaling factor to be set</param>
-        /// <exception cref="ServiceCallFailedException">Thrown when TODO: description.</exception>
+        /// <exception cref="ServiceCallFailedException">Thrown when call to service failed.</exception>
         public void SetVelocityScaling(double value)
         {
             var srv = new xamlamoveit.SetFloat();
@@ -245,7 +245,7 @@ namespace Xamla.Robotics.Motion
         /// </summary>
         /// <param name="name">Name of the flag</param>
         /// <returns>Returns true if flag is set, false otherwise</returns>
-        /// <exception cref="ServiceCallFailedException">Thrown when TODO: description.</exception>
+        /// <exception cref="ServiceCallFailedException">Thrown when call to service failed.</exception>
         public bool GetFlag(string name)
         {
             var srv = new xamlamoveit.GetFlag();
@@ -260,7 +260,7 @@ namespace Xamla.Robotics.Motion
         /// </summary>
         /// <param name="name">Name of the flag</param>
         /// <param name="value">The value the flag should be set</param>
-        /// <exception cref="ServiceCallFailedException">Thrown when TODO: description.</exception>
+        /// <exception cref="ServiceCallFailedException">Thrown when call to service failed.</exception>
         public void SetFlag(string name, bool value)
         {
             var srv = new xamlamoveit.SetFlag();
@@ -274,7 +274,7 @@ namespace Xamla.Robotics.Motion
         /// Toggles tracking
         /// </summary>
         /// <param name="activate">If true, activates tracking; deactivates otherwise</param>
-        /// <exception cref="ServiceCallFailedException">Thrown when TODO: description.</exception>
+        /// <exception cref="ServiceCallFailedException">Thrown when call to service failed.</exception>
         private void ToggleTracking(bool activate)
         {
             var srv = new std_srvs.SetBool();
@@ -284,7 +284,7 @@ namespace Xamla.Robotics.Motion
         }
 
         /// <summary>
-        /// Start TODO: Definition
+        /// Starts tracking
         /// </summary>
         public void Start()
         {
@@ -292,7 +292,7 @@ namespace Xamla.Robotics.Motion
         }
 
         /// <summary>
-        /// Stop TODO: Definition
+        /// Stops tracking
         /// </summary>
         public void Stop()
         {
@@ -300,7 +300,7 @@ namespace Xamla.Robotics.Motion
         }
 
         /// <summary>
-        /// Send twist to TODO: Where to?
+        /// Send twist to service
         /// </summary>
         /// <param name="twist">The twist to be sent</param>
         public void SendTwist(Twist twist)
@@ -312,7 +312,7 @@ namespace Xamla.Robotics.Motion
         /// <summary>
         /// Handle feedback
         /// </summary>
-        /// <param name="state">TODO: Definition</param>
+        /// <param name="state">Controller state: Definition</param>
         void HandleJoggingFeedback(xamlamoveit.ControllerState state)
         {
             var model = new JoggingControllerStatusModel

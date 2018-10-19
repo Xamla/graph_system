@@ -8,7 +8,7 @@ using Xamla.Robotics.Types;
 namespace Xamla.Robotics.Motion
 {
     /// <summary>
-    /// Implementations of <c>IMotionService</c> expose a range of functionality to be used by TODO:
+    /// Implementations of <c>IMotionService</c> expose a range of functionality to be used by clients
     /// </summary>  
     public interface IMotionService
         : IDisposable
@@ -100,7 +100,7 @@ namespace Xamla.Robotics.Motion
         /// <param name="maxVelocity">Defines the maximal velocity for every joint</param>
         /// <param name="maxAcceleration">Defines the maximal acceleration for every joint</param>
         /// <param name="maxDeviation"> Defines the maximal deviation of the joints to the defined key points while executing the trajectory</param>
-        /// <param name="dt">Sampling points frequency or time if value is create as 1.0 the value is interpreted as a value in seconds else the value is interpreted as a value in Hz. TODO: Verify this</param>
+        /// <param name="dt">Sampling points frequency or time if value is create as 1.0 the value is interpreted as a value in seconds else the value is interpreted as a value in Hz.</param>
         /// <returns>An object which implements <c>IJointTrajectory</c>.</returns>
         IJointTrajectory QueryJointTrajectory(
             IJointPath waypoints,
@@ -135,7 +135,7 @@ namespace Xamla.Robotics.Motion
         TaskSpacePlanParameters CreateTaskSpacePlanParameters(string endEffectorName = null, double maxXYZVelocity = 0.01, double maxXYZAcceleration = 0.04, double maxAngularVelocity = 0.017453292519943, double maxAngularAcceleration = 0.069813170079773, double sampleResolution = 0.05, double ikJumpThreshold = 0.1, double maxDeviation = 0.0, bool checkCollision = true, double velocityScaling = 1);
         
         /// <summary>
-        /// Create <c>PlanParameters</c> from user defined and/or queried inputs. TODO: Verify this
+        /// Create <c>PlanParameters</c> from user defined and/or queried inputs.
         /// </summary>
         /// <param name="moveGroupName">Name of the move group for which plan parameters should be created</param>
         /// <param name="joints"><c>JointSet</c> instance for which plan parameters should be created</param>
@@ -165,10 +165,10 @@ namespace Xamla.Robotics.Motion
         IJointPath PlanCollisionFreeJointPath(IJointPath waypoints,  PlanParameters parameters);
 
         /// <summary>
-        /// Plan a joint path from a cartesian path and plan parameters TODO: Verify this, could be wrong
+        /// Plan a joint path from a cartesian path and plan parameters
         /// </summary>
         /// <param name="path">Poses the planned trajectory must reach</param>
-        /// <param name="numSteps">TODO: Define this</param>
+        /// <param name="numSteps"></param>
         /// <param name="parameters">Plan parameters which defines the limits, settings and move group name</param>
         /// <returns>An object implementing <c>ICartesianPath</c>.</returns>
         ICartesianPath PlanMoveCartesian(ICartesianPath path, int numSteps, PlanParameters parameters);
@@ -256,7 +256,7 @@ namespace Xamla.Robotics.Motion
         /// <param name="endEffectorLink">Necessary if poses are defined for end effector link</param>
         /// <param name="timeout">Timeout</param>
         /// <param name="attempts">Attempts to find a solution or each pose</param>
-        /// <param name="constSeed">TODO: Definition</param>
+        /// <param name="constSeed">If true, a the same seed is used for every iteration</param>
         /// <returns>Returns the results as an instance of <c>IKResult</c>.</returns>
         IKResult InverseKinematicMany(
             IEnumerable<Pose> points,
@@ -277,7 +277,7 @@ namespace Xamla.Robotics.Motion
         /// <param name="jointPositionSeed">Optional numerical seed to control joint configuration</param>
         /// <param name="timeout">Timeout</param>
         /// <param name="attempts">Attempts to find a solution or each pose</param>
-        /// <param name="constSeed">TODO: Definition</param>
+        /// <param name="constSeed">If true, a the same seed is used for every iteration</param>
         /// <returns>Returns the results as an instance of <c>IKResult</c>.</returns>
         IKResult InverseKinematicMany(
             IEnumerable<Pose> points,
@@ -294,7 +294,7 @@ namespace Xamla.Robotics.Motion
         /// </summary>
         /// <param name="start">Starting pose</param>
         /// <param name="goal">Target pose</param>
-        /// <param name="numSteps">TODO: Definition</param>
+        /// <param name="numSteps"></param>
         /// <param name="parameters">Plan parameters which defines the limits, settings and move group name</param>
         /// <returns>Returns joint trajectory as an object implementing <c>IJointPath</c> which reaches defined poses of path under the constrains in parameters</returns>
         IJointPath PlanCartesianPath(Pose start, Pose goal, int numSteps, PlanParameters parameters);
@@ -303,7 +303,7 @@ namespace Xamla.Robotics.Motion
         /// Plan a joint trajectory from a cartesian path and plan parameters
         /// </summary>
         /// <param name="waypoints">Poses the planned trajectory must reach</param>
-        /// <param name="numSteps">TODO: Definition</param>
+        /// <param name="numSteps"></param>
         /// <param name="parameters">Plan parameters which defines the limits, settings and move group name</param>
         /// <returns>Returns joint trajectory as an object implementing <c>IJointPath</c> which reaches defined poses of path under the constrains in parameters</returns>
         IJointPath PlanCartesianPath(ICartesianPath waypoints, int numSteps, PlanParameters parameters);
