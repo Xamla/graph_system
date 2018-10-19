@@ -51,7 +51,7 @@ namespace Xamla.Robotics.Motion
         public string ActionName { get; }
 
         /// <summary>
-        /// The status of the final goal TODO: Or final status of the goal?
+        /// The final status of goal
         /// </summary>
         public GoalStatus FinalGoalStatus { get; }
 

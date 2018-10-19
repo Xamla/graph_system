@@ -1024,7 +1024,7 @@ namespace Xamla.Robotics.Motion
         /// </summary>
         /// <param name="start">Starting pose</param>
         /// <param name="goal">Target pose</param>
-        /// <param name="numSteps">TODO: Definition</param>
+        /// <param name="numSteps"></param>
         /// <param name="parameters">Plan parameters which defines the limits, settings and move group name</param>
         /// <returns>Returns joint trajectory as an object implementing <c>IJointPath</c> which reaches defined poses of path under the constrains in parameters</returns>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="start"/> is null.</exception>
@@ -1052,7 +1052,7 @@ namespace Xamla.Robotics.Motion
         /// Plan a joint trajectory from a cartesian path and plan parameters
         /// </summary>
         /// <param name="waypoints">Poses the planned trajectory must reach</param>
-        /// <param name="numSteps">TODO: Definition</param>
+        /// <param name="numSteps"></param>
         /// <param name="parameters">Plan parameters which defines the limits, settings and move group name</param>
         /// <returns>Returns joint trajectory as an object implementing <c>IJointPath</c> which reaches defined poses of path under the constrains in parameters</returns>
         public IJointPath PlanCartesianPath(ICartesianPath waypoints, int numSteps, PlanParameters parameters)
