@@ -1,5 +1,8 @@
 ﻿namespace Xamla.Robotics.Motion
 {
+    /// <summary>
+    /// An enumeration of every goal status
+    /// </summary>
     public enum GoalStatus
         : byte      // must match type of actionlib_msgs.GoalStatus.status field
     {
