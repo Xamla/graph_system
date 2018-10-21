@@ -140,7 +140,7 @@ namespace Xamla.Robotics.Types
         /// The time resolution for trajectory generation (dt) [in Second].
         /// </summary>
         public double SampleResolution { get; }
-        
+
         /// <summary>
         /// In case waypoints are used, this parameter will allow blending between the segments.
         /// </summary>

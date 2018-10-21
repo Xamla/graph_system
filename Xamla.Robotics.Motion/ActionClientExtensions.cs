@@ -15,7 +15,7 @@ namespace Xamla.Robotics.Motion
         : Exception
     {
         /// <summary>
-        /// Get the goal status 
+        /// Get the goal status
         /// </summary>
         /// <param name="goalStatus">The goal status as an instance of <c>actionlib_msgs.GoalStatus</c></param>
         /// <returns>Returns the goal status as <c>string</c>.</returns>
@@ -33,7 +33,7 @@ namespace Xamla.Robotics.Motion
         }
 
         /// <summary>
-        /// Create an instance of <c>ActionFailedExeption</c> using an action name and a goal status 
+        /// Create an instance of <c>ActionFailedExeption</c> using an action name and a goal status
         /// </summary>
         /// <param name="actionName">The name of the action</param>
         /// <param name="goalStatus">The goal status as an instance of <c>actionlib_msgs.GoalStatus</c></param>

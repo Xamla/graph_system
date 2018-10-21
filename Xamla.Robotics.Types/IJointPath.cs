@@ -41,7 +41,7 @@ namespace Xamla.Robotics.Types
         /// </summary>
         /// <param name="startIndex">The index where the sub joint path should start.</param>
         /// <param name="endIndex">The index where the sub joint path should end.</param>
-        /// <returns>A new instance of <c>IJointPath</c>.</returns> 
+        /// <returns>A new instance of <c>IJointPath</c>.</returns>
         IJointPath Sub(int startIndex, int endIndex);
 
         /// <summary>

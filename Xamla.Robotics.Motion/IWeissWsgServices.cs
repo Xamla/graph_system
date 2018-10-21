@@ -58,7 +58,7 @@ namespace Xamla.Robotics.Motion
         /// </summary>
         /// <returns>Returns a <c>Task</c> instance.</returns>
         Task Stop();
-        
+
         /// <summary>
         /// Asynchronous action to perform a movement
         /// </summary>
@@ -68,7 +68,7 @@ namespace Xamla.Robotics.Motion
         /// <param name="stopOnBlock">If true stop if maximal force is applied</param>
         /// <returns>Returns a <c>Task</c> instance.</returns>
         Task Move(double position, double speed, double force, bool stopOnBlock = true);
-        
+
         /// <summary>
         /// Asynchronous action to perform a grasp
         /// </summary>
@@ -77,7 +77,7 @@ namespace Xamla.Robotics.Motion
         /// <param name="force"></param>
         /// <returns>Returns a <c>Task</c> instance.</returns>
         Task Grasp(double position, double speed, double force);
-        
+
         /// <summary>
         /// Asynchronous action to release the gripper from a grasp
         /// </summary>
@@ -85,20 +85,20 @@ namespace Xamla.Robotics.Motion
         /// <param name="speed">Requested speed [m/s]</param>
         /// <returns>Returns a <c>Task</c> instance.</returns>
         Task Release(double position, double speed);
-        
+
         /// <summary>
         /// Set gripper acceleration
         /// </summary>
         /// <param name="acceleration">Requested acceleration [m/(s^2)]</param>
        /// <returns>Returns a <c>Task</c> instance  producing an <c>int</c> as result.</returns>
         Task<int> SetAcceleration(double acceleration);
-        
+
         /// <summary>
-        /// Get properties 
+        /// Get properties
         /// </summary>
         /// <returns>Returns a <c>Task</c> instance  producing an instance of <c>WeissWsgPropertiesModel</c> as result.</returns>
         Task<WeissWsgPropertiesModel> GetProperties();
-        
+
         /// <summary>
         /// Get status
         /// </summary>

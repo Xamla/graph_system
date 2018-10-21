@@ -121,7 +121,7 @@ namespace Xamla.Robotics.Motion
             CallChannelCommand(name, "list");
 
         /// <summary>
-        /// Sets the the topic of a chat 
+        /// Sets the the topic of a chat
         /// </summary>
         /// <param name="name">Name of the chat</param>
         /// <param name="topic">The topic name</param>
@@ -154,7 +154,7 @@ namespace Xamla.Robotics.Motion
             CallMessageCommand(channel_name, "update", text, messageId);
 
         /// <summary>
-        /// Queries the users interaction with Ros asynchronously 
+        /// Queries the users interaction with Ros asynchronously
         /// </summary>
         /// <param name="channelName">Name of the channel</param>
         /// <param name="command">The command to be executed</param>

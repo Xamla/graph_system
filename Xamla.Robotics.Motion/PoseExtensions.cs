@@ -72,7 +72,7 @@ namespace Xamla.Robotics.Motion
                 z = value.Z,
             };
         }
-        
+
         /// <summary>
         /// Extends type <c>Quaternion</c> with a method <c>ToQuaternionMessageStamped</c>, which creates a time stamped message.
         /// </summary>
@@ -189,10 +189,10 @@ namespace Xamla.Robotics.Motion
 
         /// <param name="jointState">A time joint states message</param>
         /// <returns>Returns an instance of <c>JointStates</c>.</returns>
-        /// 
-        
+        ///
+
         /// <summary>
-        /// Extends type <c>xamlamoveit.JointPathPoint</c> with a method <c>ToJointValues</c>, which creates corresponding jointvalues 
+        /// Extends type <c>xamlamoveit.JointPathPoint</c> with a method <c>ToJointValues</c>, which creates corresponding jointvalues
         /// from a jointset.
         /// </summary>
         /// <param name="point">A point message</param>

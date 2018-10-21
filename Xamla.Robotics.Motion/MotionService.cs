@@ -37,7 +37,7 @@ namespace Xamla.Robotics.Motion
         Dictionary<string, IDisposable> actionClientPool = new Dictionary<string, IDisposable>();
 
         /// <summary>
-        /// Creates a motion service 
+        /// Creates a motion service
         /// </summary>
         /// <param name="nodeHandle">Handle of a ROS node</param>
         public MotionService(NodeHandle nodeHandle)
@@ -114,7 +114,7 @@ namespace Xamla.Robotics.Motion
          /// <summary>
         /// Query all currently available move groups.
         /// </summary>
-        /// <returns>Returns an object implementing IList, which contains instances of <c>MoveGroupDescription</c> of all the available move groups.</returns>        
+        /// <returns>Returns an object implementing IList, which contains instances of <c>MoveGroupDescription</c> of all the available move groups.</returns>
         /// <exception cref="ServiceCallFailedException">Thrown when call to service failed.</exception>
         public IList<MoveGroupDescription> QueryAvailableMoveGroups()
         {
@@ -241,10 +241,11 @@ namespace Xamla.Robotics.Motion
         }
 
         /// <summary>
-        /// Query joint states 
+        /// Get current joint position of specified joints.
         /// </summary>
+        /// <param name="joints">Set of joints for which the position should be returned.</param>
         /// <param name="joints">Set of joint for which the limits are queried</param>
-        /// <returns>Returns a instance of <c>JointStates</c> which contains the current positions the joints defined in  <paramref name="joints"/>.</returns>ld be returned.</param>
+        /// <returns>Returns a instance of <c>JointStates</c> which contains the current positions the joints defined in <paramref name="joints"/>.</returns>ld be returned.</param>
         /// <exception cref="ServiceCallFailedException">Thrown when call to service failed.</exception>
         public JointStates QueryJointStates(JointSet joints)
         {
@@ -369,7 +370,6 @@ namespace Xamla.Robotics.Motion
         /// Query a cartesian path
         /// </summary>
         /// <param name="moveGroupName">Name of the move group from which the poses are queried</param>
-        /// <param name="jointNames">TODO: unused parameter</param>
         /// <param name="endEffectorLink">Name of the endeffector link</param>
         /// <param name="waypoints">The path to be queried</param>
         /// <param name="numberOfSteps"></param>
@@ -378,7 +378,6 @@ namespace Xamla.Robotics.Motion
         /// <exception cref="ServiceCallFailedException">Thrown when call to service failed.</exception>
         public ICartesianPath QueryCartesianPath(
             string moveGroupName,
-            JointSet jointNames,
             string endEffectorLink,
             ICartesianPath waypoints,
             int numberOfSteps = 50,
@@ -652,8 +651,8 @@ namespace Xamla.Robotics.Motion
 
             if (string.IsNullOrEmpty(endEffectorName))
             {
-                var firstMoveGroup = QueryAvailableMoveGroups().First();
-                endEffectorName = firstMoveGroup.EndEffectorNames.First();
+                var firstMoveGroup = QueryAvailableMoveGroups().FirstOrDefault();
+                endEffectorName = firstMoveGroup?.EndEffectorNames.FirstOrDefault();
             }
 
             maxXYZVelocity *= velocityScaling;
@@ -729,7 +728,7 @@ namespace Xamla.Robotics.Motion
         }
 
         /// <summary>
-        /// Plan a joint path from a cartesian path and plan parameters 
+        /// Plan a joint path from a cartesian path and plan parameters
         /// </summary>
         /// <param name="path">Poses the planned trajectory must reach</param>
         /// <param name="numSteps"></param>
@@ -741,7 +740,7 @@ namespace Xamla.Robotics.Motion
             if (path == null)
                 throw new ArgumentNullException(nameof(path));
 
-            return this.QueryCartesianPath(parameters.MoveGroupName, parameters.JointSet, null, path, numSteps, 0);
+            return this.QueryCartesianPath(parameters.MoveGroupName, null, path, numSteps, 0);
         }
 
         /// <summary>

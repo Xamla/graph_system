@@ -49,7 +49,7 @@ namespace Xamla.Robotics.Motion
 
     /// <summary>
     /// Implementations of <c>ISteppedMotionClient</c> perform supervised trajectory execution
-    /// </summary> 
+    /// </summary>
     public interface ISteppedMotionClient
         : IDisposable
     {
@@ -64,7 +64,7 @@ namespace Xamla.Robotics.Motion
         string GoalId { get; }
 
         /// <summary>
-        /// Request at supervised executor to perform next step 
+        /// Request at supervised executor to perform next step
         /// </summary>
         void Next();
 
@@ -74,7 +74,7 @@ namespace Xamla.Robotics.Motion
         void Previous();
 
         /// <summary>
-        /// Instance of <c>Task</c> producing an instance of <c>xamlamoveit.StepwiseMoveJResult</c> as result.  
+        /// Instance of <c>Task</c> producing an instance of <c>xamlamoveit.StepwiseMoveJResult</c> as result.
         /// </summary>
         Task<xamlamoveit.StepwiseMoveJResult> GoalTask { get; }
     }

@@ -98,7 +98,7 @@ namespace Xamla.Robotics.Motion
             this.goalHandle.GoalTask;
 
         /// <summary>
-        /// Request at supervised executor to perform next step 
+        /// Request at supervised executor to perform next step
         /// </summary>
         public void Next()
         {
@@ -106,7 +106,7 @@ namespace Xamla.Robotics.Motion
         }
 
         /// <summary>
-        /// Request at supervised executor to perform previous step 
+        /// Request at supervised executor to perform previous step
         /// </summary>
         public void Previous()
         {

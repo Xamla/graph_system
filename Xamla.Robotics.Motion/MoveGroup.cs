@@ -47,7 +47,7 @@ namespace Xamla.Robotics.Motion
         }
 
         /// <summary>
-        /// Create a instance of <c>MoveGroup</c> 
+        /// Create a instance of <c>MoveGroup</c>
         /// </summary>
         /// <param name="motionService">An object implementing <c>IMotionService</c> which is used to communicate with the motion server.</param>
         /// <param name="moveGroupName">The name of the move group represented by this instance</param>
@@ -117,9 +117,9 @@ namespace Xamla.Robotics.Motion
 
         /// <summary>
         /// Sets the collision check
-        /// If true, the trajectory planing tries to plan a collision free trajectory. 
+        /// If true, the trajectory planing tries to plan a collision free trajectory.
         /// Before executing a trajectory, a collision check is performed.
-        /// </summary> 
+        /// </summary>
         public bool CollisionCheck
         {
             get => defaultPlanParameters.CollisionCheck;
@@ -128,7 +128,7 @@ namespace Xamla.Robotics.Motion
 
         /// <summary>
         /// Trajectory point sampling frequency
-        /// </summary> 
+        /// </summary>
         public double SampleResolution
         {
             get => defaultPlanParameters.SampleResolution;
@@ -144,7 +144,7 @@ namespace Xamla.Robotics.Motion
 
         /// <summary>
         /// Maximal deviation from the trajectory points
-        /// </summary>    
+        /// </summary>
         public double MaxDeviation
         {
             get => defaultPlanParameters.MaxDeviation;
@@ -153,7 +153,7 @@ namespace Xamla.Robotics.Motion
 
         /// <summary>
         /// Maximal allowed inverse kinematics jump threshold
-        /// </summary>   
+        /// </summary>
         public double IkJumpThreshold
         {
             get => defaultTaskSpacePlanParameters.IkJumpThreshold;
@@ -162,12 +162,12 @@ namespace Xamla.Robotics.Motion
 
         /// <summary>
         /// Object implementing <c>IEnumerable<string></c> containing endeffector names of the the move group
-        /// </summary>   
+        /// </summary>
         public IEnumerable<string> EndEffectorNames => this.details.EndEffectorNames;
 
         /// <summary>
         /// Default end effector name
-        /// </summary>  
+        /// </summary>
         /// <exception cref="ArgumentNullException">Thrown when <c>value</c> is null.</exception>
         /// <exception cref="Exception">Thrown when end efector of name <c>value</c> does not exist in move group.</exception>
         public string DefaultEndEffectorName
@@ -184,49 +184,49 @@ namespace Xamla.Robotics.Motion
         }
 
         /// <summary>
-        /// Get an end effector by name 
-        /// </summary>  
-        /// <param name="endEffectorName">Name of the end effector. The default end effector is used when null.</param>  
-        /// <returns>Returns an object implementing <c>IEndEffector</c> associated with  <paramref name="endEffectorName"/>.</returns>  
+        /// Get an end effector by name
+        /// </summary>
+        /// <param name="endEffectorName">Name of the end effector. The default end effector is used when null.</param>
+        /// <returns>Returns an object implementing <c>IEndEffector</c> associated with  <paramref name="endEffectorName"/>.</returns>
         public IEndEffector GetEndEffector(string endEffectorName = null) =>
             endEffectors[endEffectorName ?? defaultEndEffectorName];
 
         /// <summary>
         /// Get default end effector
-        /// </summary>  
+        /// </summary>
         /// <returns>Returns an object implementig <c>IEndEffector</c> representing the default end effector</returns>
         public IEndEffector DefaultEndEffector =>
             this.GetEndEffector(null);
 
         /// <summary>
         /// Get the current position of an end effector
-        /// </summary>  
-        /// <param name="endEffectorName">Name of the <c>IEndEffector</c> instance. The default end effector is used when null.</param>  
-        /// <returns>Returns the current <c>Pose</c> instance of the end effector associated with <paramref name="endEffectorName"/>.</returns>  
+        /// </summary>
+        /// <param name="endEffectorName">Name of the <c>IEndEffector</c> instance. The default end effector is used when null.</param>
+        /// <returns>Returns the current <c>Pose</c> instance of the end effector associated with <paramref name="endEffectorName"/>.</returns>
         public Pose GetCurrentPose(string endEffectorName = null) =>
             this.GetEndEffector(endEffectorName).CurrentPose;
 
         /// <summary>
         /// <c>JointSet</c> of the <c>IMoveGroup</c>
-        /// </summary> 
+        /// </summary>
         public JointSet JointSet =>
             jointSet;
 
         /// <summary>
         /// Current <c>JointStates</c> of the of the <c>IMoveGroup</c> joints
-        /// </summary>  
+        /// </summary>
         public JointStates CurrentJointStates =>
             motionService.QueryJointStates(jointSet);
 
         /// <summary>
-        /// Current joint positions of the of the <c>IMoveGroup</c> joints 
-        /// </summary>  
+        /// Current joint positions of the of the <c>IMoveGroup</c> joints
+        /// </summary>
         public JointValues CurrentJointPositions =>
             this.CurrentJointStates.Positions;
 
         /// <summary>
         /// Default instance of <c>PlanParameters</c>
-        /// </summary>  
+        /// </summary>
         public PlanParameters DefaultPlanParameters =>
             defaultPlanParameters;
 
@@ -237,14 +237,14 @@ namespace Xamla.Robotics.Motion
             defaultTaskSpacePlanParameters;
 
         /// <summary>
-        /// Builds an instance of <c>TaskSpacePlanParameters</c>. 
-        /// </summary>  
-        /// <param name="velocityScaling">Scaling factor which is applied on the maximal possible joint velocities. Must lie in range (0 - 1).</param>  
-        /// <param name="collisionCheck"> If true the trajectory planing tries to plan a collision free trajectory and before executing a trajectory a collision check is performed.</param>  
-        /// <param name="maxDeviation">Maximal deviation from trajectory points when it is a fly-by-point in joint space</param>  
-        /// <param name="accelerationScaling">Scaling factor which is applied on the maximal possible joint accelerations</param>  
-        /// <param name="endEffectorName">Name of the end effector</param>  
-        /// <returns>Returns a new <c>TaskSpacePlanParameters</c> instance.</returns>  
+        /// Builds an instance of <c>TaskSpacePlanParameters</c>.
+        /// </summary>
+        /// <param name="velocityScaling">Scaling factor which is applied on the maximal possible joint velocities. Must lie in range (0 - 1).</param>
+        /// <param name="collisionCheck"> If true the trajectory planing tries to plan a collision free trajectory and before executing a trajectory a collision check is performed.</param>
+        /// <param name="maxDeviation">Maximal deviation from trajectory points when it is a fly-by-point in joint space</param>
+        /// <param name="accelerationScaling">Scaling factor which is applied on the maximal possible joint accelerations</param>
+        /// <param name="endEffectorName">Name of the end effector</param>
+        /// <returns>Returns a new <c>TaskSpacePlanParameters</c> instance.</returns>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="velocityScaling"/> is not in range (0 - 1).</exception>
         public TaskSpacePlanParameters BuildTaskSpacePlanParameters(double? velocityScaling = null, bool? collisionCheck = null, double? maxDeviation = null, double? accelerationScaling = null, string endEffectorName = null)
         {
@@ -270,13 +270,13 @@ namespace Xamla.Robotics.Motion
 
         /// <summary>
         /// Builds an instance of <c>PlanParameters</c>.
-        /// For parameter == null, the default values in <c>DefaultPlanParameters</c> are used. 
-        /// </summary>  
-        /// <param name="velocityScaling">Scaling factor which is applied on the maximal possible joint velocities. Must lie in range (0 - 1).</param>  
-        /// <param name="collisionCheck">Activates/Deactivates collision check</param>  
-        /// <param name="maxDeviation">Maximal deviation from trajectory points when it is a fly-by-point in joint space</param>  
-        /// <param name="accelerationScaling">Scaling factor which is applied on the maximal possible joint accelerations</param>  
-        /// <returns>Returns a new <c>PlanParameters</c> instance based on <c>DefaultPlanParameters</c> and parameters.</returns>  
+        /// For parameter == null, the default values in <c>DefaultPlanParameters</c> are used.
+        /// </summary>
+        /// <param name="velocityScaling">Scaling factor which is applied on the maximal possible joint velocities. Must lie in range (0 - 1).</param>
+        /// <param name="collisionCheck">Activates/Deactivates collision check</param>
+        /// <param name="maxDeviation">Maximal deviation from trajectory points when it is a fly-by-point in joint space</param>
+        /// <param name="accelerationScaling">Scaling factor which is applied on the maximal possible joint accelerations</param>
+        /// <returns>Returns a new <c>PlanParameters</c> instance based on <c>DefaultPlanParameters</c> and parameters.</returns>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="velocityScaling"/> is not in range (0 - 1).</exception>
         public PlanParameters BuildPlanParameters(double? velocityScaling = null, bool? collisionCheck = null, double? maxDeviation = null, double? accelerationScaling = null)
         {
@@ -300,13 +300,13 @@ namespace Xamla.Robotics.Motion
 
         /// <summary>
         /// Plans a trajectory based on a <c>JointValues</c> instance.
-        /// </summary>  
-        /// <param name="target">Target joint positions</param>  
-        /// <param name="velocityScaling">Scaling factor which is applied on the maximal possible joint velocities</param>  
-        /// <param name="collisionCheck">Activates/Deactivates collision check</param>  
-        /// <param name="maxDeviation">Maximal deviation from trajectory points when it is a fly-by-point in joint space</param>  
-        /// <param name="accelerationScaling">Scaling factor which is applied on the maximal possible joint accelerations</param>  
-        /// <returns>Returns a tuple of <c>(IJointTrajectory, PlanParameters)</c> instances.</returns>  
+        /// </summary>
+        /// <param name="target">Target joint positions</param>
+        /// <param name="velocityScaling">Scaling factor which is applied on the maximal possible joint velocities</param>
+        /// <param name="collisionCheck">Activates/Deactivates collision check</param>
+        /// <param name="maxDeviation">Maximal deviation from trajectory points when it is a fly-by-point in joint space</param>
+        /// <param name="accelerationScaling">Scaling factor which is applied on the maximal possible joint accelerations</param>
+        /// <returns>Returns a tuple of <c>(IJointTrajectory, PlanParameters)</c> instances.</returns>
         public (IJointTrajectory, PlanParameters) PlanMoveJoints(JointValues target, double? velocityScaling = null, bool? collisionCheck = null, double? accelerationScaling = null)
         {
             var parameters = this.BuildPlanParameters(velocityScaling, collisionCheck, null, accelerationScaling);
@@ -325,12 +325,12 @@ namespace Xamla.Robotics.Motion
 
         /// <summary>
         /// Plans asynchronously a collision free trajectory based on a <c>JointValues</c> instance.
-        /// </summary>  
-        /// <param name="target">Target joint positions</param>  
-        /// <param name="velocityScaling">Scaling factor which is applied on the maximal possible joint velocities</param>  
-        /// <param name="sampleResolution">Trajectory point sampling frequency</param>  
-        /// <param name="cancel">CancellationToken</param>  
-        /// <returns>Returns a tuple of <c>(IJointTrajectory, PlanParameters)</c> instances.</returns>  
+        /// </summary>
+        /// <param name="target">Target joint positions</param>
+        /// <param name="velocityScaling">Scaling factor which is applied on the maximal possible joint velocities</param>
+        /// <param name="sampleResolution">Trajectory point sampling frequency</param>
+        /// <param name="cancel">CancellationToken</param>
+        /// <returns>Returns a tuple of <c>(IJointTrajectory, PlanParameters)</c> instances.</returns>
         public (IJointTrajectory, PlanParameters) PlanMoveJointsCollisionFreeAsync(JointValues target, double? velocityScaling, double? sampleResolution, CancellationToken cancel = default(CancellationToken))
         {
             var parameters = this.BuildPlanParameters(velocityScaling, false, null, null);
@@ -348,12 +348,12 @@ namespace Xamla.Robotics.Motion
 
         /// <summary>
         /// Moves the joints asynchronously and collision free based on a <c>JointValues</c> instance.
-        /// </summary> 
-        /// <param name="target">Target joint positions</param>  
-        /// <param name="velocityScaling">Scaling factor which is applied on the maximal possible joint velocities</param>  
-        /// <param name="sampleResolution">Trajectory point sampling frequency</param>  
-        /// <param name="cancel">CancellationToken</param>  
-        /// <returns>Returns a <c>Task</c> instance.</returns>  
+        /// </summary>
+        /// <param name="target">Target joint positions</param>
+        /// <param name="velocityScaling">Scaling factor which is applied on the maximal possible joint velocities</param>
+        /// <param name="sampleResolution">Trajectory point sampling frequency</param>
+        /// <param name="cancel">CancellationToken</param>
+        /// <returns>Returns a <c>Task</c> instance.</returns>
         public async Task MoveJointsCollisionFreeAsync(JointValues target, double? velocityScaling, double? sampleResolution, CancellationToken cancel = default(CancellationToken))
         {
             var (trajectory, planParameters) = this.PlanMoveJointsCollisionFreeAsync(target, velocityScaling, sampleResolution);
@@ -362,21 +362,21 @@ namespace Xamla.Robotics.Motion
 
         /// <summary>
         /// Moves the joints asynchronously and collision free based on a <c>JointValues</c> instance.
-        /// </summary> 
+        /// </summary>
         /// <param name="target">Target joint positions</param>
-        /// <param name="cancel">CancellationToken</param>  
-        /// <returns>Returns an object implementing <c>ISteppedMotionClient</c>.</returns>  
+        /// <param name="cancel">CancellationToken</param>
+        /// <returns>Returns an object implementing <c>ISteppedMotionClient</c>.</returns>
         public ISteppedMotionClient MoveJointsCollisionFreeSupervisedAsync(JointValues target, CancellationToken cancel = default(CancellationToken)) =>
             this.MoveJointsCollisionFreeSupervisedAsync(target, null, null, cancel);
 
         /// <summary>
         /// Moves the joints asynchronously and collision free based on a <c>JointValues</c> instance.
-        /// </summary> 
+        /// </summary>
         /// <param name="target">Target joint positions</param>
-        /// <param name="velocityScaling">Scaling factor which is applied on the maximal possible joint velocities</param>  
-        /// <param name="sampleResolution">Trajectory point sampling frequency</param>  
-        /// <param name="cancel">CancellationToken</param>  
-        /// <returns>Returns an object implementing <c>ISteppedMotionClient</c>.</returns>  
+        /// <param name="velocityScaling">Scaling factor which is applied on the maximal possible joint velocities</param>
+        /// <param name="sampleResolution">Trajectory point sampling frequency</param>
+        /// <param name="cancel">CancellationToken</param>
+        /// <returns>Returns an object implementing <c>ISteppedMotionClient</c>.</returns>
         public ISteppedMotionClient MoveJointsCollisionFreeSupervisedAsync(JointValues target, double? velocityScaling, double? sampleResolution, CancellationToken cancel = default(CancellationToken))
         {
             var (trajectory, planParameters) = this.PlanMoveJointsCollisionFreeAsync(target, velocityScaling, sampleResolution);
@@ -389,22 +389,22 @@ namespace Xamla.Robotics.Motion
 
         /// <summary>
         /// Moves the joints asynchronously based on a <c>JointValues</c> instance.
-        /// </summary> 
-        /// <param name="target">Target joint positions</param>  
-        /// <param name="cancel">CancellationToken</param>  
-        /// <returns>Returns a <c>Task</c> instance.</returns>  
+        /// </summary>
+        /// <param name="target">Target joint positions</param>
+        /// <param name="cancel">CancellationToken</param>
+        /// <returns>Returns a <c>Task</c> instance.</returns>
         public Task MoveJointsAsync(JointValues target, CancellationToken cancel = default(CancellationToken)) =>
             this.MoveJointsAsync(target, null, null, null, cancel);
 
         /// <summary>
         /// Moves the joints asynchronously based on a <c>JointValues</c> instance.
-        /// </summary> 
-        /// <param name="target">Target joint positions</param>  
-        /// <param name="velocityScaling">Scaling factor which is applied on the maximal possible joint velocities</param>  
-        /// <param name="collisionCheck">Activates/Deactivates collision check</param>  
-        /// <param name="accelerationScaling">Scaling factor which is applied on the maximal possible joint acceleration.</param>  
-        /// <param name="cancel">CancellationToken</param>  
-        /// <returns>Returns a <c>Task</c> instance.</returns> 
+        /// </summary>
+        /// <param name="target">Target joint positions</param>
+        /// <param name="velocityScaling">Scaling factor which is applied on the maximal possible joint velocities</param>
+        /// <param name="collisionCheck">Activates/Deactivates collision check</param>
+        /// <param name="accelerationScaling">Scaling factor which is applied on the maximal possible joint acceleration.</param>
+        /// <param name="cancel">CancellationToken</param>
+        /// <returns>Returns a <c>Task</c> instance.</returns>
         public async Task MoveJointsAsync(JointValues target, double? velocityScaling = null, bool? collisionCheck = null, double? accelerationScaling = null, CancellationToken cancel = default(CancellationToken))
         {
             // plan trajectory
@@ -415,22 +415,22 @@ namespace Xamla.Robotics.Motion
 
         /// <summary>
         /// Moves the joints asynchronously based on a <c>JointValues</c> instance.
-        /// </summary> 
+        /// </summary>
         /// <param name="target">Target joint positions</param>
-        /// <param name="cancel">CancellationToken</param>  
-        /// <returns>Returns an object implementing <c>ISteppedMotionClient</c>.</returns>  
+        /// <param name="cancel">CancellationToken</param>
+        /// <returns>Returns an object implementing <c>ISteppedMotionClient</c>.</returns>
         public ISteppedMotionClient MoveJointsSupervisedAsync(JointValues target, CancellationToken cancel = default(CancellationToken)) =>
             this.MoveJointsSupervisedAsync(target, null, null, null, cancel);
 
         /// <summary>
         /// Moves the joints asynchronously based on a <c>JointValues</c> instance.
-        /// </summary> 
+        /// </summary>
         /// <param name="target">Target joint positions</param>
-        /// <param name="velocityScaling">Scaling factor which is applied on the maximal possible joint velocities</param>  
-        /// <param name="collisionCheck">Activates/Deactivates collision check</param>  
-        /// <param name="accelerationScaling">Scaling factor which is applied on the maximal possible joint acceleration.</param>  
-        /// <param name="cancel">CancellationToken</param>  
-        /// <returns>Returns an object implementing <c>ISteppedMotionClient</c>.</returns>  
+        /// <param name="velocityScaling">Scaling factor which is applied on the maximal possible joint velocities</param>
+        /// <param name="collisionCheck">Activates/Deactivates collision check</param>
+        /// <param name="accelerationScaling">Scaling factor which is applied on the maximal possible joint acceleration.</param>
+        /// <param name="cancel">CancellationToken</param>
+        /// <returns>Returns an object implementing <c>ISteppedMotionClient</c>.</returns>
         public ISteppedMotionClient MoveJointsSupervisedAsync(JointValues target, double? velocityScaling = null, bool? collisionCheck = null, double? accelerationScaling = null, CancellationToken cancel = default(CancellationToken))
         {
             // plan trajectory
@@ -444,13 +444,13 @@ namespace Xamla.Robotics.Motion
 
         /// <summary>
         /// Plans a trajectory based on a path object implementing <c>IJointPath</c>.
-        /// </summary>  
-        /// <param name="waypoints">Joint path</param>  
-        /// <param name="velocityScaling">Scaling factor which is applied on the maximal possible joint velocities</param>  
-        /// <param name="collisionCheck">Activates/Deactivates collision check</param>  
-        /// <param name="maxDeviation">Maximal deviation from trajectory points when it is a fly-by-point in joint space</param>  
-        /// <param name="accelerationScaling">Scaling factor which is applied on the maximal possible joint accelerations</param>  
-        /// <returns>Returns a tuple of <c>(IJointTrajectory, PlanParameters)</c> instances.</returns>  
+        /// </summary>
+        /// <param name="waypoints">Joint path</param>
+        /// <param name="velocityScaling">Scaling factor which is applied on the maximal possible joint velocities</param>
+        /// <param name="collisionCheck">Activates/Deactivates collision check</param>
+        /// <param name="maxDeviation">Maximal deviation from trajectory points when it is a fly-by-point in joint space</param>
+        /// <param name="accelerationScaling">Scaling factor which is applied on the maximal possible joint accelerations</param>
+        /// <returns>Returns a tuple of <c>(IJointTrajectory, PlanParameters)</c> instances.</returns>
         public (IJointTrajectory, PlanParameters) PlanMoveJointPath(IJointPath waypoints, double? velocityScaling = null, bool? collisionCheck = null, double? maxDeviation = null, double? accelerationScaling = null)
         {
             var parameters = this.BuildPlanParameters(velocityScaling, collisionCheck, maxDeviation, accelerationScaling);
@@ -469,23 +469,23 @@ namespace Xamla.Robotics.Motion
 
         /// <summary>
         /// Moves the joints asynchronously based on a path object implementing <c>IJointPath</c>.
-        /// </summary> 
-        /// <param name="waypoints">Joint path</param>  
-        /// <param name="cancel">CancellationToken</param>  
-        /// <returns>Returns a <c>Task</c> instance.</returns>  
+        /// </summary>
+        /// <param name="waypoints">Joint path</param>
+        /// <param name="cancel">CancellationToken</param>
+        /// <returns>Returns a <c>Task</c> instance.</returns>
         public Task MoveJointPathAsync(IJointPath waypoints, CancellationToken cancel = default(CancellationToken)) =>
             this.MoveJointPathAsync(waypoints, null, null, null, null, cancel);
-       
+
         /// <summary>
         /// Moves the joints asynchronously based on a path object implementing <c>IJointPath</c>.
-        /// </summary> 
-        /// <param name="waypoints">Joint path</param>  
-        /// <param name="velocityScaling">Scaling factor which is applied on the maximal possible joint velocities</param>  
-        /// <param name="collisionCheck">Activates/Deactivates collision check</param>  
-        /// <param name="maxDeviation">Maximal deviation from trajectory points when it is a fly-by-point in joint space</param>  
-        /// <param name="accelerationScaling">Scaling factor which is applied on the maximal possible joint accelerations</param>  
-        /// <param name="cancel">CancellationToken</param>  
-        /// <returns>Returns a <c>Task</c> instance.</returns>  
+        /// </summary>
+        /// <param name="waypoints">Joint path</param>
+        /// <param name="velocityScaling">Scaling factor which is applied on the maximal possible joint velocities</param>
+        /// <param name="collisionCheck">Activates/Deactivates collision check</param>
+        /// <param name="maxDeviation">Maximal deviation from trajectory points when it is a fly-by-point in joint space</param>
+        /// <param name="accelerationScaling">Scaling factor which is applied on the maximal possible joint accelerations</param>
+        /// <param name="cancel">CancellationToken</param>
+        /// <returns>Returns a <c>Task</c> instance.</returns>
         public async Task MoveJointPathAsync(IJointPath waypoints, double? velocityScaling = null, bool? collisionCheck = null, double? maxDeviation = null, double? accelerationScaling = null, CancellationToken cancel = default(CancellationToken))
         {
             if (waypoints == null || waypoints.Count == 0)
@@ -498,23 +498,23 @@ namespace Xamla.Robotics.Motion
 
         /// <summary>
         /// Moves the joints asynchronously based on a path object implementing <c>IJointPath</c>.
-        /// </summary>  
-        /// <param name="waypoints">Joint path</param>  
-        /// <param name="cancel">CancellationToken</param>  
-        /// <returns>Returns an object implementing <c>ISteppedMotionClient</c>.</returns> 
+        /// </summary>
+        /// <param name="waypoints">Joint path</param>
+        /// <param name="cancel">CancellationToken</param>
+        /// <returns>Returns an object implementing <c>ISteppedMotionClient</c>.</returns>
         public ISteppedMotionClient MoveJointPathSupervisedAsync(IJointPath waypoints, CancellationToken cancel = default(CancellationToken)) =>
             this.MoveJointPathSupervisedAsync(waypoints, null, null, null, null, cancel);
 
         /// <summary>
         /// Moves the joints asynchronously based on a path object implementing <c>IJointPath</c>.
-        /// </summary> 
-        /// <param name="waypoints">Joint path</param>  
-        /// <param name="velocityScaling">Scaling factor which is applied on the maximal possible joint velocities</param>  
-        /// <param name="collisionCheck">Activates/Deactivates collision check</param>  
-        /// <param name="maxDeviation">Maximal deviation from trajectory points when it is a fly-by-point in joint space</param>  
-        /// <param name="accelerationScaling">Scaling factor which is applied on the maximal possible joint accelerations</param>  
-        /// <param name="cancel">CancellationToken</param>  
-        /// <returns>Returns an object implementing <c>ISteppedMotionClient</c>.</returns>  
+        /// </summary>
+        /// <param name="waypoints">Joint path</param>
+        /// <param name="velocityScaling">Scaling factor which is applied on the maximal possible joint velocities</param>
+        /// <param name="collisionCheck">Activates/Deactivates collision check</param>
+        /// <param name="maxDeviation">Maximal deviation from trajectory points when it is a fly-by-point in joint space</param>
+        /// <param name="accelerationScaling">Scaling factor which is applied on the maximal possible joint accelerations</param>
+        /// <param name="cancel">CancellationToken</param>
+        /// <returns>Returns an object implementing <c>ISteppedMotionClient</c>.</returns>
         public ISteppedMotionClient MoveJointPathSupervisedAsync(IJointPath waypoints, double? velocityScaling = null, bool? collisionCheck = null, double? maxDeviation = null, double? accelerationScaling = null, CancellationToken cancel = default(CancellationToken))
         {
             // plan trajectory

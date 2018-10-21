@@ -215,7 +215,7 @@ namespace Xamla.Robotics.Motion
         }
 
         /// <summary>
-        /// Get the velocity scaling 
+        /// Get the velocity scaling
         /// </summary>
         /// <returns>Returns the velocity scaling</returns>
         /// <exception cref="ServiceCallFailedException">Thrown when call to service failed.</exception>

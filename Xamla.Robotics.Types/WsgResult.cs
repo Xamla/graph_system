@@ -38,7 +38,7 @@
         /// Contains code of which <c>WsgState</c> the Gripper is currently in.
         /// </summary>
         public int State { get; }
-        
+
         /// <summary>
         /// Width between the two Gripping fingers [in meters].
         /// </summary>

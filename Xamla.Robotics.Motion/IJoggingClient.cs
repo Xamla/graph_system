@@ -3,7 +3,7 @@
 namespace Xamla.Robotics.Motion
 {
     /// <summary>
-    /// Enumeration of every jogging error code 
+    /// Enumeration of every jogging error code
     /// </summary>
     public enum JoggingErrorCode
     {
@@ -48,7 +48,7 @@ namespace Xamla.Robotics.Motion
         /// True if check for self-collision is enabled
         /// </summary>
         public bool SelfCollisionCheckEnabled { get; set; }
-        
+
         /// <summary>
         /// True if check for joint limits is enabled
         /// </summary>
@@ -77,7 +77,7 @@ namespace Xamla.Robotics.Motion
     public interface IJoggingClient
     {
         /// <summary>
-        /// Get the status of the controller 
+        /// Get the status of the controller
         /// </summary>
         /// <returns>Returns an instance of <c>ControllerStatusModel</c>.</returns>
         ControllerStatusModel GetStatus();
@@ -113,11 +113,11 @@ namespace Xamla.Robotics.Motion
         void SetMoveGroupName(string value);
 
         /// <summary>
-        /// Get the velocity scaling 
+        /// Get the velocity scaling
         /// </summary>
         /// <returns>Returns the velocity scaling</returns>
         double GetVelocityScaling();
-       
+
         /// <summary>
         /// Set the velocity scaling factor
         /// </summary>

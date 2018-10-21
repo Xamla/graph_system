@@ -47,11 +47,11 @@ namespace Xamla.Robotics.Types
         ICartesianPath Transform(Func<Pose, int, Pose> transform);
 
         /// <summary>
-        /// A collection of the translation values of all the poses on the current path. 
+        /// A collection of the translation values of all the poses on the current path.
         /// </summary>
         IEnumerable<Vector3> Positions { get; }
         /// <summary>
-        /// A collection of the rotation values of all the poses on the current path. 
+        /// A collection of the rotation values of all the poses on the current path.
         /// </summary>
         IEnumerable<Quaternion> Orientations { get; }
     }

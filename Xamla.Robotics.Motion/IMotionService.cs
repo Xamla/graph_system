@@ -9,13 +9,13 @@ namespace Xamla.Robotics.Motion
 {
     /// <summary>
     /// Implementations of <c>IMotionService</c> expose a range of functionality to be used by clients
-    /// </summary>  
+    /// </summary>
     public interface IMotionService
         : IDisposable
     {
         /// <summary>
         /// Handle of a ROS node
-        /// </summary>  
+        /// </summary>
         NodeHandle NodeHandle { get; }
 
         /// <summary>
@@ -25,26 +25,26 @@ namespace Xamla.Robotics.Motion
         /// <param name="endEffectorName">Optional name for the end effector</param>
         /// <returns>A reference to an object implementing <c>IMoveGroup</c></returns>
         IMoveGroup CreateMoveGroup(string moveGroupName = null, string endEffectorName = null);
-      
+
         /// <summary>
         /// Creates a move group based on a <c>JointSet</c> object.
         /// </summary>
         /// <param name="jointSet">Joint configurations</param>
         /// <returns>A reference to an object implementing <c>IMoveGroup</c></returns>
         IMoveGroup CreateMoveGroupForJointSet(JointSet jointSet);
- 
+
         /// <summary>
         /// Query all currently available move groups.
         /// </summary>
         /// <returns>Returns an object implementing IList, which contains instances of <c>MoveGroupDescription</c> of all the available move groups.</returns>
         IList<MoveGroupDescription> QueryAvailableMoveGroups();
-      
+
         /// <summary>
         /// Query all currently available end effectors
         /// </summary>
         /// <returns>Returns an object implementing IList, which contains instances of <c>EndEffectorDescription</c> of all the available end effectors.</returns>
         IList<EndEffectorDescription> QueryAvailableEndEffectors();
-      
+
         /// <summary>
         /// Query end joint limits
         /// </summary>
@@ -60,7 +60,7 @@ namespace Xamla.Robotics.Motion
         EndEffectorLimits QueryEndEffectorLimits(string name);
 
         /// <summary>
-        /// Query joint states 
+        /// Query joint states
         /// </summary>
         /// <param name="joints">Set of joint for which the limits are queried</param>
         /// <returns>Returns a instance of <c>JointStates</c> which contains the current positions the joints defined in  <paramref name="joints"/>.</returns>
@@ -74,7 +74,7 @@ namespace Xamla.Robotics.Motion
         /// <param name="endEffectorLink">End effector link is necessary if end effector is not part of the move group but pose should be computed for the end effector.</param>
         /// <returns>Returns the computed <c>Pose</c> object.</returns>
         Pose QueryPose(string moveGroupName, JointValues jointPositions, string endEffectorLink = "");
-        
+
         /// <summary>
         /// Query the poses from joint path points by applying forward kinematics
         /// </summary>
@@ -133,7 +133,7 @@ namespace Xamla.Robotics.Motion
         /// <param name="velocityScaling">Scale query or user defined max acceleration. Values between 0.0 and 1.0.</param>
         /// <returns>Returns instance of <c>TaskSpacePlanParameters</c>.</returns>
         TaskSpacePlanParameters CreateTaskSpacePlanParameters(string endEffectorName = null, double maxXYZVelocity = 0.01, double maxXYZAcceleration = 0.04, double maxAngularVelocity = 0.017453292519943, double maxAngularAcceleration = 0.069813170079773, double sampleResolution = 0.05, double ikJumpThreshold = 0.1, double maxDeviation = 0.0, bool checkCollision = true, double velocityScaling = 1);
-        
+
         /// <summary>
         /// Create <c>PlanParameters</c> from user defined and/or queried inputs.
         /// </summary>
@@ -146,7 +146,7 @@ namespace Xamla.Robotics.Motion
         /// <param name="velocityScaling">Scale query or user defined max acceleration. Values between 0.0 and 1.0.</param>
         /// <returns>Instance of <c>PlanParameters</c> with automatically queried and/or user defined values.</returns>
         PlanParameters CreatePlanParameters(string moveGroupName = null, JointSet joints = null, double[] maxVelocity = null, double[] maxAcceleration = null, double sampleResolution = 0.05, bool checkCollision = true, double velocityScaling = 1);
-        
+
         /// <summary>
         /// Plans a collision free joint path by querying it
         /// </summary>
