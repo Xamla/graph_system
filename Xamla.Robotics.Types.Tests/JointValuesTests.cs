@@ -242,13 +242,14 @@ namespace Xamla.Robotics.Types.Tests
         public void TestRandom()
         {
             var joints = new JointSet("a", "b");
-            var maxAcc = new double? [] {10, 10};
-            var maxVel = new double? [] {50, 10};
-            var minPos = new double? [] {-10, 0};
-            var maxPos = new double? [] {50, 10};
-            JointLimits jl = new JointLimits(joints, maxVel, maxAcc, minPos, maxPos );
+            var maxAcc = new double?[] { 10, 10 };
+            var maxVel = new double?[] { 50, 10 };
+            var minPos = new double?[] { -10, 0 };
+            var maxPos = new double?[] { 50, 10 };
+            JointLimits jl = new JointLimits(joints, maxVel, maxAcc, minPos, maxPos);
 
-            for(int i = 0; i< 100; ++i){
+            for (int i = 0; i < 100; ++i)
+            {
                 var a = JointValues.Random(jl);
                 Assert.True(a[0] >= minPos[0]);
                 Assert.True(a[1] >= minPos[1]);
@@ -258,11 +259,11 @@ namespace Xamla.Robotics.Types.Tests
 
             Assert.Throws<System.ArgumentNullException>(() => JointValues.Random(null));
             // assert that there must be a jointlimit for every name in jointset
-            maxAcc = new double? [] {10, 10};
-            maxVel = new double? [] {50, 10};
-            minPos = new double? [] {null, 0};
-            maxPos = new double? [] {50, 10};
-            jl = new JointLimits(joints, maxVel, maxAcc, minPos, maxPos );
+            maxAcc = new double?[] { 10, 10 };
+            maxVel = new double?[] { 50, 10 };
+            minPos = new double?[] { null, 0 };
+            maxPos = new double?[] { 50, 10 };
+            jl = new JointLimits(joints, maxVel, maxAcc, minPos, maxPos);
             Assert.Throws<System.ArgumentException>(() => JointValues.Random(jl));
         }
     }
