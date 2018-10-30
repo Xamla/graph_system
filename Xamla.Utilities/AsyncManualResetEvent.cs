@@ -60,17 +60,8 @@ namespace Xamla.Utilities
             return WaitAsync(CancellationToken.None);
         }
 
-        public void Set(bool useTaskPool = false)
+        private static void Release(List<TaskCompletionSource<object>> release, bool useTaskPool)
         {
-            List<TaskCompletionSource<object>> release;
-
-            lock (gate)
-            {
-                signaled = true;
-                release = list;
-                list = null;
-            }
-
             if (release == null)
                 return;
 
@@ -87,6 +78,33 @@ namespace Xamla.Utilities
             {
                 release.ForEach(x => x.TrySetResult(null));
             }
+        }
+
+        public void Set(bool useTaskPool = false)
+        {
+            List<TaskCompletionSource<object>> release;
+
+            lock (gate)
+            {
+                signaled = true;
+                release = list;
+                list = null;
+            }
+
+            Release(release, useTaskPool);
+        }
+
+        public void Pulse(bool useTaskPool = false)
+        {
+            List<TaskCompletionSource<object>> release;
+
+            lock (gate)
+            {
+                release = list;
+                list = null;
+            }
+
+            Release(release, useTaskPool);
         }
 
         public void Reset()

@@ -43,7 +43,7 @@ namespace Xamla.Robotics.Motion
         /// </summary>
         /// <param name="pose">The pose to be transformmed to joint space</param>
         /// <param name="avoidCollision">If true the trajectory planing tries to plan collision free trajectory and before executing a trajectory a collision check is performed.</param>
-        /// <param name="jointPositionSeed">Optional numerical seed to control joint configuration</param>
+        /// <param name="jointPositionSeed">Optional seed to joint configuration</param>
         /// <param name="timeout">Timeout</param>
         /// <param name="attempts">The amount of attempts</param>
         /// <returns>Returns the joint configuration as a <c>JointValues</c> instance.</returns>
@@ -60,7 +60,7 @@ namespace Xamla.Robotics.Motion
         /// </summary>
         /// <param name="poses">The poses to be transformmed to joint space</param>
         /// <param name="avoidCollision">If true the trajectory planing tries to plan collision free trajectory and before executing a trajectory a collision check is performed.</param>
-        /// <param name="jointPositionSeed">Optional numerical seed to control joint configuration</param>
+        /// <param name="jointPositionSeed">Optional seed joint configuration</param>
         /// <param name="timeout">Timeout</param>
         /// <param name="attempts">The amount of attempts</param>
         /// <param name="constSeed">Determines if for each pose in poses the same seed should be used.</param>

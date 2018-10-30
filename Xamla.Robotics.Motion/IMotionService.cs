@@ -14,7 +14,7 @@ namespace Xamla.Robotics.Motion
         : IDisposable
     {
         /// <summary>
-        /// Handle of a ROS node
+        /// The ROS node handle used by the motion service.
         /// </summary>
         NodeHandle NodeHandle { get; }
 
@@ -177,7 +177,7 @@ namespace Xamla.Robotics.Motion
         /// Plans trajectory with linear movements from a cartesian path
         /// </summary>
         /// <param name="path">Cartesian path with poses the trajectory must reach</param>
-        /// <param name="seed">Numerical seed to control configuration</param>
+        /// <param name="seed">Seed joint configuration</param>
         /// <param name="parameters">Plan parameters which defines the limits, settings and end effector name.</param>
         /// <returns>Returns planned joint trajectory which reach the poses defined in path under the constraints of parameters.</returns>
         IJointTrajectory PlanMovePoseLinear(ICartesianPath path, JointValues seed, TaskSpacePlanParameters parameters);
@@ -214,7 +214,7 @@ namespace Xamla.Robotics.Motion
         /// </summary>
         /// <param name="pose">Pose to transform to joint space</param>
         /// <param name="parameters">Plan parameters which defines the limits, settings and move group name</param>
-        /// <param name="jointPositionSeed">Optional numerical seed to control joint configuration</param>
+        /// <param name="jointPositionSeed">Optional seed joint configuration</param>
         /// <param name="endEffectorLink">Necessary if poses are defined for end effector link</param>
         /// <param name="timeout">Timeout</param>
         /// <param name="attempts">Attempts to find a solution or each pose</param>
@@ -234,7 +234,7 @@ namespace Xamla.Robotics.Motion
         /// <param name="pose">Pose to transform to joint space</param>
         /// <param name="endEffectorName">Name of the end effector</param>
         /// <param name="avoidCollision">Indicates if collision should be avoided</param>
-        /// <param name="jointPositionSeed">Optional numerical seed to control joint configuration</param>
+        /// <param name="jointPositionSeed">Optional seed to joint configuration</param>
         /// <param name="timeout">Timeout</param>
         /// <param name="attempts">Attempts to find a solution or each pose</param>
         /// <returns>Returns an instance of <c>JointValues</c> with the joint configuration.</returns>
@@ -248,16 +248,72 @@ namespace Xamla.Robotics.Motion
         );
 
         /// <summary>
+        /// Compute inverse kinematic solutions for several points consisting of one or more effector poses.
+        /// </summary>
+        /// <param name="points">Sequence of cartesian end effector poses configurations for which joint space solutions are
+        /// requested. For robots with more than one end effector (e.g. dual arm robots) multiple poses can be specified for
+        /// a single IK computation.</param>
+        /// <param name="parameters">Plan parameters specifying move group name, joint set and whether to avoid collisions.</param>
+        /// <param name="jointPositionSeed">Optional seed joint configuration. The seed configuration may contain joints
+        /// which are not part of the selected move group (e.g. a torso joint when only solving an arm). All provided values
+        /// will be used to initialize the robot state before computing the IK solutions. The current robot state is always
+        /// used as default value for joints for which no seed is specified.</param>
+        /// <param name="timeout">Timeout</param>
+        /// <param name="attempts">Maximum number of attempts made to find a solution for each pose</param>
+        /// <param name="constSeed">If true, the same initial joint seed is used for all poses. Otherwise the last result is
+        /// used as seed for the next.</param>
+        /// <returns>Returns the IK results as an instance of <c>IKResult</c>.</returns>
+        IKResult InverseKinematicMany(
+            IEnumerable<EndEffectorPose[]> points,
+            PlanParameters parameters,
+            JointValues jointPositionSeed = null,
+            TimeSpan? timeout = null,
+            int attempts = 1,
+            bool constSeed = false
+        );
+
+        /// <summary>
+        /// Compute inverse kinematic solutions for several points consisting of one or more effector poses.
+        /// </summary>
+        /// <param name="points">Sequence of cartesian end effector poses configurations for which joint space solutions are
+        /// requested. For robots with more than one end effector (e.g. dual arm robots) multiple poses can be specified for
+        /// a single IK computation.</param>
+        /// <param name="moveGroupName">Name of the move group on which the IK request is executed (joints associated with
+        /// this move group are modified to find a solution).</param>
+        /// <param name="solutionJointSet">JointSet defining which values are copied from the robot state for each solution
+        /// to the IK result. It is possible to specify joint names which are not part of the selected move group.</param>
+        /// <param name="jointPositionSeed">Optional seed joint configuration. The seed configuration may contain joints
+        /// which are not part of the selected move group (e.g. a torso joint when only solving an arm). All provided values
+        /// will be used to initialize the robot state before computing the IK solutions. The current robot state is always
+        /// used as default value for joints for which no seed is specified.</param>
+        /// <param name="avoidCollision">Flag indicating whether to test IK solutions for collisions. If set to true no robot
+        /// configurations are returned that are in collision with the planning scene.</param>
+        /// <param name="timeout">Timeout</param>
+        /// <param name="attempts">Maximum number of attempts made to find a solution for each pose</param>
+        /// <param name="constSeed">If true, the same initial joint seed is used for all poses. Otherwise the last result is used as seed for the next.</param>
+        /// <returns>Returns the IK results as an instance of <c>IKResult</c>.</returns>
+        IKResult InverseKinematicMany(
+            IEnumerable<EndEffectorPose[]> points,
+            string moveGroupName,
+            JointSet jointSet,
+            JointValues jointPositionSeed = null,
+            bool avoidCollision = true,
+            TimeSpan? timeout = null,
+            int attempts = 1,
+            bool constSeed = false
+        );
+
+        /// <summary>
         /// Inverse kinematic solutions for several points
         /// </summary>
         /// <param name="points">Poses to be transformed to joint space</param>
         /// <param name="parameters">Plan parameters which defines the limits, settings and move group name</param>
-        /// <param name="jointPositionSeed">Optional numerical seed to control joint configuration</param>
+        /// <param name="jointPositionSeed">Optional seed joint configuration</param>
         /// <param name="endEffectorLink">Necessary if poses are defined for end effector link</param>
         /// <param name="timeout">Timeout</param>
         /// <param name="attempts">Attempts to find a solution or each pose</param>
-        /// <param name="constSeed">If true, a the same seed is used for every iteration</param>
-        /// <returns>Returns the results as an instance of <c>IKResult</c>.</returns>
+        /// <param name="constSeed">If true, the same seed is used for all poses. Otherwise the last result is used as seed for the next.</param>
+        /// <returns>Returns the IK results as an instance of <c>IKResult</c>.</returns>
         IKResult InverseKinematicMany(
             IEnumerable<Pose> points,
             PlanParameters parameters,
@@ -274,10 +330,10 @@ namespace Xamla.Robotics.Motion
         /// <param name="points"></param>
         /// <param name="endEffectorName">Poses to be transformed to joint space</param>
         /// <param name="avoidCollision">Indicates if collision should be avoided</param>
-        /// <param name="jointPositionSeed">Optional numerical seed to control joint configuration</param>
+        /// <param name="jointPositionSeed">Optional seed to joint configuration</param>
         /// <param name="timeout">Timeout</param>
         /// <param name="attempts">Attempts to find a solution or each pose</param>
-        /// <param name="constSeed">If true, a the same seed is used for every iteration</param>
+        /// <param name="constSeed">If true, the same seed is used for all poses. Otherwise the last result is used as seed for the next.</param>
         /// <returns>Returns the results as an instance of <c>IKResult</c>.</returns>
         IKResult InverseKinematicMany(
             IEnumerable<Pose> points,
@@ -336,7 +392,7 @@ namespace Xamla.Robotics.Motion
         /// </summary>
         /// <param name="target">Target pose</param>
         /// <param name="endEffectorLink">Specifies for which link the pose is defined.</param>
-        /// <param name="seed">Numerical seed to control configuration</param>
+        /// <param name="seed">Seed joint configuration</param>
         /// <param name="parameters">Plan parameters which defines the limits, settings and move group name</param>
         /// <param name="cancel">CancellationToken</param>
         /// <returns>Returns an instance of <c>Task</c>.</returns>
@@ -347,7 +403,7 @@ namespace Xamla.Robotics.Motion
         /// </summary>
         /// <param name="target">Target Pose</param>
         /// <param name="endEffectorLink">Specifies for which link the pose is defined</param>
-        /// <param name="seed">Numerical seed to control configuration</param>
+        /// <param name="seed">Seed joint configuration</param>
         /// <param name="parameters">An instance of TaskSpacePlanParameters which defines the limits, settings and end effector name</param>
         /// <param name="cancel">CancellationToken</param>
         /// <returns>Returns an instance of <c>Task</c>.</returns>

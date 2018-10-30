@@ -22,7 +22,7 @@ namespace Xamla.Graph.Modules.SequenceOperators
         public Concat(IGraphRuntime runtime)
             : base(runtime)
         {
-            this.dynamicInputPin = new DynamicInputPin(runtime, inputs, "Input", PinDataTypeFactory.FromType(typeof(ISequence<>)), OnDynamicInputAdd);
+            this.dynamicInputPin = new DynamicInputPin(runtime, inputs, "Input", PinDataTypeFactory.FromType(typeof(ISequence<>)), OnDynamicInputAdd) { Renameable = true };
             this.output = AddOutputPin("Output", PinDataTypeFactory.FromType(typeof(ISequence<object>)));
         }
 

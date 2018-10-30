@@ -159,6 +159,9 @@ namespace Xamla.Utilities
         /// </summary>
         public PosixPath RelativeTo(PosixPath source)
         {
+            if (source.IsRooted != this.IsRooted)
+                throw new Exception("Cannot compute relative path between absolute and relative path.");
+
             int shorter = Math.Min(parts.Count, source.parts.Count);
             int common;
 
@@ -175,11 +178,13 @@ namespace Xamla.Utilities
                 return source.Navigate(this);
             }
 
-            int differences = shorter - common;
-
             var result = new List<string>();
-            for (int i = 0; i < differences; i++)
-                result.Add("..");
+            if (source.parts.Count > common)
+            {
+                int differences = source.parts.Count - common;
+                for (int i = 0; i < differences; i++)
+                    result.Add("..");
+            }
 
             result.AddRange(parts.Skip(common));
 

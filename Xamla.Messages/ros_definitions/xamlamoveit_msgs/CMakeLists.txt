@@ -59,6 +59,8 @@ add_message_files(
   JointPathPoint.msg
   JointValuesPoint.msg
   TrajectoryProgress.msg
+  CartesianPath.msg
+  EndEffectorPoses.msg
 )
 
 ## Generate services in the 'srv' folder
@@ -77,6 +79,7 @@ add_service_files(
    QueryLock.srv
    QueryJointStateCollisions.srv
    GetIKSolution.srv
+   GetIKSolution2.srv
    GetFKSolution.srv
    GetCartesianPath.srv
    GetLinearCartesianTrajectory.srv
@@ -96,6 +99,8 @@ add_service_files(
    QueryCollisionObjectWorldView.srv
    SetCollisionObjectWorldView.srv
    GetCollisionObjectWorldView.srv
+   SetCartesianPathWorldView.srv
+   GetCartesianPathWorldView.srv
 )
 
 ## Generate actions in the 'action' folder

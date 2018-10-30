@@ -89,7 +89,7 @@ namespace Xamla.Robotics.Types
                 if (!point.Positions.JointSet.Equals(joints))
                     throw new ArgumentException("Provided points have position values for different joint sets.", nameof(points));
 
-                if (point.Velocities != null && point.Velocities.Values.Length > 0)
+                if (point.Velocities != null && point.Velocities.Count > 0)
                 {
                     if (!point.Velocities.JointSet.Equals(joints))
                         throw new ArgumentException("Provided points have velocity values for different joint sets.", nameof(points));
@@ -99,7 +99,7 @@ namespace Xamla.Robotics.Types
                     flags &= ~JointTrajectoryFlags.HasVelocity;
                 }
 
-                if (point.Accelerations != null && point.Accelerations.Values.Length > 0)
+                if (point.Accelerations != null && point.Accelerations.Count > 0)
                 {
                     if (!point.Velocities.JointSet.Equals(joints))
                         throw new ArgumentException("Provided points have acceleration values for different joint sets.", nameof(points));
@@ -109,7 +109,7 @@ namespace Xamla.Robotics.Types
                     flags &= ~JointTrajectoryFlags.HasAcceleration;
                 }
 
-                if (point.Effort != null && point.Effort.Values.Length > 0)
+                if (point.Efforts != null && point.Efforts.Count > 0)
                 {
                     if (!point.Velocities.JointSet.Equals(joints))
                         throw new ArgumentException("Provided points have effort values for different joint sets.", nameof(points));
@@ -175,7 +175,7 @@ namespace Xamla.Robotics.Types
         /// Gets the collection of joint effort values in the current trajectory.
         /// </summary>
         public IEnumerable<JointValues> Efforts =>
-            points.Select(x => x.Effort);
+            points.Select(x => x.Efforts);
 
         /// <summary>
         /// Gets the collection which holds the time by when the robot needs to reach the corresponding point of the trajectory.

@@ -19,7 +19,8 @@ namespace Xamla.Graph.Modules.FlowOperators
 
             this.flowInputs = new DynamicInputPin(runtime, inputs, "Flow", PinDataTypeFactory.CreateFlow())
             {
-                MaxConnections = null
+                MaxConnections = null,
+                ForceAutoId =  true
             };
             this.flowOut = this.AddOutputPin("flowOut", PinDataTypeFactory.CreateFlow(), 1);
         }

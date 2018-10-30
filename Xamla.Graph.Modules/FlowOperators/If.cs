@@ -25,7 +25,7 @@ namespace Xamla.Graph.Modules.FlowOperators
             this.flowMode = FlowMode.WaitAny;
             this.AddInputPin("flowIn", PinDataTypeFactory.CreateFlow(), PropertyMode.Never);
             this.condition = this.AddInputPin("condition", PinDataTypeFactory.CreateString("x > 0"), PropertyMode.Default);
-            this.arguments = new DynamicInputPin(runtime, base.inputs, "x", PinDataTypeFactory.CreateAny(), OnDynamicInputAdd);
+            this.arguments = new DynamicInputPin(runtime, base.inputs, "x", PinDataTypeFactory.CreateAny(), OnDynamicInputAdd) { Renameable = true };
             this.AddInterfacePin("x");
             this.trueOut = this.AddOutputPin("true", PinDataTypeFactory.CreateFlow(), 1);
             this.falseOut = this.AddOutputPin("false", PinDataTypeFactory.CreateFlow(), 1);

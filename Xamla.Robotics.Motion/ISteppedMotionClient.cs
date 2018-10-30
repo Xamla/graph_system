@@ -64,6 +64,14 @@ namespace Xamla.Robotics.Motion
         string GoalId { get; }
 
         /// <summary>
+        /// Requests the supervised executor to perform a step.
+        /// The stepping direction is determined by the sign of the <c>velocityScaling</c> parameter.
+        /// </summary>
+        /// <param name="velocityScaling">Specifies the desired velocity and direction of the supervised motion.
+        /// Positive values mean forward and negative values backward stepping. Valid range: [-1, 1]</param>
+        void Step(double velocityScaling = 0.5);
+
+        /// <summary>
         /// Request at supervised executor to perform next step
         /// </summary>
         void Next();

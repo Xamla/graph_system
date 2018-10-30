@@ -18,21 +18,21 @@ namespace Xamla.Robotics.Motion
 
 
     /// <summary>
-    /// Expose a range of functionality to be used by clients
+    /// Root service to access the Rosvita motion functionality.
     /// </summary>
     public class MotionService
         : IMotionService
     {
         const string EE_LIMITS_PARAM = "xamlaJointJogging/end_effector_list";
         const string JOINT_LIMITS_PARAM = "robot_description_planning/joint_limits";
-        const string QUERY_IK_SERVICE_NAME = "xamlaMoveGroupServices/query_ik";
+        const string QUERY_IK_SERVICE_NAME = "xamlaMoveGroupServices/query_ik2";
         const string MOVEJ_ACTION_NAME = "moveJ_action";
 
         NodeHandle nodeHandle;
         double globalVelocityScaling = 1;
         double globalAccelerationScaling = 1;
         readonly object gate = new object();
-        ServiceClient<xamlamoveit.GetIKSolution> queryIKService;
+        ServiceClient<xamlamoveit.GetIKSolution2> queryIKService;
         IActionClient<xamlamoveit.moveJGoal, xamlamoveit.moveJResult, xamlamoveit.moveJFeedback> moveJActionClient;
         Dictionary<string, IDisposable> actionClientPool = new Dictionary<string, IDisposable>();
 
@@ -43,7 +43,7 @@ namespace Xamla.Robotics.Motion
         public MotionService(NodeHandle nodeHandle)
         {
             this.nodeHandle = nodeHandle;
-            queryIKService = nodeHandle.ServiceClient<xamlamoveit.GetIKSolution>(QUERY_IK_SERVICE_NAME, true);
+            queryIKService = nodeHandle.ServiceClient<xamlamoveit.GetIKSolution2>(QUERY_IK_SERVICE_NAME, true);
             moveJActionClient = GetActionClient<xamlamoveit.moveJGoal, xamlamoveit.moveJResult, xamlamoveit.moveJFeedback>(MOVEJ_ACTION_NAME);
         }
 
@@ -428,7 +428,7 @@ namespace Xamla.Robotics.Motion
             request.dt = dt > 1.0 ? 1 / dt : dt;
             request.max_velocity = maxVelocity;
             request.max_acceleration = maxAcceleration;
-            request.waypoints = waypoints.Select(x => new xamlamoveit.JointPathPoint() { positions = x.Values }).ToArray();
+            request.waypoints = waypoints.Select(x => new xamlamoveit.JointPathPoint() { positions = x.ToArray() }).ToArray();
 
             if (!service.Call(srv))
                 throw new ServiceCallFailedException(serviceName);
@@ -448,7 +448,7 @@ namespace Xamla.Robotics.Motion
                     positions: new JointValues(resultJointSet, x.positions),
                     velocities: getJointValues(x.velocities),
                     accelerations: getJointValues(x.accelerations),
-                    effort: getJointValues(x.effort)
+                    efforts: getJointValues(x.effort)
                 )
             );
 
@@ -460,7 +460,7 @@ namespace Xamla.Robotics.Motion
         /// </summary>
         /// <param name="endEffectorName">Name of the end effector for a trajectory should be queried</param>
         /// <param name="waypoints">Define the key poses the trajectory must reach</param>
-        /// <param name="seed">Numerical seed to control configuration of the robot</param>
+        /// <param name="seed">Seed joint configuration</param>
         /// <param name="maxXyzVelocity">Defines the maximal velocity for translation [m/s]</param>
         /// <param name="maxXyzAcceleration">Defines the maximal acceleration for translation [m/s^2]</param>
         /// <param name="maxAngularVelocity">Defines the maximal angular velocity [rad/s]</param>
@@ -522,7 +522,7 @@ namespace Xamla.Robotics.Motion
                     positions: new JointValues(resultJointSet, x.positions),
                     velocities: getJointValues(x.velocities),
                     accelerations: getJointValues(x.accelerations),
-                    effort: getJointValues(x.effort)
+                    efforts: getJointValues(x.effort)
                 )
             );
 
@@ -567,12 +567,11 @@ namespace Xamla.Robotics.Motion
             {
                 if (response.in_collision[i])
                 {
-                    result.Add(new JointValuesCollision
-                    {
-                        Index = i,
-                        ErrorCode = response.error_codes[i],
-                        Message = response.messages[i]
-                    });
+                    result.Add(new JointValuesCollision(
+                        index:  i,
+                        errorCode: response.error_codes[i],
+                        message: response.messages[i]
+                    ));
                 }
             }
             return result;
@@ -747,7 +746,7 @@ namespace Xamla.Robotics.Motion
         /// Plans trajectory with linear movements from a cartesian path
         /// </summary>
         /// <param name="path">Cartesian path with poses the trajectory must reach</param>
-        /// <param name="seed">Numerical seed to control configuration</param>
+        /// <param name="seed">Seed joint configuration</param>
         /// <param name="parameters">Plan parameters which defines the limits, settings and end effector name.</param>
         /// <returns>Returns planned joint trajectory which reach the poses defined in path under the constraints of parameters.</returns>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="path"/> is null.</exception>
@@ -858,11 +857,11 @@ namespace Xamla.Robotics.Motion
         }
 
         /// <summary>
-        /// Get the joint configuration based on pose
+        /// Get a joint configuration for a given pose.
         /// </summary>
         /// <param name="pose">Pose to transform to joint space</param>
-        /// <param name="parameters">Plan parameters which defines the limits, settings and move group name</param>
-        /// <param name="jointPositionSeed">Optional numerical seed to control joint configuration</param>
+        /// <param name="parameters">Plan parameters which define the limits, settings and move group name</param>
+        /// <param name="jointPositionSeed">Optional seed joint configuration</param>
         /// <param name="endEffectorLink">Necessary if poses are defined for end effector link</param>
         /// <param name="timeout">Timeout</param>
         /// <param name="attempts">Attempts to find a solution or each pose</param>
@@ -883,7 +882,7 @@ namespace Xamla.Robotics.Motion
             {
                 throw new Exception("Received invalid IK result.");
             }
-            if (!ikResult.Suceeded)
+            if (!ikResult.Succeeded)
             {
                 throw new Exception("IK call was not successful.");
             }
@@ -892,12 +891,12 @@ namespace Xamla.Robotics.Motion
         }
 
         /// <summary>
-        /// Get the joint configuration based on pose
+        /// Get a joint configuration for a given pose.
         /// </summary>
         /// <param name="pose">Pose to transform to joint space</param>
         /// <param name="endEffectorName">Name of the end effector</param>
         /// <param name="avoidCollision">Indicates if collision should be avoided</param>
-        /// <param name="jointPositionSeed">Optional numerical seed to control joint configuration</param>
+        /// <param name="jointPositionSeed">Optional seed joint configuration</param>
         /// <param name="timeout">Timeout</param>
         /// <param name="attempts">Attempts to find a solution or each pose</param>
         /// <returns>Returns an instance of <c>JointValues</c> with the joint configuration.</returns>
@@ -915,19 +914,128 @@ namespace Xamla.Robotics.Motion
         }
 
         /// <summary>
-        /// Inverse kinematic solutions for several points
+        /// Compute inverse kinematic solutions for several points consisting of one or more effector poses.
+        /// </summary>
+        /// <param name="points">Sequence of cartesian end effector poses configurations for which joint space solutions are
+        /// requested. For robots with more than one end effector (e.g. dual arm robots) multiple poses can be specified for
+        /// a single IK computation.</param>
+        /// <param name="parameters">Plan parameters specifying the move group name, joint set and whether to avoid collisions.</param>
+        /// <param name="jointPositionSeed">Optional seed joint configuration. The seed configuration may contain joints
+        /// which are not part of the selected move group (e.g. a torso joint when only solving an arm). All provided values
+        /// will be used to initialize the robot state before computing the IK solutions. The current robot state is always
+        /// used as default value for joints for which no seed is specified.</param>
+        /// <param name="timeout">Timeout</param>
+        /// <param name="attempts">Maximum number of attempts made to find a solution for each pose</param>
+        /// <param name="constSeed">If true, the same initial joint seed is used for all poses. Otherwise the last result is
+        /// used as seed for the next.</param>
+        /// <returns>Returns the IK results as an instance of <c>IKResult</c>.</returns>
+        public IKResult InverseKinematicMany(
+            IEnumerable<EndEffectorPose[]> points,
+            PlanParameters parameters,
+            JointValues jointPositionSeed = null,
+            TimeSpan? timeout = null,
+            int attempts = 1,
+            bool constSeed = false
+        )
+        {
+            if (parameters == null)
+                throw new ArgumentNullException(nameof(parameters));
+
+            return InverseKinematicMany(
+                points,
+                parameters.MoveGroupName,
+                parameters.JointSet,
+                jointPositionSeed,
+                parameters.CollisionCheck,
+                timeout,
+                attempts,
+                constSeed
+            );
+        }
+
+        /// <summary>
+        /// Compute inverse kinematic solutions for several points consisting of one or more effector poses.
+        /// </summary>
+        /// <param name="points">Sequence of cartesian end effector poses configurations for which joint space solutions are
+        /// requested. For robots with more than one end effector (e.g. dual arm robots) multiple poses can be specified for
+        /// a single IK computation.</param>
+        /// <param name="moveGroupName">Name of the move group on which the IK request is executed (joints associated with
+        /// this move group are modified to find a solution).</param>
+        /// <param name="solutionJointSet">JointSet defining which values are copied from the robot state for each solution
+        /// to the IK result. It is possible to specify joint names which are not part of the selected move group.</param>
+        /// <param name="jointPositionSeed">Optional seed joint configuration. The seed configuration may contain joints
+        /// which are not part of the selected move group (e.g. a torso joint when only solving an arm). All provided values
+        /// will be used to initialize the robot state before computing the IK solutions. The current robot state is always
+        /// used as default value for joints for which no seed is specified.</param>
+        /// <param name="avoidCollision">Flag indicating whether to test IK solutions for collisions. If set to true no robot
+        /// configurations are returned that are in collision with the planning scene.</param>
+        /// <param name="timeout">Timeout</param>
+        /// <param name="attempts">Maximum number of attempts made to find a solution for each pose</param>
+        /// <param name="constSeed">If true, the same initial joint seed is used for all poses. Otherwise the last result is used as seed for the next.</param>
+        /// <returns>Returns the IK results as an instance of <c>IKResult</c>.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="points"/> is null.</exception>
+        /// <exception cref="ServiceCallFailedException">Thrown when called to service failed.</exception>
+        public IKResult InverseKinematicMany(
+            IEnumerable<EndEffectorPose[]> points,
+            string moveGroupName,
+            JointSet solutionJointSet,
+            JointValues jointPositionSeed = null,
+            bool avoidCollision = true,
+            TimeSpan? timeout = null,
+            int attempts = 1,
+            bool constSeed = false
+        )
+        {
+            if (points == null)
+                throw new ArgumentNullException(nameof(points));
+
+            var srv = new xamlamoveit.GetIKSolution2();
+            var request = srv.req;
+            request.joint_names = solutionJointSet.ToArray();
+            request.seed = jointPositionSeed?.ToJointValuesPointMessage();
+            request.group_name = moveGroupName;
+            request.const_seed = constSeed;
+            request.points = points
+                .Select(x => new xamlamoveit.EndEffectorPoses { poses = x.Select(y => y.Pose.ToPoseStampedMessage()).ToArray(), link_names = x.Select(y => y.LinkName).ToArray() })
+                .ToArray();
+            request.attempts = attempts;
+            request.timeout = (timeout ?? TimeSpan.FromSeconds(0.2)).ToDurationMessage();
+
+            if (!queryIKService.Call(srv))
+                throw new ServiceCallFailedException(QUERY_IK_SERVICE_NAME);
+
+            var response = srv.resp;
+
+            var path = new JointPath(solutionJointSet, response.solutions.Select(x =>
+            {
+                if (x == null || x.positions == null || x.positions.Length != solutionJointSet.Count)
+                    return JointValues.Zero(solutionJointSet);
+                return x.ToJointValues();
+            }));
+
+            var errorCodes = response.error_codes.Select(x =>
+            {
+                if (x == null || x.val == 0)
+                    return MoveItErrorCode.FAILURE;
+                return (MoveItErrorCode)x.val;
+            }).ToList();
+
+            return new IKResult(path, errorCodes);
+        }
+
+        /// <summary>
+        /// Compute inverse kinematic solutions for multiple poses.
         /// </summary>
         /// <param name="points">Poses to be transformed to joint space</param>
-        /// <param name="parameters">Plan parameters which defines the limits, settings and move group name</param>
-        /// <param name="jointPositionSeed">Optional numerical seed to control joint configuration</param>
+        /// <param name="parameters">Plan parameters which define the limits, settings and move group name</param>
+        /// <param name="jointPositionSeed">Optional seed joint configuration</param>
         /// <param name="endEffectorLink">Necessary if poses are defined for end effector link</param>
         /// <param name="timeout">Timeout</param>
-        /// <param name="attempts">Attempts to find a solution or each pose</param>
-        /// <param name="constSeed">If true, a the same seed is used for every iteration</param>
-        /// <returns>Returns the results as an instance of <c>IKResult</c>.</returns>
+        /// <param name="attempts">Maximum number of attempts to find a solution for each pose</param>
+        /// <param name="constSeed">If true, the same seed is used for all poses. Otherwise the last result is used as seed for the next.</param>
+        /// <returns>Returns the results as <c>IKResult</c> object.</returns>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="points"/> is null.</exception>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="parameters"/> is null.</exception>
-        /// <exception cref="ArgumentException">Thrown when plan parameters joint set does not match joint seed.</exception>
         /// <exception cref="ServiceCallFailedException">Thrown when called to service failed.</exception>
         public IKResult InverseKinematicMany(
             IEnumerable<Pose> points,
@@ -945,61 +1053,26 @@ namespace Xamla.Robotics.Motion
             if (parameters == null)
                 throw new ArgumentNullException(nameof(parameters));
 
-            if (jointPositionSeed != null)
-            {
-                if (!jointPositionSeed.JointSet.Equals(parameters.JointSet))
-                {
-                    if (!jointPositionSeed.JointSet.IsSimilar(parameters.JointSet))
-                        throw new ArgumentException($"Plan parameters joint set does not match joint seed ({parameters.JointSet} != {jointPositionSeed.JointSet}).", nameof(jointPositionSeed));
-
-                    jointPositionSeed = jointPositionSeed.Reorder(parameters.JointSet);
-                }
-            }
-
             var jointSet = parameters.JointSet;
-            var srv = new xamlamoveit.GetIKSolution();
-
-            var request = srv.req;
-
-            request.group_name = parameters.MoveGroupName;
-            request.joint_names = parameters.JointSet.ToArray();
-            request.end_effector_link = endEffectorLink;
-            request.seed = jointPositionSeed?.ToJointPathPointMessage();
-            request.collision_check = parameters.CollisionCheck;
-            request.attemts = attempts;
-            request.timeout = (timeout ?? TimeSpan.FromSeconds(0.2)).ToDurationMessage();
-            request.const_seed = constSeed;
-            request.points = points.Select(pose => pose.ToPoseStampedMessage()).ToArray();
-
-            if (!queryIKService.Call(srv))
-                throw new ServiceCallFailedException(QUERY_IK_SERVICE_NAME);
-
-            var response = srv.resp;
-
-            var path = new JointPath(jointSet, response.solutions.Select(x =>
-            {
-                if (x == null || x.positions == null || x.positions.Length != jointSet.Count)
-                    return JointValues.Zero(jointSet);
-                return x.ToJointValues(jointSet);
-            }));
-
-            var errorCodes = response.error_codes.Select(x =>
-            {
-                if (x == null || x.val == 0)
-                    return MoveItErrorCode.FAILURE;
-                return (MoveItErrorCode)x.val;
-            }).ToList();
-
-            return new IKResult(path, errorCodes);
+            return InverseKinematicMany(
+                points.Select(x => new EndEffectorPose[] { new EndEffectorPose(x, endEffectorLink) }),
+                parameters.MoveGroupName,
+                jointSet,
+                jointPositionSeed,
+                parameters.CollisionCheck,
+                timeout,
+                attempts,
+                constSeed
+            );
         }
 
         /// <summary>
         /// Inverse kinematic solutions for several points
         /// </summary>
         /// <param name="points"></param>
-        /// <param name="endEffectorName">Poses to be transformed to joint space</param>
+        /// <param name="endEffectorName">Name of the end effector for which the poses are specified.</param>
         /// <param name="avoidCollision">Indicates if collision should be avoided</param>
-        /// <param name="jointPositionSeed">Optional numerical seed to control joint configuration</param>
+        /// <param name="jointPositionSeed">Optional seed joint configuration</param>
         /// <param name="timeout">Timeout</param>
         /// <param name="attempts">Attempts to find a solution or each pose</param>
         /// <param name="constSeed">If true, a the same seed is used for every iteration</param>
@@ -1108,7 +1181,7 @@ namespace Xamla.Robotics.Motion
         /// </summary>
         /// <param name="target">Target pose</param>
         /// <param name="endEffectorLink">Specifies for which link the pose is defined.</param>
-        /// <param name="seed">Numerical seed to control configuration</param>
+        /// <param name="seed">Seed joint configuration</param>
         /// <param name="parameters">Plan parameters which defines the limits, settings and move group name</param>
         /// <param name="cancel">CancellationToken</param>
         /// <returns>Returns an instance of <c>Task</c>.</returns>
@@ -1140,7 +1213,7 @@ namespace Xamla.Robotics.Motion
         /// </summary>
         /// <param name="target">Target Pose</param>
         /// <param name="endEffectorLink">Specifies for which link the pose is defined</param>
-        /// <param name="seed">Numerical seed to control configuration</param>
+        /// <param name="seed">Seed joint configuration</param>
         /// <param name="parameters">An instance of TaskSpacePlanParameters which defines the limits, settings and end effector name</param>
         /// <param name="cancel">CancellationToken</param>
         /// <returns>Returns an instance of <c>Task</c>.</returns>

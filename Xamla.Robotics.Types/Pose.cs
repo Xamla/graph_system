@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Numerics;
+using Xamla.Types;
 using Xamla.Utilities;
 
 namespace Xamla.Robotics.Types
@@ -86,6 +87,13 @@ namespace Xamla.Robotics.Types
             }
         }
 
+        public Pose Inverse()
+        {
+            var rotation = Quaternion.Inverse(this.Rotation);
+            var t = Vector4.Transform(-this.Translation, rotation);
+            return new Pose(new Vector3(t.X, t.Y, t.Z), rotation, this.Frame);
+        }
+
         /// <summary>
         /// Creates a new <c>Pose</c> translated in the axes x, y and z.
         /// </summary>
@@ -110,6 +118,9 @@ namespace Xamla.Robotics.Types
         /// <returns>A new <c>Pose</c></returns>
         public Pose NormalizeRotation() =>
             new Pose(this.Translation, NormalizeQuaternion(this.Rotation), this.Frame);
+
+        public Pose Multiply(Pose other) =>
+            this * other;
 
         /// <summary>
         /// Test if the current Pose equals the given other <c>Pose</c>.
@@ -145,12 +156,43 @@ namespace Xamla.Robotics.Types
         public override string ToString() =>
             $"translation: {this.Translation}; Rotation: {this.Rotation}; Frame: '{this.Frame}';";
 
+        public A<float> ToA() =>
+            this.TransformMatrix.ToA();
+
+        public M<float> ToM() =>
+            this.TransformMatrix.ToM();
+
+        public static Pose Interpolate(Pose a, Pose b, double t = 0.5)
+        {
+            if (a == null)
+                throw new ArgumentNullException(nameof(a));
+            if (b == null)
+                throw new ArgumentNullException(nameof(b));
+            if (a.Frame != b.Frame)
+                throw new Exception("Poses have different parent frame.");
+
+            return new Pose(Vector3.Lerp(a.Translation, b.Translation, (float)t), Quaternion.Slerp(a.Rotation, b.Rotation, (float)t), a.Frame);
+        }
+
         private static Quaternion NormalizeQuaternion(Quaternion q)
         {
             q = Quaternion.Normalize(q);
             if (q.W < 0)
                 q = Quaternion.Negate(q);
             return q;
+        }
+
+        public static Pose operator*(Pose a, Pose b)
+        {
+            if (a == null)
+                throw new ArgumentNullException(nameof(a));
+            if (b == null)
+                throw new ArgumentNullException(nameof(b));
+            if (a.Frame != b.Frame)
+                throw new Exception("Poses have different parent frames.");
+
+            var t = Vector4.Transform(a.Translation, b.Rotation);
+            return new Pose(b.Translation + new Vector3(t.X, t.Y, t.Z), b.Rotation * a.Rotation, a.Frame);
         }
     }
 }

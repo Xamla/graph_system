@@ -16,4 +16,15 @@
     <ProjectReference Include="..\Xamla.Utilities\Xamla.Utilities.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Python.Runtime" Condition=" '$(OS)' != 'Unix' ">
+      <HintPath>..\ThirdParty\pythonnet_build\lib.win-amd64-3.6\netcoreapp2.0\Python.Runtime.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="Python.Runtime" Condition=" '$(OS)' == 'Unix' ">
+      <HintPath>..\ThirdParty\pythonnet_build\lib.linux-x86_64-3.5\netcoreapp2.1\Python.Runtime.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+  </ItemGroup>
+
 </Project>

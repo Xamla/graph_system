@@ -82,7 +82,7 @@ namespace Xamla.Graph
     public enum PinFlags
     {
         None = 0,
-        ResolvePath = 0x1
+        ResolvePath = 0x1,
     }
 
     public interface IPin
@@ -99,6 +99,7 @@ namespace Xamla.Graph
         IList<PinConnection> Connections { get; }
         int ConnectionCount { get; }
         bool Removable { get; }
+        bool Renameable { get; }
         int Index { get; }
         string Description { get; }
         PinFlags Flags { get; }

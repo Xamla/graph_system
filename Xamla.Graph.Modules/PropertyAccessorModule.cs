@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reactive;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,13 +12,14 @@ namespace Xamla.Graph.Modules.XData
     public class PropertyAccessorModule
         : ModuleBase
     {
-        GenericInputPin itemPin;
-        GenericInputPin itemTypeNamePin;
-        List<GenericOutputPin> itemPropertyPins;
-
         private static readonly Type OBJECT_TYPE = typeof(object);
         private static readonly string OBJECT_TYPE_NAME = OBJECT_TYPE.AssemblyQualifiedName;
         private const BindingFlags BINDING_FLAGS = BindingFlags.GetProperty | BindingFlags.Instance | BindingFlags.Public;
+
+        GenericInputPin itemPin;
+        GenericInputPin itemTypeNamePin;
+        List<GenericOutputPin> itemPropertyPins;
+        Type itemType;
 
         public PropertyAccessorModule(IGraphRuntime runtime)
             : base(runtime)
@@ -29,7 +29,7 @@ namespace Xamla.Graph.Modules.XData
 
             this.itemPropertyPins = new List<GenericOutputPin>();
 
-            this.itemPin.WhenNodeEvent.Subscribe(Observer.Create<NodeEvent>(evt =>
+            this.itemPin.WhenNodeEvent.Subscribe(evt =>
             {
                 if (itemPin.Connections.Any())
                 {
@@ -39,7 +39,7 @@ namespace Xamla.Graph.Modules.XData
                 {
                     BuildOutputPins(OBJECT_TYPE);
                 }
-            }));
+            });
         }
 
         protected override void OnCreate()
@@ -54,19 +54,19 @@ namespace Xamla.Graph.Modules.XData
             BuildOutputPins(Type.GetType(this.ItemTypeName) ?? OBJECT_TYPE);
         }
 
-        void RestorePinConnection(IPin pin, Dictionary<string, string[]> oldConnections)
+        void RestorePinConnection(IPin pin, Dictionary<string, IPin[]> oldConnections)
         {
-            string[] oldPinTraces;
-            if (oldConnections.TryGetValue(pin.Id, out oldPinTraces))
+            IPin[] remotePins;
+            if (oldConnections.TryGetValue(pin.Id, out remotePins))
             {
-                foreach (var t in oldPinTraces)
+                foreach (var remotePin in remotePins)
                 {
-                    var remotePin = this.Runtime.FindNodeByTrace(t) as IPin;
+                    if (remotePin.Graph == null || remotePin.Container == null)
+                        return;
 
                     try
                     {
-                        if (pin != null && remotePin != null)
-                            pin.Connect(remotePin);
+                        pin.Connect(remotePin);
                     }
                     catch (Exception)
                     {
@@ -78,17 +78,20 @@ namespace Xamla.Graph.Modules.XData
 
         public void BuildOutputPins(Type itemType)
         {
+            if (itemType == this.itemType)
+                return;
+
             // do not fall back to object when we have build pins for another type before
             // (most likely the drop back to object is due to a disconnect and we do not want to loose all existing connections)
             if (itemType == typeof(object) && itemPropertyPins.Count > 0)
                 return;
 
-            var oldConnections = new Dictionary<string, string[]>();
+            var oldConnections = new Dictionary<string, IPin[]>();
 
             // remove all outputs
             foreach (var itemPropertiesPin in itemPropertyPins)
             {
-                oldConnections.Add(itemPropertiesPin.Id, itemPropertiesPin.Connections.Select(x => x.Remote.Trace).ToArray());
+                oldConnections.Add(itemPropertiesPin.Id, itemPropertiesPin.Connections.Select(x => x.Remote).ToArray());
                 itemPropertiesPin.DisconnectAll();
                 outputs.Remove(itemPropertiesPin);
             }
@@ -118,6 +121,7 @@ namespace Xamla.Graph.Modules.XData
 
             // store current type in property
             this.ItemTypeName = itemType.AssemblyQualifiedName;
+            this.itemType = itemType;
         }
 
         public IInputPin ItemPin

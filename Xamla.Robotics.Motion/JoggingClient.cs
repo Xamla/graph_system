@@ -7,6 +7,7 @@ using std_srvs = Messages.std_srvs;
 using xamlamoveit = Messages.xamlamoveit_msgs;
 using System.Reactive.Subjects;
 using Xamla.Robotics.Types;
+using Xamla.Robotics.Types.Models;
 
 namespace Xamla.Robotics.Motion
 {
@@ -116,10 +117,10 @@ namespace Xamla.Robotics.Motion
         /// <param name="velocities">Velocities to sent [m/s]</param>
         public void SendVelocities(JointValues velocities)
         {
-            var point = new trajectory_msgs.JointTrajectoryPoint()
+            var point = new trajectory_msgs.JointTrajectoryPoint
             {
                 time_from_start = TimeSpan.FromSeconds(0.008).ToDurationMessage(),
-                velocities = velocities.Values,
+                velocities = velocities.ToArray(),
             };
 
             var trajectory = new trajectory_msgs.JointTrajectory()

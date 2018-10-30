@@ -299,13 +299,13 @@ string error_msg"; }
                 currentIndex += piecesize;
                 //creation_date
                 creation_date = new Time(new TimeData(
-                        BitConverter.ToUInt32(serializedMessage, currentIndex),
-                        BitConverter.ToUInt32(serializedMessage, currentIndex+Marshal.SizeOf(typeof(System.Int32)))));
+                        BitConverter.ToInt32(serializedMessage, currentIndex),
+                        BitConverter.ToInt32(serializedMessage, currentIndex+Marshal.SizeOf(typeof(System.Int32)))));
                 currentIndex += 2*Marshal.SizeOf(typeof(System.Int32));
                 //expiration_date
                 expiration_date = new Time(new TimeData(
-                        BitConverter.ToUInt32(serializedMessage, currentIndex),
-                        BitConverter.ToUInt32(serializedMessage, currentIndex+Marshal.SizeOf(typeof(System.Int32)))));
+                        BitConverter.ToInt32(serializedMessage, currentIndex),
+                        BitConverter.ToInt32(serializedMessage, currentIndex+Marshal.SizeOf(typeof(System.Int32)))));
                 currentIndex += 2*Marshal.SizeOf(typeof(System.Int32));
                 //error_msg
                 error_msg = "";
@@ -418,12 +418,12 @@ string error_msg"; }
                 id_lock = Encoding.ASCII.GetString(strbuf);
                 //creation_date
                 creation_date = new Time(new TimeData(
-                        Convert.ToUInt32(rand.Next()),
-                        Convert.ToUInt32(rand.Next())));
+                        Convert.ToInt32(rand.Next()),
+                        Convert.ToInt32(rand.Next())));
                 //expiration_date
                 expiration_date = new Time(new TimeData(
-                        Convert.ToUInt32(rand.Next()),
-                        Convert.ToUInt32(rand.Next())));
+                        Convert.ToInt32(rand.Next()),
+                        Convert.ToInt32(rand.Next())));
                 //error_msg
                 strlength = rand.Next(100) + 1;
                 strbuf = new byte[strlength];

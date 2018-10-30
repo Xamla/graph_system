@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Xamla.Robotics.Types
 {
     /// <summary>
-    /// Holds the result of an request to the inverse kinematic solver.
+    /// Holds the result of a request to the inverse kinematic solver.
     /// </summary>
     public class IKResult
     {
@@ -30,8 +30,8 @@ namespace Xamla.Robotics.Types
         public IList<MoveItErrorCode> ErrorCodes { get; }
 
         /// <summary>
-        /// Indicates whether there was at least on solution found for the inverse kinematic request.
+        /// Indicates whether all solutions were found for the batch inverse kinematic request.
         /// </summary>
-        public bool Suceeded => this.ErrorCodes != null && this.ErrorCodes.All(errorCode => errorCode == MoveItErrorCode.SUCCESS);
+        public bool Succeeded => this.ErrorCodes != null && this.ErrorCodes.All(errorCode => errorCode == MoveItErrorCode.SUCCESS);
     }
 }

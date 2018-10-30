@@ -65,11 +65,11 @@ namespace Xamla.Robotics.Motion
         }
 
         /// <summary>
-        /// Get inverse kinematic solution for one pose
+        /// Get inverse kinematic solution for one pose.
         /// </summary>
         /// <param name="pose">The pose to be transformmed to joint space</param>
         /// <param name="avoidCollision">If true the trajectory planing tries to plan collision free trajectory and before executing a trajectory a collision check is performed.</param>
-        /// <param name="jointPositionSeed">Optional numerical seed to control joint configuration</param>
+        /// <param name="jointPositionSeed">Optional seed joint configuration</param>
         /// <param name="timeout">Timeout</param>
         /// <param name="attempts">Attempts</param>
         /// <returns>Returns the joint configuration as a <c>JointValues</c> instance.</returns>
@@ -86,11 +86,11 @@ namespace Xamla.Robotics.Motion
         }
 
         /// <summary>
-        /// Get inverse kinematic solutions for several poses
+        /// Get inverse kinematic solutions for multiple poses.
         /// </summary>
         /// <param name="poses">The poses to be transformmed to joint space</param>
         /// <param name="avoidCollision">If true the trajectory planing tries to plan collision free trajectory and before executing a trajectory a collision check is performed.</param>
-        /// <param name="jointPositionSeed">Optional numerical seed to control joint configuration</param>
+        /// <param name="jointPositionSeed">Optional seed joint configuration</param>
         /// <param name="timeout">Timeout</param>
         /// <param name="attempts">The amount of attempts</param>
         /// <param name="constSeed">Determines if for each pose in poses the same seed should be used.</param>
@@ -295,7 +295,7 @@ namespace Xamla.Robotics.Motion
             var parameters = moveGroup.BuildPlanParameters();
             var targetJoints = motionService.InverseKinematicMany(waypoints, parameters, seed, this.LinkName);
 
-            if (!targetJoints.Suceeded)
+            if (!targetJoints.Succeeded)
                 throw new Exception("IK solutions Failed.");
 
             var path = targetJoints.Path;
@@ -336,7 +336,7 @@ namespace Xamla.Robotics.Motion
             var parameters = moveGroup.BuildPlanParameters();
             var targetJoints = motionService.InverseKinematicMany(waypoints, parameters, seed, this.LinkName);
 
-            if (!targetJoints.Suceeded)
+            if (!targetJoints.Succeeded)
                 throw new Exception("IK solutions Failed.");
 
             var path = targetJoints.Path;

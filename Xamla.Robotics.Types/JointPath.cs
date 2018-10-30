@@ -65,17 +65,18 @@ namespace Xamla.Robotics.Types
             this.joints = joints ?? throw new ArgumentNullException(nameof(joints));
             if (points == null)
                 throw new ArgumentNullException(nameof(points));
+
             this.points = points
                 .Where(x => x != null)
                 .Select(x =>
                 {
-                    if (x.JointSet.Equals(joints))
-                        return x;
-
-                    if (!x.JointSet.IsSimilar(joints))
-                        throw new ArgumentException("Provided path points have joint values of incompatible joint sets.", nameof(points));
-
-                    return x.Reorder(joints);
+                    if (!x.JointSet.Equals(joints))
+                    {
+                        if (!x.JointSet.IsSimilar(joints))
+                            throw new ArgumentException("Provided path points have joint values of incompatible joint sets.", nameof(points));
+                        x = x.Reorder(joints);
+                    }
+                    return x;
                 })
                 .ToList();
         }

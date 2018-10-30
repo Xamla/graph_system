@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Text;
 
 namespace Xamla.Utilities
 {
@@ -127,6 +128,72 @@ namespace Xamla.Utilities
             }
 
             return true;
+        }
+
+        public static string ToCSharpName(this Type type, bool full)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            if (type.IsArray)
+            {
+                sb.Append(ToCSharpName(type.GetElementType(), full));
+                sb.Append('[');
+                int rank = type.GetArrayRank();
+                for (int i = 1; i < rank; i++)
+                    sb.Append(',');
+                sb.Append(']');
+                return sb.ToString();
+            }
+
+            // Generic nested types return the complete list of type arguments,
+            // including type arguments for the declaring class. This requires
+            // some special handling
+            if (type.IsGenericType && !type.IsGenericTypeDefinition)
+            {
+                Type[] args = type.GetGenericArguments();
+                int nt = args.Length - 1;
+                Type pt = type;
+                // Loop throguh the declaring class chain, consuming type arguments for every
+                // generic class in the chain
+                while (pt != null)
+                {
+                    if (sb.Length > 0)
+                        sb.Insert(0, '.');
+                    int i = pt.Name.IndexOf('`');
+                    if (i != -1)
+                    {
+                        int na = nt - int.Parse(pt.Name.Substring(i + 1));
+                        sb.Insert(0, '>');
+                        for (; nt > na; nt--)
+                        {
+                            sb.Insert(0, ToCSharpName(args[nt], full));
+                            if (nt - 1 != na)
+                                sb.Insert(0, ',');
+                        }
+                        sb.Insert(0, '<');
+                        sb.Insert(0, pt.Name.Substring(0, i));
+                    }
+                    else
+                        sb.Insert(0, pt.Name);
+                    pt = pt.DeclaringType;
+                }
+                if (full && type.Namespace.Length > 0)
+                    sb.Insert(0, type.Namespace + ".");
+                return sb.ToString();
+            }
+
+            if (type.DeclaringType != null)
+            {
+                sb.Append(ToCSharpName(type.DeclaringType, full)).Append('.');
+                sb.Append(type.Name);
+            }
+            else
+            {
+                if (full && type.Namespace.Length > 0)
+                    sb.Append(type.Namespace).Append('.');
+                sb.Append(type.Name);
+            }
+            return sb.ToString();
         }
     }
 }

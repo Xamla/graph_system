@@ -9,6 +9,7 @@ using Xamla.Utilities;
 using System.Runtime.Serialization;
 using System.Collections;
 using System.Reflection;
+using System.Numerics;
 
 namespace Xamla.Types
 {
@@ -1047,5 +1048,27 @@ namespace Xamla.Types
         {
             return a.Map(x => -x);
         }
+
+        public static float[] ToRowMajorArray(this Matrix4x4 m) =>
+            new float[] {
+                m.M11, m.M12, m.M13, m.M14,
+                m.M21, m.M22, m.M23, m.M24,
+                m.M31, m.M32, m.M33, m.M34,
+                m.M41, m.M42, m.M43, m.M44
+            };
+
+        public static float[] ToClumnMajorArray(this Matrix4x4 m) =>
+            new float[] {
+                m.M11, m.M21, m.M31, m.M41,
+                m.M12, m.M22, m.M32, m.M42,
+                m.M13, m.M23, m.M33, m.M43,
+                m.M14, m.M24, m.M34, m.M44
+            };
+
+        public static A<float> ToA(this Matrix4x4 m) =>
+            new A<float>(m.ToRowMajorArray(), 4, 4);
+
+        public static M<float> ToM(this Matrix4x4 m) =>
+            new M<float>(m.ToA());
     }
 }

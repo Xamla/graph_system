@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using Xamla.Robotics.Types.Models;
 
 namespace Xamla.Robotics.Types.JsonConverters
 {

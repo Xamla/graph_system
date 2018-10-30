@@ -1,6 +1,8 @@
 ﻿using System.Linq;
 using System.Numerics;
 using System.Collections.Immutable;
+using System;
+using Xamla.Robotics.Types.Models;
 
 namespace Xamla.Robotics.Types
 {
@@ -26,7 +28,7 @@ namespace Xamla.Robotics.Types
             };
 
         public static JointPathModel ToModel(this IJointPath path) =>
-            new JointPathModel { JointNames = path.JointSet.ToArray(), Points = path.Select(x => x.Values).ToList() };
+            new JointPathModel { JointNames = path.JointSet.ToArray(), Points = path.Select(x => x.ToArray()).ToList() };
 
         public static IJointPath ToJointPath(this JointPathModel model)
         {
@@ -41,13 +43,13 @@ namespace Xamla.Robotics.Types
             new JointLimits(new JointSet(model.JointNames), model.MaxVelocity, model.MaxAcceleration, model.MinPosition, model.MaxPosition);
 
         public static JointValuesModel ToModel(this JointValues values) =>
-            new JointValuesModel { JointNames = values.JointSet.ToArray(), Values = values.Values };
+            new JointValuesModel { JointNames = values.JointSet.ToArray(), Values = values.ToArray() };
 
         public static JointValues ToJointValues(this JointValuesModel model) =>
             new JointValues(new JointSet(model.JointNames), model.Values);
 
         public static JointStatesModel ToModel(this JointStates states) =>
-            new JointStatesModel { JointNames = states.JointSet?.ToArray(), Positions = states.Positions?.Values, Velocities = states.Velocities?.Values, Efforts = states.Efforts?.Values };
+            new JointStatesModel { JointNames = states.JointSet?.ToArray(), Positions = states.Positions?.ToArray(), Velocities = states.Velocities?.ToArray(), Efforts = states.Efforts?.ToArray() };
 
         public static JointStates ToJointStates(this JointStatesModel model)
         {
@@ -63,16 +65,16 @@ namespace Xamla.Robotics.Types
             values != null ? new JointValues(jointSet, values) : null;
 
         public static JointTrajectoryPoint ToJointTrajectoryPoint(this JointTrajectoryPointModel model, JointSet jointSet) =>
-            new JointTrajectoryPoint(model.TimeFromStart, GetJointValues(jointSet, model.Positions), GetJointValues(jointSet, model.Velocities), GetJointValues(jointSet, model.Accelerations), GetJointValues(jointSet, model.Effort));
+            new JointTrajectoryPoint(TimeSpan.FromSeconds(model.TimeFromStart), GetJointValues(jointSet, model.Positions), GetJointValues(jointSet, model.Velocities), GetJointValues(jointSet, model.Accelerations), GetJointValues(jointSet, model.Efforts));
 
         public static JointTrajectoryPointModel ToModel(this JointTrajectoryPoint point) =>
             new JointTrajectoryPointModel
             {
-                TimeFromStart = point.TimeFromStart,
-                Positions = point.Positions?.Values,
-                Velocities = point.Velocities?.Values,
-                Accelerations = point.Accelerations?.Values,
-                Effort = point.Effort?.Values
+                TimeFromStart = point.TimeFromStart.TotalSeconds,
+                Positions = point.Positions?.ToArray(),
+                Velocities = point.Velocities?.ToArray(),
+                Accelerations = point.Accelerations?.ToArray(),
+                Efforts = point.Efforts?.ToArray()
             };
 
         public static IJointTrajectory ToJointTrajectory(this JointTrajectoryModel model)
@@ -140,6 +142,12 @@ namespace Xamla.Robotics.Types
                 model.Frame
             );
 
+        public static EndEffectorPoseModel ToModel(this EndEffectorPose eep) =>
+            new EndEffectorPoseModel { Pose = eep.Pose?.ToModel(), LinkName = eep.LinkName };
+
+        public static EndEffectorPose ToEndEffectorPose(this EndEffectorPoseModel model) =>
+            new EndEffectorPose(model.Pose?.ToPose(), model.LinkName);
+
         public static CartesianPathModel ToModel(this ICartesianPath path) =>
             new CartesianPathModel { Points = path.Select(x => x.ToModel()).ToList() };
 
@@ -149,7 +157,7 @@ namespace Xamla.Robotics.Types
         public static IKResultModel ToModel(this IKResult result) =>
             new IKResultModel
             {
-                Suceeded = result.Suceeded,
+                Suceeded = result.Succeeded,
                 Path = result.Path?.ToModel(),
                 ErrorCodes = result.ErrorCodes.Cast<int>().ToArray(),
                 Errors = result.ErrorCodes.Select(x => x.ToString()).ToArray()

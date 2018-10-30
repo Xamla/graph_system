@@ -8,6 +8,8 @@ using System.Threading;
 using Xamla.Robotics.Ros.Async;
 using Messages.xamlamoveit_msgs;
 using Uml.Robotics.Ros;
+using Xamla.Robotics.Types.Models;
+
 namespace Xamla.Robotics.Motion
 {
     /// <summary>

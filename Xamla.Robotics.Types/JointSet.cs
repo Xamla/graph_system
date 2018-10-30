@@ -2,11 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Xamla.Utilities;
 
 namespace Xamla.Robotics.Types
 {
     /// <summary>
-    /// A <c>JointSet</c> is a collection of joint names in a certain order. 
+    /// A <c>JointSet</c> is a collection of joint names in a certain order.
     /// </summary>
     /// <remarks>
     /// It provides methods for creating and comparing <c>JointSet</c> instances.
@@ -38,8 +39,8 @@ namespace Xamla.Robotics.Types
         /// <param name="names">A list of joint names, that the new <c>JointSet</c> should hold.</param>
         /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="names"/> is null.</exception>
         public JointSet(params string[] names)
+            : this((IEnumerable<string>)names)
         {
-            this.jointNames = names ?? throw new ArgumentNullException(nameof(names));
         }
 
         /// <summary>
@@ -47,8 +48,10 @@ namespace Xamla.Robotics.Types
         /// </summary>
         /// <param name="names">A collection of joint names, that the new <c>JointSet</c> should hold.</param>
         public JointSet(IEnumerable<string> names)
-            : this(names.ToArray())
         {
+            if (names == null)
+                throw new ArgumentNullException(nameof(names));
+            this.jointNames = names.Unique().ToArray();
         }
 
         /// <summary>
@@ -58,6 +61,55 @@ namespace Xamla.Robotics.Types
         /// <returns>A new <c>JointSet</c></returns>
         public JointSet AddPrefix(string prefix) =>
             new JointSet(this.Select(x => prefix + x));
+
+        /// <summary>
+        /// Appends the given joint names to the array of joint names already which form the current joint set.
+        /// </summary>
+        /// <param name="names">The names that should be appended.</param>
+        /// <returns>A new <c>JointSet</c></returns>
+        public JointSet Append(params string[] names) =>
+            Append((IEnumerable<string>)names);
+
+        /// <summary>
+        /// Appends the given joint names to the array of joint names already which form the current joint set.
+        /// </summary>
+        /// <param name="names">The names that should be appended.</param>
+        /// <returns>A new <c>JointSet</c></returns>
+        public JointSet Append(IEnumerable<string> names) =>
+            new JointSet(jointNames.Concat(names));
+
+        /// <summary>
+        /// Appends the joint names of the given joint set to the array of joint names already which form the current joint set.
+        /// </summary>
+        /// <param name="other">The names that should be appended.</param>
+        /// <returns>A new <c>JointSet</c></returns>
+        public JointSet Append(JointSet other) =>
+            Append(other.jointNames);
+
+        /// <summary>
+        /// Combines the joint names of the current instance with the provided names and creates a resulting new JointSet. Names that are already included in the current joint set are skipped.
+        /// </summary>
+        /// <param name="names">The names that should be appended.</param>
+        /// <returns>A new <c>JointSet</c></returns>
+        public JointSet Combine(string[] names) =>
+            new JointSet(Enumerable.Concat(jointNames, names).DistinctInOrder());
+
+        /// <summary>
+        /// Appends the joint names of the given joint set to the current joint names, if they are not already in the set.
+        /// </summary>
+        /// <param name="other">The <c>JointSet</c> containing the names that should be added<param>
+        /// <returns>A new <c>JointSet</c></returns>
+        public JointSet Combine(JointSet other) =>
+            Combine(other.jointNames);
+
+        public static JointSet Combine(JointSet left, JointSet right)
+        {
+            if (left == null)
+                return right;
+            if (right == null)
+                return left;
+            return left.Combine(right);
+        }
 
         /// <summary>
         /// Tests whether the all joint names of the current <c>JointSet</c> are included in the given other <c>JointSet</c>.
@@ -161,6 +213,12 @@ namespace Xamla.Robotics.Types
         /// </summary>
         public string[] ToArray() =>
             (string[])jointNames.Clone();
+
+        /// <summary>
+        /// Creates a new List holding the current joint names.
+        /// </summary>
+        public List<string> ToList() =>
+            jointNames.ToList();
 
         /// <summary>
         /// Creates a human readable representation of the current <c>JointSet</c>.

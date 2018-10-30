@@ -1,24 +1,79 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reactive.Disposables;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Xamla.Utilities
 {
+    public class DuplicateElementException
+        : Exception
+    {
+        public DuplicateElementException()
+            : base("A element appeared more than once in the sequence")
+        {
+        }
+    }
+
     public static class EnumerableEx
     {
-        public static IEnumerable<T> Return<T>(T value)
+        public static IEnumerable<T> Return<T>(T value) =>
+            new[] { value };
+
+        public static bool IsEmpty<T>(this IEnumerable<T> source) =>
+            !source.Any();
+
+        public static IEnumerable<T> DistinctInOrder<T>(this IEnumerable<T> source) =>
+            source.DistinctInOrder(EqualityComparer<T>.Default);
+
+        public static IEnumerable<T> DistinctInOrder<T>(this IEnumerable<T> source, IEqualityComparer<T> comparer)
         {
-            return new[] { value };
+            var seen = new HashSet<T>(comparer);
+            try
+            {
+                foreach (T item in source)
+                {
+                    if (seen.Add(item))
+                    {
+                        yield return item;
+                    }
+                }
+            }
+            finally
+            {
+                seen = null;        // see https://codeblog.jonskeet.uk/2011/01/18/gotcha-around-iterator-blocks/
+            }
         }
 
-        public static bool IsEmpty<T>(IEnumerable<T> source)
+        /// <summary>
+        /// Ensures that all values in a sequence appear only once. If an element is seen twice a <c>DuplicateElementException<>
+        /// is thrown.
+        /// </summary>
+        /// <typeparam name="T">Sequence element type</typeparam>
+        /// <param name="source"></param>
+        /// <returns>A sequence containing all elements of the source sequence.</returns>
+        /// <exception cref="DuplicateElementException">Thrown when an duplicate element is detected.</exception>
+        public static IEnumerable<T> Unique<T>(this IEnumerable<T> source)
+            => source.Unique(EqualityComparer<T>.Default);
+
+        public static IEnumerable<T> Unique<T>(this IEnumerable<T> source, IEqualityComparer<T> comparer)
         {
-            return !source.Any();
+            var seen = new HashSet<T>(comparer);
+            try
+            {
+                foreach (T item in source)
+                {
+                    if (!seen.Add(item))
+                        throw new DuplicateElementException();
+
+                    yield return item;
+                }
+            }
+            finally
+            {
+                seen = null;        // see https://codeblog.jonskeet.uk/2011/01/18/gotcha-around-iterator-blocks/
+            }
         }
 
         public static IEnumerable<T> SkipLast<T>(this IList<T> list, int count)

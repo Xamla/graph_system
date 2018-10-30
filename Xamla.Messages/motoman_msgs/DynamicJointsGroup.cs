@@ -178,8 +178,8 @@ duration time_from_start"; }
 
             //time_from_start
             time_from_start = new Duration(new TimeData(
-                    BitConverter.ToUInt32(serializedMessage, currentIndex),
-                    BitConverter.ToUInt32(serializedMessage, currentIndex+Marshal.SizeOf(typeof(System.Int32)))));
+                    BitConverter.ToInt32(serializedMessage, currentIndex),
+                    BitConverter.ToInt32(serializedMessage, currentIndex+Marshal.SizeOf(typeof(System.Int32)))));
             currentIndex += 2*Marshal.SizeOf(typeof(System.Int32));
         }
 
@@ -333,8 +333,8 @@ duration time_from_start"; }
             }
             //time_from_start
             time_from_start = new Duration(new TimeData(
-                    Convert.ToUInt32(rand.Next()),
-                    Convert.ToUInt32(rand.Next())));
+                    Convert.ToInt32(rand.Next()),
+                    Convert.ToInt32(rand.Next())));
         }
 
         public override bool Equals(RosMessage ____other)

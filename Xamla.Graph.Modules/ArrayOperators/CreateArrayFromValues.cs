@@ -42,7 +42,7 @@ namespace Xamla.Graph.Modules.ArrayOperators
         public CreateArray(IGraphRuntime runtime)
             : base(runtime)
         {
-            this.dynamicInputPin = new DynamicInputPin(runtime, inputs, "Input", PinDataTypeFactory.CreateAny(), OnDynamicInputAdd);
+            this.dynamicInputPin = new DynamicInputPin(runtime, inputs, "Input", PinDataTypeFactory.CreateAny(), OnDynamicInputAdd) { ForceAutoId = true };
             this.output = AddOutputPin("Output", PinDataTypeFactory.FromType(typeof(Array)));
         }
 

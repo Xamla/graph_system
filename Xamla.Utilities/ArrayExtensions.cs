@@ -56,6 +56,22 @@ namespace Xamla.Utilities
 
                 return converter;
             }
+
         }
+
+        public static T[] CloneT<T>(this T[] array) =>
+            (T[])array.Clone();
+
+        public static void Clear<T>(this T[] array) =>
+            Array.Clear(array, 0, array.Length);
+
+        public static void Clear<T>(this T[] array, int startIndex, int count) =>
+            Array.Clear(array, startIndex, count);
+
+        public static void Fill<T>(this T[] array, T value) =>
+            Array.Fill(array, value);
+
+        public static void Fill<T>(this T[] array, T value, int startIndex, int count) =>
+            Array.Fill(array, value, startIndex, count);
     }
 }

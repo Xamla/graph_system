@@ -125,6 +125,23 @@ namespace Xamla.Types
             return m.UnderlyingArray;
         }
 
+        public static M<T> operator *(M<T> a, M<T> b)
+        {
+            var ad = a as M<double>;
+            if (ad != null)
+            {
+                return MExtensions.Multiply(ad, b as M<double>) as M<T>;
+            }
+
+            var af = a as M<float>;
+            if (af != null)
+            {
+                return MExtensions.Multiply(af, b as M<float>) as M<T>;
+            }
+
+            throw new Exception($"Multiplication not supported for M<{typeof(T)}> type.");
+        }
+
         [DebuggerNonUserCode]
         private sealed class DebugView
         {
@@ -234,6 +251,29 @@ namespace Xamla.Types
                 for (int j = 0; j < r.Columns; ++j)
                 {
                     double sum = 0;
+                    for (int k = 0; k < a.Columns; ++k)
+                    {
+                        sum += a[i, k] * b[k, j];
+                    }
+                    r[i, j] = sum;
+                }
+            }
+
+            return r;
+        }
+
+        public static M<float> Multiply(this M<float> a, M<float> b)
+        {
+            if (a.Columns != b.Rows)
+                throw new Exception("Matrix size invalid for multiplication.");
+
+            var r = new M<float>(a.Rows, b.Columns);
+
+            for (int i = 0; i < r.Rows; ++i)
+            {
+                for (int j = 0; j < r.Columns; ++j)
+                {
+                    float sum = 0;
                     for (int k = 0; k < a.Columns; ++k)
                     {
                         sum += a[i, k] * b[k, j];

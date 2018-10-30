@@ -1,4 +1,5 @@
 ﻿using Xamla.Robotics.Types;
+using Xamla.Robotics.Types.Models;
 
 namespace Xamla.Robotics.Motion
 {

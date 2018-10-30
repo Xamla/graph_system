@@ -20,6 +20,7 @@ namespace Xamla.Graph.Models
         public List<ConnectionModel> Connections { get; set; }
         public PinDataTypeModel PinDataType { get; set; }
         public bool Removable { get; set; }
+        public bool Renameable { get; set; }
     }
 
     public class GenericInputPinModel

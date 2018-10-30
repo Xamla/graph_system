@@ -19,6 +19,7 @@ namespace Xamla.Graph.Modules.SequenceOperators
 
         GenericDelegate<Func<object, object, object>> genericDelegate;
         GenericInputPin subGraphResult;
+        bool addingSubGraphPin;
 
         public Zip(IGraphRuntime runtime)
             : base(runtime, true)
@@ -61,7 +62,15 @@ namespace Xamla.Graph.Modules.SequenceOperators
                 });
             });
 
-            return SubGraph.InputModule.AddModulePin(id, true, PinDataTypeFactory.CreateAny()) != null;
+            try
+            {
+                addingSubGraphPin = true;
+                return SubGraph.InputModule.AddModulePin(id, true, PinDataTypeFactory.CreateAny()) != null;
+            }
+            finally
+            {
+                addingSubGraphPin = false;
+            }
         }
 
         private void DefaultState()
@@ -99,6 +108,9 @@ namespace Xamla.Graph.Modules.SequenceOperators
 
         protected override string BeforeAddSubGraphInputPin(string id)
         {
+            if (addingSubGraphPin)
+                return id;
+
             return dynamicInputPin.AddPin(id).Id;
         }
 

@@ -8,7 +8,7 @@ using System.Xml.Linq;
 using Xamla.Types;
 using Xamla.Types.Records;
 using Xamla.Utilities;
-
+using Python.Runtime;
 namespace Xamla.Graph
 {
     public enum AuthorRole
@@ -58,6 +58,7 @@ namespace Xamla.Graph
     public interface IGraph
         : IMutableContainer<INode>
     {
+        PyScope PythonScope { get; }
         IInputPin Sink { get; }
         IGraphMetadata Metadata { get; set; }
         string FilePath { get; set; }

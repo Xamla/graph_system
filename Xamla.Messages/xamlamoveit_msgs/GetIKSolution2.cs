@@ -14,24 +14,23 @@ using Messages.geometry_msgs;
 
 namespace Messages.xamlamoveit_msgs
 {
-    public class GetIKSolution : RosService
+    public class GetIKSolution2 : RosService
     {
-        public override string ServiceType { get { return "xamlamoveit_msgs/GetIKSolution"; } }
+        public override string ServiceType { get { return "xamlamoveit_msgs/GetIKSolution2"; } }
         public override string ServiceDefinition() { return @"string group_name
 string[] joint_names
-string end_effector_link
-JointPathPoint seed
+JointValuesPoint seed
 bool const_seed
-geometry_msgs/PoseStamped[] points
+EndEffectorPoses[] points
 bool collision_check
 int32 attempts
 duration timeout
 ---
-JointPathPoint[] solutions
+JointValuesPoint[] solutions
 moveit_msgs/MoveItErrorCodes[] error_codes"; }
-        public override string MD5Sum() { return "653026b987b53996e2b3185f96e7529c"; }
+        public override string MD5Sum() { return "8077a0f08c0609ce4db100ba19b3c347"; }
 
-        public GetIKSolution()
+        public GetIKSolution2()
         {
             InitSubtypes(new Request(), new Response());
         }
@@ -54,28 +53,26 @@ moveit_msgs/MoveItErrorCodes[] error_codes"; }
         {
 				public string group_name = "";
 				public string[] joint_names;
-				public string end_effector_link = "";
-				public Messages.xamlamoveit_msgs.JointPathPoint seed = new Messages.xamlamoveit_msgs.JointPathPoint();
+				public Messages.xamlamoveit_msgs.JointValuesPoint seed = new Messages.xamlamoveit_msgs.JointValuesPoint();
 				public bool const_seed;
-				public Messages.geometry_msgs.PoseStamped[] points;
+				public Messages.xamlamoveit_msgs.EndEffectorPoses[] points;
 				public bool collision_check;
 				public int attempts;
 				public Duration timeout = new Duration();
 
 
-            public override string MD5Sum() { return "acbb94ff7466e4ff79b384fd13ea15ce"; }
+            public override string MD5Sum() { return "198486961b24d9162719e71a5147534f"; }
             public override bool HasHeader() { return false; }
             public override bool IsMetaType() { return true; }
             public override string MessageDefinition() { return @"string group_name
 string[] joint_names
-string end_effector_link
-JointPathPoint seed
+JointValuesPoint seed
 bool const_seed
-geometry_msgs/PoseStamped[] points
+EndEffectorPoses[] points
 bool collision_check
 int32 attempts
 duration timeout"; }
-			public override string MessageType { get { return "xamlamoveit_msgs/GetIKSolution__Request"; } }
+			public override string MessageType { get { return "xamlamoveit_msgs/GetIKSolution2__Request"; } }
             public override bool IsServiceComponent() { return true; }
 
             public Request()
@@ -126,14 +123,8 @@ duration timeout"; }
                     joint_names[i] = Encoding.ASCII.GetString(serializedMessage, currentIndex, piecesize);
                     currentIndex += piecesize;
                 }
-                //end_effector_link
-                end_effector_link = "";
-                piecesize = BitConverter.ToInt32(serializedMessage, currentIndex);
-                currentIndex += 4;
-                end_effector_link = Encoding.ASCII.GetString(serializedMessage, currentIndex, piecesize);
-                currentIndex += piecesize;
                 //seed
-                seed = new Messages.xamlamoveit_msgs.JointPathPoint(serializedMessage, ref currentIndex);
+                seed = new Messages.xamlamoveit_msgs.JointValuesPoint(serializedMessage, ref currentIndex);
                 //const_seed
                 const_seed = serializedMessage[currentIndex++]==1;
                 //points
@@ -141,12 +132,12 @@ duration timeout"; }
                 arraylength = BitConverter.ToInt32(serializedMessage, currentIndex);
                 currentIndex += Marshal.SizeOf(typeof(System.Int32));
                 if (points == null)
-                    points = new Messages.geometry_msgs.PoseStamped[arraylength];
+                    points = new Messages.xamlamoveit_msgs.EndEffectorPoses[arraylength];
                 else
                     Array.Resize(ref points, arraylength);
                 for (int i=0;i<points.Length; i++) {
                     //points[i]
-                    points[i] = new Messages.geometry_msgs.PoseStamped(serializedMessage, ref currentIndex);
+                    points[i] = new Messages.xamlamoveit_msgs.EndEffectorPoses(serializedMessage, ref currentIndex);
                 }
                 //collision_check
                 collision_check = serializedMessage[currentIndex++]==1;
@@ -204,18 +195,9 @@ duration timeout"; }
                     Array.Copy(scratch2, thischunk, 4);
                     pieces.Add(thischunk);
                 }
-                //end_effector_link
-                if (end_effector_link == null)
-                    end_effector_link = "";
-                scratch1 = Encoding.ASCII.GetBytes((string)end_effector_link);
-                thischunk = new byte[scratch1.Length + 4];
-                scratch2 = BitConverter.GetBytes(scratch1.Length);
-                Array.Copy(scratch1, 0, thischunk, 4, scratch1.Length);
-                Array.Copy(scratch2, thischunk, 4);
-                pieces.Add(thischunk);
                 //seed
                 if (seed == null)
-                    seed = new Messages.xamlamoveit_msgs.JointPathPoint();
+                    seed = new Messages.xamlamoveit_msgs.JointValuesPoint();
                 pieces.Add(seed.Serialize(true));
                 //const_seed
                 thischunk = new byte[1];
@@ -224,12 +206,12 @@ duration timeout"; }
                 //points
                 hasmetacomponents |= true;
                 if (points == null)
-                    points = new Messages.geometry_msgs.PoseStamped[0];
+                    points = new Messages.xamlamoveit_msgs.EndEffectorPoses[0];
                 pieces.Add(BitConverter.GetBytes(points.Length));
                 for (int i=0;i<points.Length; i++) {
                     //points[i]
                     if (points[i] == null)
-                        points[i] = new Messages.geometry_msgs.PoseStamped();
+                        points[i] = new Messages.xamlamoveit_msgs.EndEffectorPoses();
                     pieces.Add(points[i].Serialize(true));
                 }
                 //collision_check
@@ -290,29 +272,20 @@ duration timeout"; }
                     strbuf[strlength - 1] = 0; //null terminate
                     joint_names[i] = Encoding.ASCII.GetString(strbuf);
                 }
-                //end_effector_link
-                strlength = rand.Next(100) + 1;
-                strbuf = new byte[strlength];
-                rand.NextBytes(strbuf);  //fill the whole buffer with random bytes
-                for (int __x__ = 0; __x__ < strlength; __x__++)
-                    if (strbuf[__x__] == 0) //replace null chars with non-null random ones
-                        strbuf[__x__] = (byte)(rand.Next(254) + 1);
-                strbuf[strlength - 1] = 0; //null terminate
-                end_effector_link = Encoding.ASCII.GetString(strbuf);
                 //seed
-                seed = new Messages.xamlamoveit_msgs.JointPathPoint();
+                seed = new Messages.xamlamoveit_msgs.JointValuesPoint();
                 seed.Randomize();
                 //const_seed
                 const_seed = rand.Next(2) == 1;
                 //points
                 arraylength = rand.Next(10);
                 if (points == null)
-                    points = new Messages.geometry_msgs.PoseStamped[arraylength];
+                    points = new Messages.xamlamoveit_msgs.EndEffectorPoses[arraylength];
                 else
                     Array.Resize(ref points, arraylength);
                 for (int i=0;i<points.Length; i++) {
                     //points[i]
-                    points[i] = new Messages.geometry_msgs.PoseStamped();
+                    points[i] = new Messages.xamlamoveit_msgs.EndEffectorPoses();
                     points[i].Randomize();
                 }
                 //collision_check
@@ -331,7 +304,7 @@ duration timeout"; }
 					return false;
 
                 bool ret = true;
-                xamlamoveit_msgs.GetIKSolution.Request other = (Messages.xamlamoveit_msgs.GetIKSolution.Request)____other;
+                xamlamoveit_msgs.GetIKSolution2.Request other = (Messages.xamlamoveit_msgs.GetIKSolution2.Request)____other;
 
                 ret &= group_name == other.group_name;
                 if (joint_names.Length != other.joint_names.Length)
@@ -340,7 +313,6 @@ duration timeout"; }
                 {
                     ret &= joint_names[__i__] == other.joint_names[__i__];
                 }
-                ret &= end_effector_link == other.end_effector_link;
                 ret &= seed.Equals(other.seed);
                 ret &= const_seed == other.const_seed;
                 if (points.Length != other.points.Length)
@@ -358,17 +330,17 @@ duration timeout"; }
 
         public class Response : RosMessage
         {
-				public Messages.xamlamoveit_msgs.JointPathPoint[] solutions;
+				public Messages.xamlamoveit_msgs.JointValuesPoint[] solutions;
 				public Messages.moveit_msgs.MoveItErrorCodes[] error_codes;
 
 
 
-            public override string MD5Sum() { return "acbb94ff7466e4ff79b384fd13ea15ce"; }
+            public override string MD5Sum() { return "198486961b24d9162719e71a5147534f"; }
             public override bool HasHeader() { return false; }
             public override bool IsMetaType() { return true; }
-            public override string MessageDefinition() { return @"JointPathPoint[] solutions
+            public override string MessageDefinition() { return @"JointValuesPoint[] solutions
 moveit_msgs/MoveItErrorCodes[] error_codes"; }
-			public override string MessageType { get { return "xamlamoveit_msgs/GetIKSolution__Response"; } }
+			public override string MessageType { get { return "xamlamoveit_msgs/GetIKSolution2__Response"; } }
             public override bool IsServiceComponent() { return true; }
 
             public Response()
@@ -402,12 +374,12 @@ moveit_msgs/MoveItErrorCodes[] error_codes"; }
                 arraylength = BitConverter.ToInt32(serializedMessage, currentIndex);
                 currentIndex += Marshal.SizeOf(typeof(System.Int32));
                 if (solutions == null)
-                    solutions = new Messages.xamlamoveit_msgs.JointPathPoint[arraylength];
+                    solutions = new Messages.xamlamoveit_msgs.JointValuesPoint[arraylength];
                 else
                     Array.Resize(ref solutions, arraylength);
                 for (int i=0;i<solutions.Length; i++) {
                     //solutions[i]
-                    solutions[i] = new Messages.xamlamoveit_msgs.JointPathPoint(serializedMessage, ref currentIndex);
+                    solutions[i] = new Messages.xamlamoveit_msgs.JointValuesPoint(serializedMessage, ref currentIndex);
                 }
                 //error_codes
                 hasmetacomponents |= false;
@@ -436,12 +408,12 @@ moveit_msgs/MoveItErrorCodes[] error_codes"; }
                 //solutions
                 hasmetacomponents |= true;
                 if (solutions == null)
-                    solutions = new Messages.xamlamoveit_msgs.JointPathPoint[0];
+                    solutions = new Messages.xamlamoveit_msgs.JointValuesPoint[0];
                 pieces.Add(BitConverter.GetBytes(solutions.Length));
                 for (int i=0;i<solutions.Length; i++) {
                     //solutions[i]
                     if (solutions[i] == null)
-                        solutions[i] = new Messages.xamlamoveit_msgs.JointPathPoint();
+                        solutions[i] = new Messages.xamlamoveit_msgs.JointValuesPoint();
                     pieces.Add(solutions[i].Serialize(true));
                 }
                 //error_codes
@@ -477,12 +449,12 @@ moveit_msgs/MoveItErrorCodes[] error_codes"; }
                 //solutions
                 arraylength = rand.Next(10);
                 if (solutions == null)
-                    solutions = new Messages.xamlamoveit_msgs.JointPathPoint[arraylength];
+                    solutions = new Messages.xamlamoveit_msgs.JointValuesPoint[arraylength];
                 else
                     Array.Resize(ref solutions, arraylength);
                 for (int i=0;i<solutions.Length; i++) {
                     //solutions[i]
-                    solutions[i] = new Messages.xamlamoveit_msgs.JointPathPoint();
+                    solutions[i] = new Messages.xamlamoveit_msgs.JointValuesPoint();
                     solutions[i].Randomize();
                 }
                 //error_codes
@@ -504,7 +476,7 @@ moveit_msgs/MoveItErrorCodes[] error_codes"; }
 					return false;
 
                 bool ret = true;
-                xamlamoveit_msgs.GetIKSolution.Response other = (Messages.xamlamoveit_msgs.GetIKSolution.Response)____other;
+                xamlamoveit_msgs.GetIKSolution2.Response other = (Messages.xamlamoveit_msgs.GetIKSolution2.Response)____other;
 
                 if (solutions.Length != other.solutions.Length)
                     return false;

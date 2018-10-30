@@ -22,6 +22,7 @@ namespace Xamla.Robotics.Motion
     public class SteppedMotionClient
         : ISteppedMotionClient
     {
+        const string STEP_TOPIC = "/xamlaMoveActions/step";
         const string NEXT_TOPIC = "/xamlaMoveActions/next";
         const string PREVIOUS_TOPIC = "/xamlaMoveActions/prev";
         const string FEEDBACK_TOPIC = "/xamlaMoveActions/feedback";
@@ -29,6 +30,7 @@ namespace Xamla.Robotics.Motion
 
         private NodeHandle nodeHandle;
         private Subscriber feedbackSubscriber;
+        private Publisher<xamlamoveit.Step> stepPublisher;
         private Publisher<GoalID> nextPublisher;
         private Publisher<GoalID> previousPublisher;
 
@@ -74,6 +76,7 @@ namespace Xamla.Robotics.Motion
 
             motionState = new SteppedMotionState(goalId.id, null, 0, 0); // set initial motion state
 
+            stepPublisher = nodeHandle.Advertise<xamlamoveit.Step>(STEP_TOPIC, 1);
             nextPublisher = nodeHandle.Advertise<GoalID>(NEXT_TOPIC, 1);
             previousPublisher = nodeHandle.Advertise<GoalID>(PREVIOUS_TOPIC, 1);
             feedbackSubscriber = nodeHandle.Subscribe<xamlamoveit.TrajectoryProgress>(FEEDBACK_TOPIC, 10, OnFeedbackMessage);
@@ -96,6 +99,22 @@ namespace Xamla.Robotics.Motion
         /// </summary>
         public Task<xamlamoveit.StepwiseMoveJResult> GoalTask =>
             this.goalHandle.GoalTask;
+
+        /// <summary>
+        /// Requests the supervised executor to perform a step.
+        /// The stepping direction is determined by the sign of the <c>velocityScaling</c> parameter.
+        /// </summary>
+        /// <param name="velocityScaling">Specifies the desired velocity and direction of the supervised motion.
+        /// Positive values mean forward and negative values backward stepping. Valid range: [-1, 1]</param>
+        public void Step(double velocityScaling = 0.5)
+        {
+            var msg = new xamlamoveit.Step
+            {
+                id = goalId.id,
+                velocity_scaling = velocityScaling
+            };
+            stepPublisher.Publish(msg);
+        }
 
         /// <summary>
         /// Request at supervised executor to perform next step
@@ -128,6 +147,7 @@ namespace Xamla.Robotics.Motion
         public void Dispose()
         {
             feedbackSubscriber?.Dispose();
+            stepPublisher?.Dispose();
             nextPublisher?.Dispose();
             previousPublisher?.Dispose();
             stepwiseMoveJActionClient?.Shutdown();
