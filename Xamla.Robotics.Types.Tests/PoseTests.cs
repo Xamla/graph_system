@@ -108,5 +108,56 @@ namespace Xamla.Robotics.Types.Tests
                 Assert.True(d2 < 1E-5);
             }
         }
+        public void TestTranslate()
+        {
+             
+            foreach (var p in RandomPoses(100))
+            {
+                var vec = RandomVector();
+
+                Matrix4x4 m1 =  p.Translate(vec).TransformMatrix;
+                Matrix4x4 m2 = p.TransformMatrix;
+                m2.Translation += vec;
+
+                double delta = SeqAbsDiff(m1.ToRowMajorArray(), m2.ToRowMajorArray());
+                Assert.True(delta < 1E-9);
+            }
+        }
+
+       
+        [Fact]
+        public void TestEquals()
+        {
+            foreach (var (p,q) in RandomPoses(100).Zip(RandomPoses(100), (x,y) => (x,y)))
+            {
+                double delta = SeqAbsDiff(p.TransformMatrix.ToRowMajorArray(), q.TransformMatrix.ToRowMajorArray());
+                if(delta > 1E-9){
+                    Assert.False(q.Equals(p));
+                }
+                Pose r = p;
+                Assert.True(r.Equals(p));
+            }
+        } 
+
+       
+       // TODO: This test fails, no idea why 
+        [Fact]
+        public void TestInterpolation()
+        {
+            foreach (var (p,q) in RandomPoses(100).Zip(RandomPoses(100), (x,y) => (x,y)))
+            {
+                float amount = (float)rng.NextDouble();
+                Console.WriteLine(amount);
+                Matrix4x4 m1 = (Pose.Interpolate(p,q, amount)).TransformMatrix;
+                Matrix4x4 m2 = Matrix4x4.Lerp(p.TransformMatrix, q.TransformMatrix, amount);
+
+                double delta = SeqAbsDiff(m1.ToRowMajorArray(), m2.ToRowMajorArray());
+                Console.WriteLine(delta);
+                Assert.True(delta < 1E-3);
+            }
+        } 
+
+        
+
     }
 }
