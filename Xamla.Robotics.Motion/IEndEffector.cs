@@ -95,6 +95,16 @@ namespace Xamla.Robotics.Motion
         /// <returns>Returns a <c>Task</c> instance.</returns>
         Task MovePoseAsync(Pose target, JointValues seed = null, double? velocityScaling = null, bool? collisionCheck = null, double? accelerationScaling = null, CancellationToken cancel = default(CancellationToken));
 
+
+        (IJointTrajectory, PlanParameters) PlanMoveCartesianPath(
+            ICartesianPath waypoints,
+            JointValues seed = null,
+            double? velocityScaling = null,
+            bool? collisionCheck = null,
+            double? maxDeviation = null,
+            double? accelerationScaling = null
+        );
+
         /// <summary>
         /// Move asynchronously using cartesian path
         /// </summary>
@@ -116,6 +126,14 @@ namespace Xamla.Robotics.Motion
         /// <param name="cancel">CancellationToken</param>
         /// <returns>Returns a <c>Task</c> instance.</returns>
         Task MoveCartesianPathAsync(ICartesianPath waypoints, JointValues seed = null, double? velocityScaling = null, bool? collisionCheck = null, double? maxDeviation = null, double? accelerationScaling = null, CancellationToken cancel = default(CancellationToken));
+
+        /// <summary>
+        /// Plan the move to a pose collision free.
+        /// </summary>
+        /// <param name="target">The target pose</param>
+        /// <param name="seed">Numerical seed to control joint configuration</param>
+        /// <returns>Returns a tuple of <c>(IJointTrajectory, PlanParameters)</c> instances.</returns>
+        //(IJointTrajectory, TaskSpacePlanParameters) PlanMovePoseCollisionFree(Pose target, JointValues seed = null);
 
         /// <summary>
         /// Move to pose asynchronously and collision free

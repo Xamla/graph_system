@@ -266,6 +266,27 @@ namespace Xamla.Robotics.Motion
             return (trajectory, parameters);
         }
 
+        public (IJointTrajectory, PlanParameters) PlanMoveCartesianPath(
+            ICartesianPath waypoints,
+            JointValues seed = null,
+            double? velocityScaling = null,
+            bool? collisionCheck = null,
+            double? maxDeviation = null,
+            double? accelerationScaling = null
+        )
+        {
+            if (waypoints.Count == 0)
+                throw new ArgumentException(nameof(waypoints), "Path needs to contain at least a goal point.");
+
+            var parameters = moveGroup.BuildPlanParameters(velocityScaling, collisionCheck, maxDeviation, accelerationScaling);
+            var targetJoints = motionService.InverseKinematicMany(waypoints, parameters, seed, this.LinkName);
+            if (!targetJoints.Succeeded)
+                throw new Exception("IK solutions Failed.");
+
+            var path = targetJoints.Path;
+            return moveGroup.PlanMoveJointPath(path, velocityScaling, collisionCheck, maxDeviation, accelerationScaling);
+        }
+
         /// <summary>
         /// Move asynchronously using cartesian path
         /// </summary>
@@ -288,20 +309,20 @@ namespace Xamla.Robotics.Motion
         /// <param name="cancel">CancellationToken</param>
         /// <returns>Returns a <c>Task</c> instance.</returns>
         /// <exception cref="Exception">Thrown when IK solutions failed.</exception>
-        public async Task MoveCartesianPathAsync(ICartesianPath waypoints, JointValues seed = null, double? velocityScaling = null, bool? collisionCheck = null, double? maxDeviation = null, double? accelerationScaling = null, CancellationToken cancel = default(CancellationToken))
+        public async Task MoveCartesianPathAsync(
+            ICartesianPath waypoints,
+            JointValues seed = null,
+            double? velocityScaling = null,
+            bool? collisionCheck = null,
+            double? maxDeviation = null,
+            double? accelerationScaling = null,
+            CancellationToken cancel = default(CancellationToken)
+        )
         {
             if (waypoints.Count == 0)
                 return;
-            var parameters = moveGroup.BuildPlanParameters();
-            var targetJoints = motionService.InverseKinematicMany(waypoints, parameters, seed, this.LinkName);
 
-            if (!targetJoints.Succeeded)
-                throw new Exception("IK solutions Failed.");
-
-            var path = targetJoints.Path;
-            // plan trajectory
-            var (trajectory, planParameters) = moveGroup.PlanMoveJointPath(path, velocityScaling, collisionCheck, maxDeviation, accelerationScaling);
-
+            var (trajectory, planParameters) = PlanMoveCartesianPath(waypoints, seed, velocityScaling, collisionCheck, maxDeviation, accelerationScaling);
             await motionService.ExecuteJointTrajectory(trajectory, planParameters.CollisionCheck, cancel);
         }
 
@@ -330,23 +351,11 @@ namespace Xamla.Robotics.Motion
         /// <exception cref="Exception">Thrown when IK solutions failed.</exception>
         public ISteppedMotionClient MoveCartesianPathSupervisedAsync(ICartesianPath waypoints, JointValues seed = null, double? velocityScaling = null, bool? collisionCheck = null, double? maxDeviation = null, double? accelerationScaling = null, CancellationToken cancel = default(CancellationToken))
         {
-            if (waypoints.Count == 0)
-                throw new ArgumentException(nameof(waypoints), "Path needs to contain at least a goal point.");
-
-            var parameters = moveGroup.BuildPlanParameters();
-            var targetJoints = motionService.InverseKinematicMany(waypoints, parameters, seed, this.LinkName);
-
-            if (!targetJoints.Succeeded)
-                throw new Exception("IK solutions Failed.");
-
-            var path = targetJoints.Path;
             // plan trajectory
-            var (trajectory, planParameters) = moveGroup.PlanMoveJointPath(path, velocityScaling, collisionCheck, maxDeviation, accelerationScaling);
+            var (trajectory, planParameters) = PlanMoveCartesianPath(waypoints, seed, velocityScaling, collisionCheck, maxDeviation, accelerationScaling);
 
-            double scaling = 1.0;
-            if (velocityScaling.HasValue)
-                scaling = velocityScaling.Value;
-            return motionService.ExecuteJointTrajectorySupervised(trajectory, scaling, planParameters.CollisionCheck, cancel);
+            // execute supervised
+            return motionService.ExecuteJointTrajectorySupervised(trajectory, velocityScaling ?? 1.0, planParameters.CollisionCheck, cancel);
         }
 
         /// <summary>

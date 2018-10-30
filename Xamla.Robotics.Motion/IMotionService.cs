@@ -304,6 +304,39 @@ namespace Xamla.Robotics.Motion
         );
 
         /// <summary>
+        /// Asynchronously compute inverse kinematic solutions for several points consisting of one or more effector poses.
+        /// </summary>
+        /// <param name="points">Sequence of cartesian end effector poses configurations for which joint space solutions are
+        /// requested. For robots with more than one end effector (e.g. dual arm robots) multiple poses can be specified for
+        /// a single IK computation.</param>
+        /// <param name="moveGroupName">Name of the move group on which the IK request is executed (joints associated with
+        /// this move group are modified to find a solution).</param>
+        /// <param name="solutionJointSet">JointSet defining which values are copied from the robot state for each solution
+        /// to the IK result. It is possible to specify joint names which are not part of the selected move group.</param>
+        /// <param name="jointPositionSeed">Optional seed joint configuration. The seed configuration may contain joints
+        /// which are not part of the selected move group (e.g. a torso joint when only solving an arm). All provided values
+        /// will be used to initialize the robot state before computing the IK solutions. The current robot state is always
+        /// used as default value for joints for which no seed is specified.</param>
+        /// <param name="avoidCollision">Flag indicating whether to test IK solutions for collisions. If set to true no robot
+        /// configurations are returned that are in collision with the planning scene.</param>
+        /// <param name="timeout">Timeout</param>
+        /// <param name="attempts">Maximum number of attempts made to find a solution for each pose</param>
+        /// <param name="constSeed">If true, the same initial joint seed is used for all poses. Otherwise the last result is used as seed for the next.</param>
+        /// <returns>Returns the IK results as an instance of <c>IKResult</c>.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="points"/> is null.</exception>
+        /// <exception cref="ServiceCallFailedException">Thrown when called to service failed.</exception>
+        Task<IKResult> InverseKinematicManyAsync(
+            IEnumerable<EndEffectorPose[]> points,
+            string moveGroupName,
+            JointSet solutionJointSet,
+            JointValues jointPositionSeed = null,
+            bool avoidCollision = true,
+            TimeSpan? timeout = null,
+            int attempts = 1,
+            bool constSeed = false
+        );
+
+        /// <summary>
         /// Inverse kinematic solutions for several points
         /// </summary>
         /// <param name="points">Poses to be transformed to joint space</param>
