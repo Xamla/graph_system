@@ -111,9 +111,7 @@ namespace Xamla.Robotics.Types.Tests
             Assert.Equal(6, b.GetValue("b"));
             Assert.Equal(5, b.GetValue("c"));
 
-            Assert.Equal(6, b[0]);
-            Assert.Equal(5, b[1]);
-            Assert.Equal(7, b[2]);
+            Assert.True(b.Values.SequenceEqual(new double[] { 6, 5, 7 }));
 
             Assert.Throws<System.ArgumentException>(() => a.Reorder(new JointSet("a", "b")));
         }
@@ -147,20 +145,16 @@ namespace Xamla.Robotics.Types.Tests
             var a = new JointValues(jointsA, array);
 
             var b = a.SetValues(new JointSet("a", "b"), new double[] { 1, 2 });
-            Assert.Equal(1, b[0]);
-            Assert.Equal(2, b[1]);
-            Assert.Equal(5, b[2]);
+
+            Assert.True(b.Values.SequenceEqual(new double[] { 1, 2, 5 }));
 
             Assert.Throws<System.ArgumentException>(() => a.SetValues(new JointSet("a", "d"), new double[] { 1, 2 }));
             // Throws a System.IndexOutOfRangeException when not the same size
             Assert.Throws<System.IndexOutOfRangeException>(() => a.SetValues(new JointSet("a"), new double[] { 1, 2 }));
 
-
             var c = new JointValues(new JointSet("a", "b"), new double[] { 1, 2 });
             var d = a.SetValues(new JointSet("a", "b"), new double[] { 1, 2 });
-            Assert.Equal(1, d[0]);
-            Assert.Equal(2, d[1]);
-            Assert.Equal(5, d[2]);
+            Assert.True(d.Values.SequenceEqual(new double[] { 1, 2, 5 }));
         }
 
         [Fact]
@@ -188,15 +182,11 @@ namespace Xamla.Robotics.Types.Tests
 
             Func<double, int, double> func1 = (value, i) => value * i;
             var b = a.Transform(func1);
-            Assert.Equal(0, b[0]);
-            Assert.Equal(2, b[1]);
-            Assert.Equal(4, b[2]);
+            Assert.True(b.Values.SequenceEqual(new double[] { 0, 2, 4 }));
 
             Func<double, int, double> func2 = (value, i) => 0;
             var c = a.Transform(func2);
-            Assert.Equal(0, c[0]);
-            Assert.Equal(0, c[1]);
-            Assert.Equal(0, c[2]);
+            Assert.True(c.Values.SequenceEqual(new double[] { 0, 0, 0 }));
         }
 
         [Fact]
@@ -204,38 +194,14 @@ namespace Xamla.Robotics.Types.Tests
         {
             var a = new JointValues(new JointSet("a", "b", "c"), new double[] { 2, 2, 2 });
             var b = new JointValues(new JointSet("b", "a", "c"), new double[] { 2, 1, 3 });
-            var c = a.Add(b);
-            Assert.Equal(3, c[0]);
-            Assert.Equal(4, c[1]);
-            Assert.Equal(5, c[2]);
 
-            var d = b.Add(-1);
-            Assert.Equal(1, d[0]);
-            Assert.Equal(0, d[1]);
-            Assert.Equal(2, d[2]);
-
-            var e = a.Subtract(b);
-            Assert.Equal(1, e[0]);
-            Assert.Equal(0, e[1]);
-            Assert.Equal(-1, e[2]);
-
-            var f = b.Subtract(1);
-            Assert.True(f.Equals(d));
-
-            var g = b.Divide(2);
-            Assert.Equal(1, g[0]);
-            Assert.Equal(0.5, g[1]);
-            Assert.Equal(1.5, g[2]);
-
-            var h = b.Multiply(2);
-            Assert.Equal(4, h[0]);
-            Assert.Equal(2, h[1]);
-            Assert.Equal(6, h[2]);
-
-            var i = b.Negate();
-            Assert.Equal(-2, i[0]);
-            Assert.Equal(-1, i[1]);
-            Assert.Equal(-3, i[2]);
+            Assert.True(a.Add(b).Values.SequenceEqual(new double[] { 3, 4, 5 }));
+            Assert.True(b.Add(-1).Values.SequenceEqual(new double[] { 1, 0, 2 }));
+            Assert.True(a.Subtract(b).Values.SequenceEqual(new double[] { 1, 0, -1 }));
+            Assert.True(b.Subtract(1).Values.SequenceEqual(new double[] { 1, 0, 2 }));
+            Assert.True(b.Divide(2).Values.SequenceEqual(new double[] { 1, 0.5, 1.5 }));
+            Assert.True(b.Multiply(2).Values.SequenceEqual(new double[] { 4, 2, 6 }));
+            Assert.True(b.Negate().Values.SequenceEqual(new double[] { -2, -1, -3 }));
         }
 
         [Fact]
