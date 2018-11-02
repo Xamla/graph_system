@@ -85,6 +85,8 @@ namespace Xamla.Robotics.Types.Tests
                 Assert.True(d2 < 1E-5);
             }
         }
+
+        [Fact]
         public void TestTranslate()
         {
 
@@ -101,7 +103,6 @@ namespace Xamla.Robotics.Types.Tests
             }
         }
 
-
         [Fact]
         public void TestEquals()
         {
@@ -117,7 +118,6 @@ namespace Xamla.Robotics.Types.Tests
             }
         }
 
-
         // TODO: This test fails, no idea why 
         [Fact]
         public void TestInterpolation()
@@ -128,7 +128,7 @@ namespace Xamla.Robotics.Types.Tests
                 Matrix4x4 m1 = (Pose.Interpolate(p, q, amount)).TransformMatrix;
                 Matrix4x4 m2 = Matrix4x4.Lerp(p.TransformMatrix, q.TransformMatrix, amount);
                 double delta = SeqAbsDiff(m1.ToRowMajorArray(), m2.ToRowMajorArray());
-                // Assert.True(delta < 1E-3);
+                Assert.True(delta < 1E-3);
             }
         }
 
