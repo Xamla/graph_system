@@ -7,10 +7,8 @@ using Xunit;
 
 namespace Xamla.Robotics.Types.Tests
 {
-
     public class JointTrajectoryTests
     {
-
         private static JointTrajectoryPoint GetPoint(long ticks, JointSet joints)
         {
             var timeSpan = new TimeSpan(ticks);
@@ -26,7 +24,6 @@ namespace Xamla.Robotics.Types.Tests
         public void TestInit()
         {
             var joints = new JointSet("a", "b", "c");
-
             var p1 = GetPoint(100, joints);
             var p2 = GetPoint(200, joints);
             var p3 = GetPoint(300, joints);
@@ -42,7 +39,6 @@ namespace Xamla.Robotics.Types.Tests
         public void TestAppend()
         {
             var joints = new JointSet("a", "b", "c");
-
             var p1 = GetPoint(100, joints);
             var p2 = GetPoint(200, joints);
             var p3 = GetPoint(300, joints);
@@ -61,7 +57,6 @@ namespace Xamla.Robotics.Types.Tests
         public void TestConcat()
         {
             var joints = new JointSet("a", "b", "c");
-
             var p1 = GetPoint(100, joints);
             var p2 = GetPoint(200, joints);
             var p3 = GetPoint(300, joints);
@@ -79,18 +74,18 @@ namespace Xamla.Robotics.Types.Tests
         public void TestSub()
         {
             var joints = new JointSet("a", "b", "c");
-
             var p1 = GetPoint(50, joints);
             var p2 = GetPoint(200, joints);
             var p3 = GetPoint(300, joints);
             var p4 = GetPoint(800, joints);
             var tBig = new JointTrajectory(joints, new JointTrajectoryPoint[] { p1, p2, p3, p4 });
-
             var t = tBig.Sub(1, 3);
             Assert.Equal(2, t.Count);
             // assert correct duration
             Assert.Equal(GetPoint(200, joints), t[0]);
             Assert.Equal(GetPoint(300, joints), t[1]);
+            Assert.Throws<System.ArgumentOutOfRangeException>(() => tBig.Sub(0, tBig.Count ));
+            Assert.Throws<System.ArgumentOutOfRangeException>(() => tBig.Sub(-1, tBig.Count-1 ));
         }
     }
 }
