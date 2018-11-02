@@ -89,17 +89,16 @@ namespace Xamla.Robotics.Types.Tests
         [Fact]
         public void TestTranslate()
         {
-
             foreach (var p in poseHelper.RandomPoses(100))
             {
                 var vec = poseHelper.RandomVector();
 
                 Matrix4x4 m1 = p.Translate(vec).TransformMatrix;
-                Matrix4x4 m2 = p.TransformMatrix;
+                Matrix4x4 m2 = Matrix4x4.Transpose(p.TransformMatrix);
                 m2.Translation += vec;
-
+                m2 = Matrix4x4.Transpose(m2);
                 double delta = SeqAbsDiff(m1.ToRowMajorArray(), m2.ToRowMajorArray());
-                Assert.True(delta < 1E-9);
+                Assert.True(delta < 1E-5);
             }
         }
 
