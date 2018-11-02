@@ -45,9 +45,10 @@ namespace Xamla.Robotics.Types
         /// <param name="frame">Name of the ROS TF parent frame. Default: empty string.</param>
         public Pose(Matrix4x4 transformMatrix, string frame = "")
             : this(
-                new Vector3(transformMatrix.M41, transformMatrix.M42, transformMatrix.M43),
-                Quaternion.CreateFromRotationMatrix(transformMatrix),
-                frame
+                new Vector3(transformMatrix.M14, transformMatrix.M24, transformMatrix.M34),
+                Quaternion.CreateFromRotationMatrix(Matrix4x4.Transpose(transformMatrix)),      // Transpose is used since Matrix4x4 seems to be designed for left multiplication of row-vectors
+                frame,
+                true
             )
         {
         }
@@ -72,7 +73,7 @@ namespace Xamla.Robotics.Types
         /// A 4x4 matrix containing only the rotation component of the transformation matrix.
         /// </summary>
         public Matrix4x4 RotationMatrix =>
-            Matrix4x4.CreateFromQuaternion(this.Rotation);
+            Matrix4x4.Transpose(Matrix4x4.CreateFromQuaternion(this.Rotation));
 
         /// <summary>
         /// A 4x4 matrix containing rotation and translation
@@ -81,8 +82,11 @@ namespace Xamla.Robotics.Types
         {
             get
             {
-                var result = Matrix4x4.CreateFromQuaternion(this.Rotation);
-                result.Translation = this.Translation;
+                var result = Matrix4x4.Transpose(Matrix4x4.CreateFromQuaternion(this.Rotation));
+                result.M14 = this.Translation.X;
+                result.M24 = this.Translation.Y;
+                result.M34 = this.Translation.Z;
+                result.M44 = 1;
                 return result;
             }
         }
@@ -101,7 +105,7 @@ namespace Xamla.Robotics.Types
         /// <param name="y">Translation in Y in meters.</param>
         /// <param name="z">Translation in Z in meters.</param>
         /// <returns>A new <c>Pose</c></returns>
-        public Pose Translate(float x, float y, float z) =>
+        public Pose Translate(float x = 0, float y = 0, float z = 0) =>
             Translate(new Vector3(x, y, z));
 
         /// <summary>
@@ -154,7 +158,7 @@ namespace Xamla.Robotics.Types
 
         /// <summary>Creates a human readable text representation of Translation, Rotation and Frame.</summary>
         public override string ToString() =>
-            $"translation: {this.Translation}; Rotation: {this.Rotation}; Frame: '{this.Frame}';";
+            $"Translation: {this.Translation}; Rotation: {this.Rotation}; Frame: '{this.Frame}';";
 
         public A<float> ToA() =>
             this.TransformMatrix.ToA();
@@ -182,17 +186,15 @@ namespace Xamla.Robotics.Types
             return q;
         }
 
-        public static Pose operator*(Pose a, Pose b)
+        public static Pose operator *(Pose a, Pose b)
         {
             if (a == null)
                 throw new ArgumentNullException(nameof(a));
             if (b == null)
                 throw new ArgumentNullException(nameof(b));
-            if (a.Frame != b.Frame)
-                throw new Exception("Poses have different parent frames.");
 
-            var t = Vector4.Transform(a.Translation, b.Rotation);
-            return new Pose(b.Translation + new Vector3(t.X, t.Y, t.Z), b.Rotation * a.Rotation, a.Frame);
+            var t = Vector4.Transform(b.Translation, a.Rotation);
+            return new Pose(a.Translation + new Vector3(t.X, t.Y, t.Z), a.Rotation * b.Rotation, a.Frame);
         }
     }
 }

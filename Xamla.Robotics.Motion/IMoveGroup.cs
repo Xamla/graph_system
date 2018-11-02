@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 using Xamla.Robotics.Types;
 
 namespace Xamla.Robotics.Motion
@@ -107,7 +105,13 @@ namespace Xamla.Robotics.Motion
         /// <param name="maxDeviation">Maximal deviation from trajectory points when it is a fly-by-point in joint space</param>
         /// <param name="accelerationScaling">Scaling factor which is applied on the maximal possible joint accelerations</param>
         /// <returns>Returns a new <c>PlanParameters</c> instance based on <c>DefaultPlanParameters</c> and parameters.</returns>
-        PlanParameters BuildPlanParameters(double? velocityScaling = null, bool? collisionCheck = null, double? maxDeviation = null, double? accelerationScaling = null);
+        PlanParameters BuildPlanParameters(
+            double? velocityScaling = null,
+            bool? collisionCheck = null,
+            double? maxDeviation = null,
+            double? accelerationScaling = null,
+            double? sampleResolution = null
+        );
 
         /// <summary>
         /// Builds an instance of <c>TaskSpacePlanParameters</c>.
@@ -118,144 +122,34 @@ namespace Xamla.Robotics.Motion
         /// <param name="accelerationScaling">Scaling factor which is applied on the maximal possible joint accelerations</param>
         /// <param name="endEffectorName">Name of the end effector</param>
         /// <returns>Returns a new <c>TaskSpacePlanParameters</c> instance.</returns>
-        TaskSpacePlanParameters BuildTaskSpacePlanParameters(double? velocityScaling = null, bool? collisionCheck = null, double? maxDeviation = null, double? accelerationScaling = null, string endEffectorName = null);
+        TaskSpacePlanParameters BuildTaskSpacePlanParameters(
+            double? velocityScaling = null,
+            bool? collisionCheck = null,
+            double? maxDeviation = null,
+            double? accelerationScaling = null,
+            double? ikJumpThreshold = null,
+            string endEffectorName = null
+        );
 
         /// <summary>
-        /// Plans asynchronously a collision free trajectory based on a <c>JointValues</c> instance.
+        /// Creates a move joints operation object that parameterizes a move to the provided <c>JointValues</c> target.
         /// </summary>
         /// <param name="target">Target joint positions</param>
-        /// <param name="velocityScaling">Scaling factor which is applied on the maximal possible joint velocities</param>
-        /// <param name="sampleResolution">Trajectory point sampling frequency</param>
-        /// <param name="cancel">CancellationToken</param>
-        /// <returns>Returns a tuple of <c>(IJointTrajectory, PlanParameters)</c> instances.</returns>
-        (IJointTrajectory, PlanParameters) PlanMoveJointsCollisionFreeAsync(JointValues target, double? velocityScaling, double? sampleResolution, CancellationToken cancel = default(CancellationToken));
+        /// <returns>Returns an operation object implementing <c>IMoveJointsOperation</c>.</returns>
+        IMoveJointsOperation MoveJoints(JointValues target);
 
         /// <summary>
-        /// Plans a trajectory based on a <c>JointValues</c> instance.
+        /// Creates a collision free move joints operation object that parameterizes a collision free move to the provided <c>JointValues</c> target.
         /// </summary>
         /// <param name="target">Target joint positions</param>
-        /// <param name="velocityScaling">Scaling factor which is applied on the maximal possible joint velocities</param>
-        /// <param name="collisionCheck">Activates/Deactivates collision check</param>
-        /// <param name="maxDeviation">Maximal deviation from trajectory points when it is a fly-by-point in joint space</param>
-        /// <param name="accelerationScaling">Scaling factor which is applied on the maximal possible joint accelerations</param>
-        /// <returns>Returns a tuple of <c>(IJointTrajectory, PlanParameters)</c> instances.</returns>
-        (IJointTrajectory, PlanParameters) PlanMoveJoints(JointValues target, double? velocityScaling = null, bool? collisionCheck = null, double? accelerationScaling = null);
+        /// <returns>Returns an operation object implementing <c>IMoveJointsOperation</c>.</returns>
+        IMoveJointsOperation MoveJointsCollisionFree(JointValues target);
 
         /// <summary>
-        /// Moves the joints asynchronously based on a <c>JointValues</c> instance.
-        /// </summary>
-        /// <param name="target">Target joint positions</param>
-        /// <param name="cancel">CancellationToken</param>
-        /// <returns>Returns a <c>Task</c> instance.</returns>
-        Task MoveJointsAsync(JointValues target, CancellationToken cancel = default(CancellationToken));
-
-        /// <summary>
-        /// Moves the joints asynchronously based on a <c>JointValues</c> instance.
-        /// </summary>
-        /// <param name="target">Target joint positions</param>
-        /// <param name="velocityScaling">Scaling factor which is applied on the maximal possible joint velocities</param>
-        /// <param name="collisionCheck">Activates/Deactivates collision check</param>
-        /// <param name="accelerationScaling">Scaling factor which is applied on the maximal possible joint acceleration.</param>
-        /// <param name="cancel">CancellationToken</param>
-        /// <returns>Returns a <c>Task</c> instance.</returns>
-        Task MoveJointsAsync(JointValues target, double? velocityScaling = null, bool? collisionCheck = null, double? accelerationScaling = null, CancellationToken cancel = default(CancellationToken));
-
-        /// <summary>
-        /// Moves the joints asynchronously and collision free based on a <c>JointValues</c> instance.
-        /// </summary>
-        /// <param name="target">Target joint positions</param>
-        /// <param name="velocityScaling">Scaling factor which is applied on the maximal possible joint velocities</param>
-        /// <param name="sampleResolution">Trajectory point sampling frequency</param>
-        /// <param name="cancel">CancellationToken</param>
-        /// <returns>Returns a <c>Task</c> instance.</returns>
-        Task MoveJointsCollisionFreeAsync(JointValues target, double? velocityScaling, double? sampleResolution, CancellationToken cancel = default(CancellationToken));
-
-        /// <summary>
-        /// Plans a trajectory based on a path object implementing <c>IJointPath</c>.
+        /// Creates a move joint path operation object that parameterizes a move along a <c>IJointPath</c> in joint space.
         /// </summary>
         /// <param name="waypoints">Joint path</param>
-        /// <param name="velocityScaling">Scaling factor which is applied on the maximal possible joint velocities</param>
-        /// <param name="collisionCheck">Activates/Deactivates collision check</param>
-        /// <param name="maxDeviation">Maximal deviation from trajectory points when it is a fly-by-point in joint space</param>
-        /// <param name="accelerationScaling">Scaling factor which is applied on the maximal possible joint accelerations</param>
-        /// <returns>Returns a tuple of <c>(IJointTrajectory, PlanParameters)</c> instances.</returns>
-        (IJointTrajectory, PlanParameters) PlanMoveJointPath(IJointPath waypoints, double? velocityScaling = null, bool? collisionCheck = null, double? maxDeviation = null, double? accelerationScaling = null);
-
-        /// <summary>
-        /// Moves the joints asynchronously based on a path object implementing <c>IJointPath</c>.
-        /// </summary>
-        /// <param name="waypoints">Joint path</param>
-        /// <param name="cancel">CancellationToken</param>
-        /// <returns>Returns a <c>Task</c> instance.</returns>
-        Task MoveJointPathAsync(IJointPath waypoints, CancellationToken cancel = default(CancellationToken));
-
-        /// <summary>
-        /// Moves the joints asynchronously based on a path object implementing <c>IJointPath</c>.
-        /// </summary>
-        /// <param name="waypoints">Joint path</param>
-        /// <param name="velocityScaling">Scaling factor which is applied on the maximal possible joint velocities</param>
-        /// <param name="collisionCheck">Activates/Deactivates collision check</param>
-        /// <param name="maxDeviation">Maximal deviation from trajectory points when it is a fly-by-point in joint space</param>
-        /// <param name="accelerationScaling">Scaling factor which is applied on the maximal possible joint accelerations</param>
-        /// <param name="cancel">CancellationToken</param>
-        /// <returns>Returns a <c>Task</c> instance.</returns>
-        Task MoveJointPathAsync(IJointPath waypoints, double? velocityScaling = null, bool? collisionCheck = null, double? maxDeviation = null, double? accelerationScaling = null, CancellationToken cancel = default(CancellationToken));
-
-        /// <summary>
-        /// Moves the joints asynchronously based on a path object implementing <c>IJointPath</c>.
-        /// </summary>
-        /// <param name="waypoints">Joint path</param>
-        /// <param name="cancel">CancellationToken</param>
-        /// <returns>Returns an object implementing <c>ISteppedMotionClient</c>.</returns>
-        ISteppedMotionClient MoveJointPathSupervisedAsync(IJointPath waypoints, CancellationToken cancel = default(CancellationToken));
-
-        /// <summary>
-        /// Moves the joints asynchronously based on a path object implementing <c>IJointPath</c>.
-        /// </summary>
-        /// <param name="waypoints">Joint path</param>
-        /// <param name="velocityScaling">Scaling factor which is applied on the maximal possible joint velocities</param>
-        /// <param name="collisionCheck">Activates/Deactivates collision check</param>
-        /// <param name="maxDeviation">Maximal deviation from trajectory points when it is a fly-by-point in joint space</param>
-        /// <param name="accelerationScaling">Scaling factor which is applied on the maximal possible joint accelerations</param>
-        /// <param name="cancel">CancellationToken</param>
-        /// <returns>Returns an object implementing <c>ISteppedMotionClient</c>.</returns>
-        ISteppedMotionClient MoveJointPathSupervisedAsync(IJointPath waypoints, double? velocityScaling = null, bool? collisionCheck = null, double? maxDeviation = null, double? accelerationScaling = null, CancellationToken cancel = default(CancellationToken));
-
-        /// <summary>
-        /// Moves the joints asynchronously based on a <c>JointValues</c> instance.
-        /// </summary>
-        /// <param name="target">Target joint positions</param>
-        /// <param name="cancel">CancellationToken</param>
-        /// <returns>Returns an object implementing <c>ISteppedMotionClient</c>.</returns>
-        ISteppedMotionClient MoveJointsSupervisedAsync(JointValues target, CancellationToken cancel = default(CancellationToken));
-
-        /// <summary>
-        /// Moves the joints asynchronously based on a <c>JointValues</c> instance.
-        /// </summary>
-        /// <param name="target">Target joint positions</param>
-        /// <param name="velocityScaling">Scaling factor which is applied on the maximal possible joint velocities</param>
-        /// <param name="collisionCheck">Activates/Deactivates collision check</param>
-        /// <param name="accelerationScaling">Scaling factor which is applied on the maximal possible joint acceleration.</param>
-        /// <param name="cancel">CancellationToken</param>
-        /// <returns>Returns an object implementing <c>ISteppedMotionClient</c>.</returns>
-        ISteppedMotionClient MoveJointsSupervisedAsync(JointValues target, double? velocityScaling = null, bool? collisionCheck = null, double? accelerationScaling = null, CancellationToken cancel = default(CancellationToken));
-
-        /// <summary>
-        /// Moves the joints asynchronously and collision free based on a <c>JointValues</c> instance.
-        /// </summary>
-        /// <param name="target">Target joint positions</param>
-        /// <param name="cancel">CancellationToken</param>
-        /// <returns>Returns an object implementing <c>ISteppedMotionClient</c>.</returns>
-        ISteppedMotionClient MoveJointsCollisionFreeSupervisedAsync(JointValues target, CancellationToken cancel = default(CancellationToken));
-
-        /// <summary>
-        /// Moves the joints asynchronously and collision free based on a <c>JointValues</c> instance.
-        /// </summary>
-        /// <param name="target">Target joint positions</param>
-        /// <param name="velocityScaling">Scaling factor which is applied on the maximal possible joint velocities</param>
-        /// <param name="sampleResolution">Trajectory point sampling frequency</param>
-        /// <param name="cancel">CancellationToken</param>
-        /// <returns>Returns an object implementing <c>ISteppedMotionClient</c>.</returns>
-        ISteppedMotionClient MoveJointsCollisionFreeSupervisedAsync(JointValues target, double? velocityScaling, double? sampleResolution, CancellationToken cancel = default(CancellationToken));
+        /// <returns>Returns an operation object implementing <c>IMoveJointsOperation</c>.</returns>
+        IMoveJointPathOperation MoveJointPath(IJointPath waypoints);
     }
 }

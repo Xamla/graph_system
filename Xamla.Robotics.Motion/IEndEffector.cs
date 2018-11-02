@@ -32,6 +32,16 @@ namespace Xamla.Robotics.Motion
         Pose CurrentPose { get; }
 
         /// <summary>
+        /// Builds an instance of <c>TaskSpacePlanParameters</c>.
+        /// </summary>
+        /// <param name="velocityScaling">Scaling factor which is applied on the maximal possible joint velocities</param>
+        /// <param name="collisionCheck"> If true the trajectory planing tries to plan a collision free trajectory and before executing a trajectory a collision check is performed.</param>
+        /// <param name="maxDeviation">Maximal deviation from trajectory points when it is a fly-by-point in joint space</param>
+        /// <param name="accelerationScaling">Scaling factor which is applied on the maximal possible joint accelerations</param>
+        /// <returns>Returns a new <c>TaskSpacePlanParameters</c> instance.</returns>
+        TaskSpacePlanParameters BuildTaskSpacePlanParameters(double? velocityScaling = null, bool? collisionCheck = null, double? maxDeviation = null, double? accelerationScaling = null, double? ikJumpThreshold = null);
+
+        /// <summary>
         /// Computes the pose based on an instance of <c>JointValues</c>.
         /// </summary>
         /// <param name="jointValues">Joint configuration of the robot</param>
@@ -75,221 +85,17 @@ namespace Xamla.Robotics.Motion
         );
 
         /// <summary>
-        /// Move to pose asynchronously.
+        /// Creates a collision free move pose operation.
         /// </summary>
         /// <param name="target">The target pose</param>
         /// <param name="seed">Numerical seed to control joint configuration</param>
-        /// <param name="cancel">CancellationToken</param>
-        /// <returns>Returns a <c>Task</c> instance.</returns>
-        Task MovePoseAsync(Pose target, JointValues seed = null, CancellationToken cancel = default(CancellationToken));
+        /// <returns>Returns an operation object implementing <c>IMovePoseOperation</c>.</returns>
+        IMovePoseOperation MovePoseCollisionFree(Pose target, JointValues seed = null);
 
-        /// <summary>
-        /// Move to pose asynchronously.
-        /// </summary>
-        /// <param name="target">The target pose</param>
-        /// <param name="seed">Numerical seed to control joint configuration</param>
-        /// <param name="velocityScaling">Scaling factor which is applied on the maximal possible joint velocities</param>
-        /// <param name="collisionCheck">If true the trajectory planing tries to plan a collision free trajectory and before executing a trajectory a collision check is performed</param>
-        /// <param name="accelerationScaling">Scaling factor which is applied on the maximal possible joint accelerations</param>
-        /// <param name="cancel">CancellationToken</param>
-        /// <returns>Returns a <c>Task</c> instance.</returns>
-        Task MovePoseAsync(Pose target, JointValues seed = null, double? velocityScaling = null, bool? collisionCheck = null, double? accelerationScaling = null, CancellationToken cancel = default(CancellationToken));
+        IMovePoseOperation MovePoseLinear(Pose target, JointValues seed = null);
 
+        IMoveCartesianPathOperation MoveCartesianPathLinear(ICartesianPath waypoints);
 
-        (IJointTrajectory, PlanParameters) PlanMoveCartesianPath(
-            ICartesianPath waypoints,
-            JointValues seed = null,
-            double? velocityScaling = null,
-            bool? collisionCheck = null,
-            double? maxDeviation = null,
-            double? accelerationScaling = null
-        );
-
-        /// <summary>
-        /// Move asynchronously using cartesian path
-        /// </summary>
-        /// <param name="waypoints">The cartesian path as an object implementing <c>ICartesianPath</c></param>
-        /// <param name="seed">Numerical seed to control joint configuration</param>
-        /// <param name="cancel">CancellationToken</param>
-        /// <returns>Returns a <c>Task</c> instance.</returns>
-        Task MoveCartesianPathAsync(ICartesianPath waypoints, JointValues seed = null, CancellationToken cancel = default(CancellationToken));
-
-        /// <summary>
-        /// Move asynchronously using cartesian path
-        /// </summary>
-        /// <param name="waypoints">The cartesian path as an object implementing <c>ICartesianPath</c></param>
-        /// <param name="seed">Numerical seed to control joint configuration</param>
-        /// <param name="velocityScaling">Scaling factor which is applied on the maximal possible joint velocities</param>
-        /// <param name="collisionCheck">If true the trajectory planing tries to plan a collision free trajectory and before executing a trajectory a collision check is performed</param>
-        /// <param name="maxDeviation">Defines the maximal deviation from trajectory points when it is a fly-by-point in joint space</param>
-        /// <param name="accelerationScaling">Scaling factor which is applied on the maximal possible joint accelerations</param>
-        /// <param name="cancel">CancellationToken</param>
-        /// <returns>Returns a <c>Task</c> instance.</returns>
-        Task MoveCartesianPathAsync(ICartesianPath waypoints, JointValues seed = null, double? velocityScaling = null, bool? collisionCheck = null, double? maxDeviation = null, double? accelerationScaling = null, CancellationToken cancel = default(CancellationToken));
-
-        /// <summary>
-        /// Plan the move to a pose collision free.
-        /// </summary>
-        /// <param name="target">The target pose</param>
-        /// <param name="seed">Numerical seed to control joint configuration</param>
-        /// <returns>Returns a tuple of <c>(IJointTrajectory, PlanParameters)</c> instances.</returns>
-        //(IJointTrajectory, TaskSpacePlanParameters) PlanMovePoseCollisionFree(Pose target, JointValues seed = null);
-
-        /// <summary>
-        /// Move to pose asynchronously and collision free
-        /// </summary>
-        /// <param name="target">The target pose</param>
-        /// <param name="seed">Numerical seed to control joint configuration</param>
-        /// <param name="cancel">CancellationToken</param>
-        /// <returns>Returns a <c>Task</c> instance.</returns>
-        Task MovePoseCollisionFreeAsync(Pose target, JointValues seed = null, CancellationToken cancel = default(CancellationToken));
-
-        /// <summary>
-        /// Move to pose asynchronously
-        /// </summary>
-        /// <param name="target">The target pose</param>
-        /// <param name="seed">Numerical seed to control joint configuration</param>
-        /// <param name="cancel">CancellationToken</param>
-        /// <returns>Returns an object implementing <c>ISteppedMotionClient</c>.</returns>
-        ISteppedMotionClient MovePoseSupervisedAsync(Pose target, JointValues seed = null, CancellationToken cancel = default(CancellationToken));
-
-        /// <summary>
-        /// Move to pose asynchronously and collision free
-        /// </summary>
-        /// <param name="target">The target pose</param>
-        /// <param name="seed">Numerical seed to control joint configuration</param>
-        /// <param name="cancel">CancellationToken</param>
-        /// <returns>Returns an object implementing <c>ISteppedMotionClient</c>.</returns>
-        ISteppedMotionClient MovePoseCollisionFreeSupervisedAsync(Pose target, JointValues seed = null, CancellationToken cancel = default(CancellationToken));
-
-        /// <summary>
-        /// Move asynchronously using cartesian path
-        /// </summary>
-        /// <param name="waypoints">The cartesian path as an object implementing <c>ICartesianPath</c></param>
-        /// <param name="seed">Numerical seed to control joint configuration</param>
-        /// <param name="cancel">CancellationToken</param>
-        /// <returns>Returns an object implementing <c>ISteppedMotionClient</c>.</returns>
-        ISteppedMotionClient MoveCartesianPathSupervisedAsync(ICartesianPath waypoints, JointValues seed = null, CancellationToken cancel = default(CancellationToken));
-
-        /// <summary>
-        /// Move asynchronously using cartesian path
-        /// </summary>
-        /// <param name="waypoints">The cartesian path as an object implementing <c>ICartesianPath</c></param>
-        /// <param name="seed">Numerical seed to control joint configuration</param>
-        /// <param name="velocityScaling">Scaling factor which is applied on the maximal possible joint velocities</param>
-        /// <param name="collisionCheck">If true the trajectory planing tries to plan a collision free trajectory and before executing a trajectory a collision check is performed</param>
-        /// <param name="maxDeviation">Maximal deviation from trajectory points when it is a fly-by-point in joint space</param>
-        /// <param name="accelerationScaling">Scaling factor which is applied on the maximal possible joint accelerations</param>
-        /// <param name="cancel">CancellationToken</param>
-        /// <returns>Returns an object implementing <c>ISteppedMotionClient</c>.</returns>
-        ISteppedMotionClient MoveCartesianPathSupervisedAsync(ICartesianPath waypoints, JointValues seed = null, double? velocityScaling = null, bool? collisionCheck = null, double? maxDeviation = null, double? accelerationScaling = null, CancellationToken cancel = default(CancellationToken));
-
-        /// <summary>
-        /// Plans a trajectory with linear movements based on a pose
-        /// </summary>
-        /// <param name="target">The target pose</param>
-        /// <param name="velocityScaling">Scaling factor which is applied on the maximal possible joint velocities</param>
-        /// <param name="collisionCheck">If true the trajectory planing tries to plan a collision free trajectory and before executing a trajectory a collision check is performed</param>
-        /// <param name="accelerationScaling">Scaling factor which is applied on the maximal possible joint accelerations.</param>
-        /// <returns>Returns a tuple of <c>(IJointTrajectory, PlanParameters)</c> instances.</returns>
-        (IJointTrajectory, TaskSpacePlanParameters) PlanMovePoseLinear(Pose target, double? velocityScaling = null, bool? collisionCheck = null, double? accelerationScaling = null);
-
-        /// <summary>
-        /// Move to pose with linear movement asynchronously
-        /// </summary>
-        /// <param name="target">The target pose</param>
-        /// <param name="cancel">CancellationToken</param>
-        /// <returns>Returns a <c>Task</c> instance.</returns>
-        Task MovePoseLinearAsync(Pose target, CancellationToken cancel = default(CancellationToken));
-
-        /// <summary>
-        /// Move to pose with linear movement asynchronously
-        /// </summary>
-        /// <param name="target">The target pose</param>
-        /// <param name="velocityScaling">Scaling factor which is applied on the maximal possible joint velocities</param>
-        /// <param name="collisionCheck">If true the trajectory planing tries to plan a collision free trajectory and before executing a trajectory a collision check is performed</param>
-        /// <param name="accelerationScaling">Scaling factor which is applied on the maximal possible joint accelerations</param>
-        /// <param name="cancel">CancellationToken</param>
-        /// <returns>Returns a <c>Task</c> instance.</returns>
-        Task MovePoseLinearAsync(Pose target, double? velocityScaling = null, bool? collisionCheck = null, double? accelerationScaling = null, CancellationToken cancel = default(CancellationToken));
-
-        /// <summary>
-        /// Plans a trajectory with linear movements based on waypoints
-        /// </summary>
-        /// <param name="waypoints">The cartesian path as an object implementing <c>ICartesianPath</c></param>
-        /// <param name="velocityScaling">Scaling factor which is applied on the maximal possible joint velocities</param>
-        /// <param name="collisionCheck">If true the trajectory planing tries to plan a collision free trajectory and before executing a trajectory a collision check is performed</param>
-        /// <param name="maxDeviation">Maximal deviation from trajectory points when it is a fly-by-point in joint space</param>
-        /// <param name="accelerationScaling">Scaling factor which is applied on the maximal possible joint accelerations.</param>
-        /// <returns>Returns a tuple of <c>(IJointTrajectory, PlanParameters)</c> instances.</returns>
-        (IJointTrajectory, TaskSpacePlanParameters) PlanMovePoseLinearWaypoints(ICartesianPath waypoints, double? velocityScaling = null, bool? collisionCheck = null, double? maxDeviation = null, double? accelerationScaling = null);
-
-
-        /// <summary>
-        /// Plans a trajectory with linear movements based on waypoints and task space plan parameters.
-        /// </summary>
-        /// <param name="waypoints">The cartesian path as an object implementing <c>ICartesianPath</c></param>
-        /// <param name="parameters">An instance of <c>TaskSpacePlanParameters</c></param>
-        /// <returns>Returns a tuple of <c>(IJointTrajectory, PlanParameters)</c> instances.</returns>
-        (IJointTrajectory, TaskSpacePlanParameters) PlanMovePoseLinearWaypoints(ICartesianPath waypoints, TaskSpacePlanParameters parameters);
-
-        /// <summary>
-         /// Move asynchronously using cartesian path
-        /// </summary>
-        /// <param name="waypoints">The cartesian path as an object implementing <c>ICartesianPath</c></param>
-        /// <param name="cancel">CancellationToken</param>
-        /// <returns>Returns a <c>Task</c> instance.</returns>
-        Task MoveCartesianPathLinearAsync(ICartesianPath waypoints, CancellationToken cancel = default(CancellationToken));
-
-        /// <summary>
-        /// Move asynchronously using cartesian path
-        /// </summary>
-        /// <param name="waypoints">The cartesian path as an object implementing <c>ICartesianPath</c></param>
-        /// <param name="velocityScaling">Scaling factor which is applied on the maximal possible joint velocities</param>
-        /// <param name="collisionCheck">If true the trajectory planing tries to plan a collision free trajectory and before executing a trajectory a collision check is performed</param>
-        /// <param name="maxDeviation">Maximal deviation from trajectory points when it is a fly-by-point in joint space</param>
-        /// <param name="accelerationScaling">Scaling factor which is applied on the maximal possible joint accelerations.</param>
-        /// <param name="cancel">CancellationToken</param>
-        /// <returns>Returns a <c>Task</c> instance.</returns>
-        Task MoveCartesianPathLinearAsync(ICartesianPath waypoints, double? velocityScaling = null, bool? collisionCheck = null, double? maxDeviation = null, double? accelerationScaling = null, CancellationToken cancel = default(CancellationToken));
-
-        /// <summary>
-        /// Move to pose with linear movement asynchronously
-        /// </summary>
-        /// <param name="target">The target pose</param>
-        /// <param name="cancel">CancellationToken</param>
-        /// <returns>Returns an object implementing <c>ISteppedMotionClient</c>.</returns>
-        ISteppedMotionClient MovePoseLinearSupervisedAsync(Pose target, CancellationToken cancel = default(CancellationToken));
-
-        /// <summary>
-        /// Move to pose with linear movement asynchronously
-        /// </summary>
-        /// <param name="target">The target pose</param>
-        /// <param name="velocityScaling">Scaling factor which is applied on the maximal possible joint velocities</param>
-        /// <param name="collisionCheck">If true the trajectory planing tries to plan a collision free trajectory and before executing a trajectory a collision check is performed</param>
-        /// <param name="accelerationScaling">Scaling factor which is applied on the maximal possible joint accelerations</param>
-        /// <param name="cancel">CancellationToken</param>
-        /// <returns>Returns an object implementing <c>ISteppedMotionClient</c>.</returns>
-        ISteppedMotionClient MovePoseLinearSupervisedAsync(Pose target, double? velocityScaling = null, bool? collisionCheck = null, double? accelerationScaling = null, CancellationToken cancel = default(CancellationToken));
-
-        /// <summary>
-        /// Move asynchronously using cartesian path
-        /// </summary>
-        /// <param name="waypoints">The cartesian path as an object implementing <c>ICartesianPath</c></param>
-        /// <param name="cancel">CancellationToken</param>
-        /// <returns>Returns an object implementing <c>ISteppedMotionClient</c>.</returns>
-        ISteppedMotionClient MoveCartesianPathLinearSupervisedAsync(ICartesianPath waypoints, CancellationToken cancel = default(CancellationToken));
-
-        /// <summary>
-        /// Move with linear movement asynchronously using cartesian path
-        /// </summary>
-        /// <param name="waypoints">The cartesian path as an object implementing <c>ICartesianPath</c></param>
-        /// <param name="velocityScaling">Scaling factor which is applied on the maximal possible joint velocities</param>
-        /// <param name="collisionCheck">If true the trajectory planing tries to plan a collision free trajectory and before executing a trajectory a collision check is performed</param>
-        /// <param name="maxDeviation">Maximal deviation from trajectory points when it is a fly-by-point in joint space</param>
-        /// <param name="accelerationScaling">Scaling factor which is applied on the maximal possible joint accelerations.</param>
-        /// <param name="cancel">CancellationToken</param>
-        /// <returns>Returns an object implementing <c>ISteppedMotionClient</c>.</returns>
-        ISteppedMotionClient MoveCartesianPathLinearSupervisedAsync(ICartesianPath waypoints, double? velocityScaling = null, bool? collisionCheck = null, double? maxDeviation = null, double? accelerationScaling = null, CancellationToken cancel = default(CancellationToken));
+        IMoveCartesianPathOperation MoveCartesianPath(ICartesianPath waypoints);
     }
 }

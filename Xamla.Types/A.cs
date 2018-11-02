@@ -750,14 +750,24 @@ namespace Xamla.Types
             return Zip(a, b, (x, y) => x * y).Sum();
         }
 
-        public static float LNorm(this A<float> a, float l)
+        public static float Norm(this A<float> a, float p = 2.0f)
         {
-            return (l == 1) ? a.Sum() : (float)Math.Pow(a.Sum(x => Math.Pow(x, l)), 1 / l);
+            if (p == 2.0)
+                return (float)Math.Sqrt(a.Sum(x => x * x));
+            else if (p == 1.0)
+                return a.Sum((Func<float, float>)Math.Abs);
+            else
+                return (float)Math.Pow(a.Sum(x => Math.Pow(Math.Abs(x), p)), 1.0 / p);
         }
 
-        public static double LNorm(this A<double> a, double l)
+        public static double Norm(this A<double> a, double p = 2.0)
         {
-            return (l == 1) ? a.Sum() : Math.Pow(a.Sum(x => Math.Pow(x, l)), 1 / l);
+            if (p == 2.0)
+                return Math.Sqrt(a.Sum(x => x * x));
+            else if (p == 1.0)
+                return a.Sum((Func<double, double>)Math.Abs);
+            else
+                return Math.Pow(a.Sum(x => Math.Pow(Math.Abs(x), p)), 1.0 / p);
         }
 
         public static A<float> Multiply(this A<float> a, float scalar)

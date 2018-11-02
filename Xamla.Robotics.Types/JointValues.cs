@@ -379,6 +379,24 @@ namespace Xamla.Robotics.Types
         public A<double> ToA() =>
             new A<double>(this.ToArray(), this.Count);
 
+        public V<double> ToV() =>
+            new V<double>(this.ToA());
+
+        /// <summary>
+        /// Computes the p-norm of this instance.
+        /// </summary>
+        /// <param name="p">p-parameter</param>
+        /// <returns>Returns the p-norm of the JointValues.</returns>
+        public double Norm(double p = 2.0) =>
+            JointValues.Norm(this, p);
+
+        /// <summary>
+        /// Computes max{ |j_0|, |j_1|, ... , |j_n| }, the maximum (or uniform , L-inifinity) norm of the joint values.
+        /// </summary>
+        /// <returns>The maximum norm</returns>
+        public double MaxNorm() =>
+            JointValues.MaxNorm(this);
+
         public static JointValues operator +(JointValues a, JointValues b) =>
             a.Add(b);
 
@@ -402,6 +420,43 @@ namespace Xamla.Robotics.Types
 
         public static JointValues operator /(JointValues j, double divisor) =>
             j.Divide(divisor);
+
+        /// <summary>
+        /// Computes max{ |j_0|, |j_1|, ... , |j_n| }, the maximum (or uniform , L-inifinity) norm of the joint values.
+        /// </summary>
+        /// <returns>Returns the maximum value of the absolute joint values.</returns>
+        public static double MaxNorm(JointValues j)
+        {
+            if (j == null)
+                throw new ArgumentNullException(nameof(j));
+
+            if (j.Count == 0)
+                return 0;       // special handling for empty joint values
+
+            return j.Max((Func<double, double>)Math.Abs);
+        }
+
+        /// <summary>
+        /// Computes the L^p-norm of a JointValues object.
+        /// </summary>
+        /// <param name="j">JointValues instance</param>
+        /// <param name="p">p-parameter</param>
+        /// <returns>Returns the p-norm of the JointValues.</returns>
+        public static double Norm(JointValues j, double p = 2.0)
+        {
+            if (j == null)
+                throw new ArgumentNullException(nameof(j));
+
+            if (j.Count == 0)
+                return 0;       // special handling for empty joint values
+
+            if (p == 2.0)
+                return Math.Sqrt(j.Sum(x => x * x));
+            else if (p == 1.0)
+                return j.Sum((Func<double, double>)Math.Abs);
+            else
+                return Math.Pow(j.Sum(x => Math.Pow(Math.Abs(x), p)), 1.0 / p);
+        }
 
         public static JointValues Interpolate(JointValues a, JointValues b, double t = 0.5) =>
             (1-t) * a + t * b;

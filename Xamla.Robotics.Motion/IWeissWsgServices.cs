@@ -34,8 +34,6 @@ namespace Xamla.Robotics.Motion
         public double DefaultAcceleration { get; set; }
     }
 
-
-
     /// <summary>
     /// Implementations of <c>IWeissWsgServices</c> represent the abilities / properties of a Weiss Wsg gripper
     /// </summary>

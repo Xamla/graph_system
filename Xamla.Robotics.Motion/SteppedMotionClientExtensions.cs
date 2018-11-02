@@ -1,13 +1,9 @@
-using System;
-using System.Numerics;
-using Xamla.Robotics.Types;
-using Newtonsoft.Json.Linq;
-using System.Threading.Tasks;
-using Rosvita.RosMonitor;
-using System.Threading;
-using Xamla.Robotics.Ros.Async;
 using Messages.xamlamoveit_msgs;
-using Uml.Robotics.Ros;
+using Newtonsoft.Json.Linq;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+using Xamla.Robotics.Ros.Async;
 using Xamla.Robotics.Types.Models;
 
 namespace Xamla.Robotics.Motion
@@ -38,37 +34,47 @@ namespace Xamla.Robotics.Motion
                 => JToken.FromObject(this).ToString(Newtonsoft.Json.Formatting.None);
         }
 
-        public async static Task HandleStepwiseMotions(this ISteppedMotionClient client, IMoveGroup group, IRosClientLibrary rosClient)
+        public async static Task HandleStepwiseMotions(this ISteppedMotionClient client, IMoveGroup group, bool disposeClient = false)
         {
-            string channelName = "MotionDialog";
-            string topic = "SteppedMotions";
-            string disposition = "SteppedMotion";
-            using (var RosRoboChatClient = new RosRoboChatActionClient(rosClient.GlobalNodeHandle))
+            try
             {
-                RosRoboChatClient.CreateChat(channelName, topic);
-                var messageBody = new SteppedMotionMessage { GoalId = client.GoalId, Progress = 0, MoveGroupName = group.Name }.ToString();
-                string messageId = RosRoboChatClient.CallMessageCommand(channelName, "add", messageBody, null, new string[] { disposition });
-                try
+                const string channelName = "MotionDialog";
+                const string topic = "SteppedMotions";
+                const string disposition = "SteppedMotion";
+                using (var RosRoboChatClient = new RosRoboChatActionClient(group.MotionService.NodeHandle))
                 {
-                    var cancelReport = new CancellationTokenSource();
-                    StepwiseMoveJResult result;
-                    var updateProgressTask = UpdateProgress(client, RosRoboChatClient, channelName, messageId, disposition, group.Name, cancelReport.Token);
+                    RosRoboChatClient.CreateChat(channelName, topic);
+                    var messageBody = new SteppedMotionMessage { GoalId = client.GoalId, Progress = 0, MoveGroupName = group.Name }.ToString();
+                    string messageId = RosRoboChatClient.CallMessageCommand(channelName, "add", messageBody, null, new string[] { disposition });
                     try
                     {
-                        result = await client.GoalTask;
+                        var cancelReport = new CancellationTokenSource();
+                        StepwiseMoveJResult result;
+                        var updateProgressTask = UpdateProgress(client, RosRoboChatClient, channelName, messageId, disposition, group.Name, cancelReport.Token);
+                        try
+                        {
+                            result = await client.GoalTask;
+                        }
+                        finally
+                        {
+                            cancelReport.Cancel();
+                            await updateProgressTask.WhenCompleted();
+                        }
+
+                        if (result.result < 0)
+                            throw new Exception($"SteppedMotion was not finished: { result.result }");
                     }
                     finally
                     {
-                        cancelReport.Cancel();
-                        await updateProgressTask.WhenCompleted();
+                        RosRoboChatClient.CallMessageCommand(channelName, "remove", null, messageId, new string[] { disposition });
                     }
-
-                    if (result.result < 0)
-                        throw new Exception($"SteppedMotion was not finished: { result.result }");
                 }
-                finally
+            }
+            finally
+            {
+                if (disposeClient)
                 {
-                    RosRoboChatClient.CallMessageCommand(channelName, "remove", null, messageId, new string[] { disposition });
+                    client.Dispose();
                 }
             }
         }

@@ -1,11 +1,9 @@
 ﻿using Rosvita.RosMonitor;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Xamla.Robotics.Types;
 using Uml.Robotics.Ros;
+using Xamla.Robotics.Types;
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
 
@@ -17,20 +15,29 @@ namespace Xamla.Robotics.Motion
         : IWeissWsgServices
         , IDisposable
     {
+        private readonly object gate = new object();
+
         private IRosClientLibrary rosClient;
         private WeissWsgPropertiesModel properties;
         private IMotionService motionService;
         private ServiceClient<wsg_50.GetGripperStatus> wsgStatusClient;
         private ServiceClient<wsg_50.SetValue> wsgSetAccelerationClient;
-        private readonly object gate = new object();
 
         public WeissWsgServices(IRosClientLibrary rosClient, WeissWsgPropertiesModel properties)
         {
             this.rosClient = rosClient;
             this.properties = properties;
 
-            rosClient.OnRosMasterConnected += RosClientOnRosMasterConnected;
-            rosClient.OnRosMasterDisconnected += RosClientOnRosMasterDisconnected;
+            lock (gate)
+            {
+                if (rosClient.Ok)
+                {
+                    Initialize();
+                }
+
+                rosClient.OnRosMasterConnected += RosClientOnRosMasterConnected;
+                rosClient.OnRosMasterDisconnected += RosClientOnRosMasterDisconnected;
+            }
         }
 
         public async Task AcknowledgeError()
@@ -39,15 +46,50 @@ namespace Xamla.Robotics.Motion
             var result = await this.motionService.WsgGripperCommand(properties.ControlAction, WsgCommand.AcknowledgeError, 0, 0, 0, true, cancel);
         }
 
+        public bool IsReady =>
+            motionService != null
+            && this.wsgStatusClient != null
+            && this.wsgStatusClient.IsValid
+            && this.wsgSetAccelerationClient != null
+            &&  this.wsgSetAccelerationClient.IsValid;
+
+        private void Initialize()
+        {
+            lock (gate)
+            {
+                Shutdown();
+
+                try
+                {
+                    var nodeHandle = rosClient.GlobalNodeHandle;
+                    this.motionService = new MotionService(nodeHandle);
+                    this.wsgStatusClient = nodeHandle.ServiceClient<wsg_50.GetGripperStatus>(properties.StatusService, true);
+                    this.wsgSetAccelerationClient = nodeHandle.ServiceClient<wsg_50.SetValue>(properties.SetAccelerationService, true);
+                }
+                catch
+                {
+                    Shutdown();
+                    throw;
+                }
+            }
+        }
+
+        private void Shutdown()
+        {
+            lock (gate)
+            {
+                this.motionService?.Dispose();
+                this.motionService = null;
+                this.wsgStatusClient?.Dispose();
+                this.wsgStatusClient = null;
+                this.wsgSetAccelerationClient?.Dispose();
+                this.wsgSetAccelerationClient = null;
+            }
+        }
+
         public void Dispose()
         {
-            this.motionService?.Dispose();
-            this.motionService = null;
-            this.wsgStatusClient?.Dispose();
-            this.wsgStatusClient = null;
-            this.wsgSetAccelerationClient?.Dispose();
-            this.wsgSetAccelerationClient = null;
-
+            Shutdown();
             rosClient.OnRosMasterConnected -= RosClientOnRosMasterConnected;
             rosClient.OnRosMasterDisconnected -= RosClientOnRosMasterDisconnected;
         }
@@ -115,26 +157,12 @@ namespace Xamla.Robotics.Motion
 
         private void RosClientOnRosMasterConnected(object sender, EventArgs e)
         {
-            lock (gate)
-            {
-                var nodeHandle = rosClient.GlobalNodeHandle;
-                this.motionService = new MotionService(nodeHandle);
-                this.wsgStatusClient = nodeHandle.ServiceClient<wsg_50.GetGripperStatus>(properties.StatusService, true);
-                this.wsgSetAccelerationClient = nodeHandle.ServiceClient<wsg_50.SetValue>(properties.SetAccelerationService, true);
-            }
+            Initialize();
         }
 
         private void RosClientOnRosMasterDisconnected(object sender, EventArgs e)
         {
-            lock (gate)
-            {
-                this.motionService?.Dispose();
-                this.motionService = null;
-                this.wsgStatusClient?.Dispose();
-                this.wsgStatusClient = null;
-                this.wsgSetAccelerationClient?.Dispose();
-                this.wsgSetAccelerationClient = null;
-            }
+            Shutdown();
         }
     }
 }

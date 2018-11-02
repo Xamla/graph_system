@@ -208,9 +208,9 @@ namespace Xamla.Types
             return a.UnderlyingArray.Dot(b.UnderlyingArray);
         }
 
-        public static double LNorm(this V<double> a, double l)
+        public static double Norm(this V<double> a, double p = 2.0)
         {
-            return a.UnderlyingArray.LNorm(l);
+            return a.UnderlyingArray.Norm(p);
         }
 
         public static double SumOfSquares(this V<double> a)

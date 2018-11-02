@@ -180,7 +180,7 @@ namespace Xamla.Robotics.Motion
         /// <param name="seed">Seed joint configuration</param>
         /// <param name="parameters">Plan parameters which defines the limits, settings and end effector name.</param>
         /// <returns>Returns planned joint trajectory which reach the poses defined in path under the constraints of parameters.</returns>
-        IJointTrajectory PlanMovePoseLinear(ICartesianPath path, JointValues seed, TaskSpacePlanParameters parameters);
+        IJointTrajectory PlanMoveCartesianPathLinear(ICartesianPath path, JointValues seed, TaskSpacePlanParameters parameters);
 
         /// <summary>
         /// Plans trajectory from a joint path
@@ -207,7 +207,7 @@ namespace Xamla.Robotics.Motion
         /// <param name="checkCollision">Check for collision if True</param>
         /// <param name="cancel">CancellationToken</param>
         /// <returns>Returns a Task instance which returns the result as <c>int</c>.</returns>
-        Task<int> ExecuteJointTrajectory(IJointTrajectory trajectory, bool checkCollision, CancellationToken cancel = default(CancellationToken));
+        Task<int> ExecuteJointTrajectoryAsync(IJointTrajectory trajectory, bool checkCollision, CancellationToken cancel = default(CancellationToken));
 
         /// <summary>
         /// Get the joint configuration based on pose

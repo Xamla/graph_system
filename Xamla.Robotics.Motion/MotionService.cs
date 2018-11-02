@@ -750,7 +750,7 @@ namespace Xamla.Robotics.Motion
         /// <param name="parameters">Plan parameters which defines the limits, settings and end effector name.</param>
         /// <returns>Returns planned joint trajectory which reach the poses defined in path under the constraints of parameters.</returns>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="path"/> is null.</exception>
-        public IJointTrajectory PlanMovePoseLinear(ICartesianPath path, JointValues seed, TaskSpacePlanParameters parameters)
+        public IJointTrajectory PlanMoveCartesianPathLinear(ICartesianPath path, JointValues seed, TaskSpacePlanParameters parameters)
         {
             if (path == null)
                 throw new ArgumentNullException(nameof(path));
@@ -820,10 +820,13 @@ namespace Xamla.Robotics.Motion
         /// <returns>Returns a Task instance which returns the result as <c>int</c>.</returns>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="trajectory"/> is null.</exception>
         /// <exception cref="Exception">Thrown when unexpected null result received by ActionClient for.</exception>
-        public async Task<int> ExecuteJointTrajectory(IJointTrajectory trajectory, bool checkCollision, CancellationToken cancel = default(CancellationToken))
+        public async Task<int> ExecuteJointTrajectoryAsync(IJointTrajectory trajectory, bool checkCollision, CancellationToken cancel = default(CancellationToken))
         {
             if (trajectory == null)
                 throw new ArgumentNullException(nameof(trajectory));
+
+            if (trajectory.Count == 0)
+                return 0;
 
             var actionClient = moveJActionClient;
 
@@ -1243,7 +1246,7 @@ namespace Xamla.Robotics.Motion
             var source = GetCurrentJointValues(parameters.JointSet);
             var path = new JointPath(source, target);
             var trajectory = PlanMoveJoints(path, parameters);
-            await ExecuteJointTrajectory(trajectory, parameters.CollisionCheck, cancel);
+            await ExecuteJointTrajectoryAsync(trajectory, parameters.CollisionCheck, cancel);
         }
 
         /// <summary>
@@ -1301,8 +1304,8 @@ namespace Xamla.Robotics.Motion
 
             var source = QueryPose(moveGroup.Name, seed, endEffectorLink);
             var path = new CartesianPath(source, target);
-            var trajectory = PlanMovePoseLinear(path, seed, parameters);
-            await ExecuteJointTrajectory(trajectory, parameters.CollisionCheck, cancel);
+            var trajectory = PlanMoveCartesianPathLinear(path, seed, parameters);
+            await ExecuteJointTrajectoryAsync(trajectory, parameters.CollisionCheck, cancel);
         }
 
         /// <summary>

@@ -22,10 +22,10 @@ namespace Xamla.Robotics.Types.Tests
             Vector3.Normalize(RandomVector(1));
 
         public Quaternion RandomRotation() =>
-            Quaternion.CreateFromAxisAngle(RandomAxis(), (float)((rng.NextDouble()-0.5) * 4 * Math.PI));
+            Quaternion.CreateFromAxisAngle(RandomAxis(), (float)((rng.NextDouble() - 0.5) * 4 * Math.PI));
 
         public Pose RandomPose() =>
-            new Pose(RandomVector(100), RandomRotation());
+            new Pose(RandomVector(100), RandomRotation(), "world", true);
 
         public IEnumerable<Pose> RandomPoses()
         {
@@ -71,10 +71,11 @@ namespace Xamla.Robotics.Types.Tests
         [Fact]
         public void TestMultiply()
         {
-            foreach (var (p,q) in RandomPoses(100).Zip(RandomPoses(100), (x,y) => (x,y)))
+            foreach (var (p, q) in RandomPoses(100).Zip(RandomPoses(100), (x, y) => (x, y)))
             {
                 var m1 = (p * q).TransformMatrix;
                 var m2 = p.TransformMatrix * q.TransformMatrix;
+                var m3 = p.ToM() * q.ToM();
 
                 double delta = SeqAbsDiff(m1.ToRowMajorArray(), m2.ToRowMajorArray());
                 Assert.True(delta < 1E-3);
@@ -90,6 +91,21 @@ namespace Xamla.Robotics.Types.Tests
 
                 double delta = SeqAbsDiff(m1.ToRowMajorArray(), m2.ToRowMajorArray());
                 Assert.True(delta < 1E-3);
+            }
+        }
+
+        [Fact]
+        public void TestPoseMatrixRoundTrip()
+        {
+            foreach (var p in RandomPoses(100))
+            {
+                var m = p.TransformMatrix;
+                var p2 = new Pose(m, p.Frame);
+
+                var d1 = (p.Translation - p2.Translation).LengthSquared();
+                var d2 = (p.Rotation - p2.Rotation).LengthSquared();
+                Assert.True(d1 < 1E-5);
+                Assert.True(d2 < 1E-5);
             }
         }
     }
