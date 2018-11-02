@@ -35,6 +35,24 @@ namespace Xamla.Robotics.Types.Tests
             Assert.Throws<System.ArgumentException>(() => new JointTrajectory(joints, new JointTrajectoryPoint[] { p1, p3, p2 }));
         }
 
+
+        [Fact]
+        public void TestPrepend()
+        {
+            var joints = new JointSet("a", "b", "c");
+            var p1 = GetPoint(100, joints);
+            var p2 = GetPoint(200, joints);
+            var p3 = GetPoint(300, joints);
+            var t1 = new JointTrajectory(joints, new JointTrajectoryPoint[] { p3 });
+            var points = new JointTrajectoryPoint[] { p1, p2 };
+            var t = t1.Prepend(points);
+            Assert.Equal(3, t.Count);
+            Assert.Equal(p1, t[0]);
+            Assert.Equal(p2, t[1]);
+            // assert that duration of t1 gets added to t2
+            Assert.Equal(GetPoint(500, joints), t[2]);
+        }
+
         [Fact]
         public void TestAppend()
         {

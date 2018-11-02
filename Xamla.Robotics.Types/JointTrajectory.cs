@@ -218,6 +218,18 @@ namespace Xamla.Robotics.Types
         }
 
         /// <summary>
+        /// Prepends the given collection of <c>JointTrajectoryPoint</c>s to the current trajectory.
+        /// </summary>
+        /// <param name="source">The collection of points that should be prepended to the current trajectory. The points need to fulfill the same criteria as described in the constructor of <see cref="JointTrajectory"/>.</param>
+        /// <returns>A new instance of <c>JointTrajectory</c>.</returns>
+        public IJointTrajectory Prepend(IEnumerable<JointTrajectoryPoint> source)
+        {
+            // Assuming the last index contains the largest timespan, since that is a criteria of the source parameter
+            var offset = source.Last().TimeFromStart;
+            return new JointTrajectory(joints, source.Concat(points.Select(x => x.AddTimeOffset(offset))), this.IsValid);
+        }
+
+        /// <summary>
         /// Concatenates the current joint trajectory and the given other joint trajectory.
         /// </summary>
         /// <param name="other">The joint trajectory that the current joint trajectory should be concatenated with.</param>
