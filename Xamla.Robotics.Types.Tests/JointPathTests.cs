@@ -4,7 +4,7 @@ using Xunit;
 
 namespace Xamla.Robotics.Types.Tests
 {
-    public class JointPAthTests
+    public class JointPathTests
     {
         [Fact]
         public void TestInit()
