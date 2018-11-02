@@ -93,7 +93,7 @@ namespace Xamla.Robotics.Types.Tests
             Assert.Equal(0, joints.GetIndexOf("a"));
 
             Assert.Throws<System.Exception>(() => joints.GetIndexOf("d"));
-            // TODO: The following assertion is derived of the documentation, which is not in accordance with the implementation
+            // TODO: The following assertion is derived from the documentation, which is not in accordance with the implementation
             Assert.Throws<System.ArgumentNullException>(() => joints.GetIndexOf(null));
         }
 
