@@ -21,7 +21,7 @@ namespace Xamla.Robotics.Types.Tests
             Assert.Equal(start, p2[0]);
             Assert.Equal(goal, p2[1]);
 
-            Assert.Throws<System.ArgumentException>(() => new JointPath(start, badGoal));
+            Assert.Throws<ArgumentException>(() => new JointPath(start, badGoal));
 
             var p3 = new JointPath(joints, start, goal);
             Assert.Equal(start, p3[0]);
@@ -92,8 +92,8 @@ namespace Xamla.Robotics.Types.Tests
             var p = pBig.Sub(1, 3);
             Assert.Equal(val2, p[0]);
             Assert.Equal(val3, p[1]);
-            Assert.Throws<System.ArgumentOutOfRangeException>(() => p[2]);
-            Assert.Throws<System.ArgumentOutOfRangeException>(() => pBig.Sub(1, 5));
+            Assert.Throws<ArgumentOutOfRangeException>(() => p[2]);
+            Assert.Throws<ArgumentOutOfRangeException>(() => pBig.Sub(1, 5));
         }
 
         [Fact]

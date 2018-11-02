@@ -30,7 +30,7 @@ namespace Xamla.Robotics.Types
         /// <param name="positions">The position values of the joints.</param>
         /// <param name="velocities">The velocity values of the joints.</param>
         /// <param name="efforts">The effort values of the joints.</param>
-        /// TODO: ADDED_DOCUMENTATION <exception cref="Exception">Thrown when the jointsets of the non-null jointstates differ.</exception>
+        /// <exception cref="Exception">Thrown when the jointsets of the non-null jointstates differ.</exception>
         public JointStates(JointValues positions, JointValues velocities = null, JointValues efforts = null)
         {
             this.Positions = positions;

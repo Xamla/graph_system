@@ -10,9 +10,8 @@ namespace Xamla.Robotics.Motion
         public IJointPath Waypoints { get; }
 
         public IMoveGroup MoveGroup { get; }
-        public double VelocityScaling { get; }
-        public double AccelerationScaling { get; }
-        public double SampleResolution { get; }
+        public double? VelocityScaling { get; }
+        public double? AccelerationScaling { get; }
         public PlanParameters Parameters { get; }
 
         public MoveJointPathOperation(MoveJointPathArgs args)
@@ -45,8 +44,11 @@ namespace Xamla.Robotics.Motion
         public IMoveJointPathOperation WithCollisionCheck(bool value = true) =>
             this.Parameters.CollisionCheck == value ? this : With(a => a.CollisionCheck = value);
 
-        public IMoveJointPathOperation WithVelocityScaling(double value) =>
+        public IMoveJointPathOperation WithVelocityScaling(double? value) =>
             this.VelocityScaling == value ? this : With(a => a.VelocityScaling = value);
+
+        public IMoveJointPathOperation WithAccelerationScaling(double? value) =>
+            this.AccelerationScaling == value ? this : With(a => a.AccelerationScaling = value);
 
         public IMoveJointPathOperation WithArgs(double? velocityScaling = null, bool? collisionCheck = null, double? maxDeviation = null, double? sampleResolution = null, double? accelerationScaling = null) =>
             this.With(a =>

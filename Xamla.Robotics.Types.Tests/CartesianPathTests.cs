@@ -91,8 +91,8 @@ namespace Xamla.Robotics.Types.Tests
                 Assert.Equal(pathBig[i + beg], path[i]);
             }
 
-            Assert.Throws<System.ArgumentOutOfRangeException>(() => path.Sub(0, count+1 ));
-            Assert.Throws<System.ArgumentOutOfRangeException>(() => path.Sub(-1, count-1 ));
+            Assert.Throws<ArgumentOutOfRangeException>(() => path.Sub(0, count+1 ));
+            Assert.Throws<ArgumentOutOfRangeException>(() => path.Sub(-1, count-1 ));
         }
     }
 }

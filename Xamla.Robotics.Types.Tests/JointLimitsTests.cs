@@ -1,3 +1,4 @@
+using System;
 using Xunit;
 
 namespace Xamla.Robotics.Types.Tests
@@ -16,9 +17,9 @@ namespace Xamla.Robotics.Types.Tests
             var maxPos = new double?[] { 50, 10 };
             JointLimits jl = new JointLimits(joints, maxVel, maxAcc, minPos, maxPos);
 
-            Assert.Throws<System.ArgumentNullException>(() => new JointLimits(joints, null, maxAcc, minPos, maxPos));
-            Assert.Throws<System.ArgumentException>(() => new JointLimits(tooManyJoints, maxVel, maxAcc, minPos, maxPos));
-            Assert.Throws<System.ArgumentException>(() => new JointLimits(notEnoughJoints, maxVel, maxAcc, minPos, maxPos));
+            Assert.Throws<ArgumentNullException>(() => new JointLimits(joints, null, maxAcc, minPos, maxPos));
+            Assert.Throws<ArgumentException>(() => new JointLimits(tooManyJoints, maxVel, maxAcc, minPos, maxPos));
+            Assert.Throws<ArgumentException>(() => new JointLimits(notEnoughJoints, maxVel, maxAcc, minPos, maxPos));
         }
     }
 }

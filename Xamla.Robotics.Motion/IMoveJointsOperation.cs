@@ -18,7 +18,8 @@ namespace Xamla.Robotics.Motion
 
         IMoveJointsOperation WithStart(JointValues value);
         IMoveJointsOperation WithCollisionCheck(bool value = true);
-        IMoveJointsOperation WithVelocityScaling(double value);
+        IMoveJointsOperation WithVelocityScaling(double? value);
+        IMoveJointsOperation WithAccelerationScaling(double? value);
 
         IMoveJointsOperation WithArgs(
             double? velocityScaling = null,

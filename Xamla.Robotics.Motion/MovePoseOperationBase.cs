@@ -13,8 +13,8 @@ namespace Xamla.Robotics.Motion
         public JointValues Start { get; }
 
         public IMoveGroup MoveGroup { get; }
-        public double VelocityScaling { get; }
-        public double AccelerationScaling { get; }
+        public double? VelocityScaling { get; }
+        public double? AccelerationScaling { get; }
         public PlanParameters Parameters { get; }
         public TaskSpacePlanParameters TaskSpaceParameters { get; }
 
@@ -30,13 +30,22 @@ namespace Xamla.Robotics.Motion
             this.AccelerationScaling = args.AccelerationScaling;
 
             this.Parameters = this.MoveGroup.BuildPlanParameters(args.VelocityScaling, args.CollisionCheck, args.MaxDeviation, args.AccelerationScaling, args.SampleResolution);
-            this.TaskSpaceParameters = this.EndEffector.BuildTaskSpacePlanParameters(args.VelocityScaling, args.CollisionCheck, args.MaxDeviation, args.AccelerationScaling, args.IkJumpThreshold)
-                .WithSampleResolution(args.SampleResolution);
+            this.TaskSpaceParameters = this.EndEffector.BuildTaskSpacePlanParameters(args.VelocityScaling, args.CollisionCheck, args.MaxDeviation, args.AccelerationScaling, args.IkJumpThreshold);
+            if (args.SampleResolution.HasValue)
+            {
+                this.TaskSpaceParameters = this.TaskSpaceParameters.WithSampleResolution(args.SampleResolution.Value);
+            }
         }
 
         protected abstract IMovePoseOperation Build(MovePoseArgs args);
 
         public abstract IPlan Plan();
+
+        public IMovePoseOperation WithVelocityScaling(double? value) =>
+            this.VelocityScaling == value ? this : With(a => a.VelocityScaling = value);
+
+        public IMovePoseOperation WithAccelerationScaling(double? value) =>
+            this.AccelerationScaling == value ? this : With(a => a.AccelerationScaling = value);
 
         public IMovePoseOperation With(Func<MovePoseArgs, MovePoseArgs> mutator) =>
             Build(mutator(this.ToArgs()));

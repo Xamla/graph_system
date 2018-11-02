@@ -92,8 +92,8 @@ namespace Xamla.Robotics.Types.Tests
             Assert.Equal(2, joints.GetIndexOf("b"));
             Assert.Equal(0, joints.GetIndexOf("a"));
 
-            Assert.Throws<System.Exception>(() => joints.GetIndexOf("d"));
-            Assert.Throws<System.ArgumentNullException>(() => joints.GetIndexOf(null));
+            Assert.Throws<Exception>(() => joints.GetIndexOf("d"));
+            Assert.Throws<ArgumentNullException>(() => joints.GetIndexOf(null));
         }
 
         [Fact]
@@ -105,7 +105,7 @@ namespace Xamla.Robotics.Types.Tests
             Assert.Equal(2, val1);
             success = joints.TryGetIndexOf("d", out int val2);
             Assert.False(success);
-            // Assert.Equal(-1, val2);
+            Assert.Equal(-1, val2);
         }
 
         [Fact]
@@ -120,7 +120,7 @@ namespace Xamla.Robotics.Types.Tests
         {
             var joints = new JointSet("a", "c", "b");
             Assert.Equal("b", joints[2]);
-            Assert.Throws<System.IndexOutOfRangeException>(() => joints[3]);
+            Assert.Throws<IndexOutOfRangeException>(() => joints[3]);
         }
 
         [Fact]

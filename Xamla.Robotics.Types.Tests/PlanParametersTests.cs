@@ -12,8 +12,8 @@ namespace Xamla.Robotics.Types.Tests
             var builder = new PlanParameters.Builder();
             builder.MaxAcceleration = new double[] { 1000, -4 };
             Assert.Equal(builder.MaxAcceleration, new double[] { 1000, -4 });
-            Assert.Throws<System.ArgumentOutOfRangeException>(() => builder.ScaleAcceleration(1.1));
-            Assert.Throws<System.ArgumentOutOfRangeException>(() => builder.ScaleAcceleration(-0.1));
+            Assert.Throws<ArgumentOutOfRangeException>(() => builder.ScaleAcceleration(1.1));
+            Assert.Throws<ArgumentOutOfRangeException>(() => builder.ScaleAcceleration(-0.1));
             Assert.Equal(builder.ScaleAcceleration(0.25).MaxAcceleration, new double[] { 250, -1 });
         }
 
@@ -23,8 +23,8 @@ namespace Xamla.Robotics.Types.Tests
             var builder = new PlanParameters.Builder();
             builder.MaxVelocity = new double[] { 1000, -4 };
             Assert.Equal(builder.MaxVelocity, new double[] { 1000, -4 });
-            Assert.Throws<System.ArgumentOutOfRangeException>(() => builder.ScaleVelocity(1.1));
-            Assert.Throws<System.ArgumentOutOfRangeException>(() => builder.ScaleVelocity(-0.1));
+            Assert.Throws<ArgumentOutOfRangeException>(() => builder.ScaleVelocity(1.1));
+            Assert.Throws<ArgumentOutOfRangeException>(() => builder.ScaleVelocity(-0.1));
             Assert.Equal(builder.ScaleVelocity(0.25).MaxVelocity, new double[] { 250, -1 });
         }
     }
@@ -38,13 +38,13 @@ namespace Xamla.Robotics.Types.Tests
             badBuilderA.JointSet = new JointSet("a", "b", "c");
             badBuilderA.MaxVelocity = new double[] { 1, 2, 3 };
             badBuilderA.MaxAcceleration = new double[] { 1, 2 };
-            Assert.Throws<System.ArgumentOutOfRangeException>(() => new PlanParameters(badBuilderA));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new PlanParameters(badBuilderA));
 
             var badBuilderB = new PlanParameters.Builder();
             badBuilderB.JointSet = new JointSet("a", "b", "c");
             badBuilderB.MaxVelocity = new double[] { 1, 2 };
             badBuilderB.MaxAcceleration = new double[] { 1, 2, 3 };
-            Assert.Throws<System.ArgumentOutOfRangeException>(() => new PlanParameters(badBuilderB));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new PlanParameters(badBuilderB));
 
             var builder = new PlanParameters.Builder();
             builder.JointSet = new JointSet("a", "b", "c");
@@ -58,8 +58,8 @@ namespace Xamla.Robotics.Types.Tests
         {
             var builder = new PlanParameters.Builder();
             var parameters = new PlanParameters(builder);
-            Assert.Equal(true, parameters.WithCollisionCheck(true).CollisionCheck);
-            Assert.Equal(false, parameters.WithCollisionCheck(false).CollisionCheck);
+            Assert.True(parameters.WithCollisionCheck(true).CollisionCheck);
+            Assert.False(parameters.WithCollisionCheck(false).CollisionCheck);
         }
 
         [Fact]

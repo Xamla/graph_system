@@ -104,7 +104,7 @@ namespace Xamla.Robotics.Types
         /// <param name="startIndex">Index from which the sub path should start.</param>
         /// <param name="endIndex">Index where the sub path should end.</param>
         /// <returns>A new <c>CartesianPath</c> containing the poses in the range of [<paramref name="startIndex"/>, <paramref name="endIndex"/>].</returns>
-        /// <exception cref="System.ArgumentOutOfRangeException">Thrown when either the <paramref name="startIndex"/> or <paramref name="endIndex"/> is not within the range of the available points.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when either the <paramref name="startIndex"/> or <paramref name="endIndex"/> is not within the range of the available points.</exception>
         public ICartesianPath Sub(int startIndex, int endIndex) =>
             new CartesianPath(Slice(startIndex, endIndex));
 

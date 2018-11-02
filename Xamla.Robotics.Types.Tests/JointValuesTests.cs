@@ -102,8 +102,8 @@ namespace Xamla.Robotics.Types.Tests
             Assert.Equal(6, a.GetValue("b"));
             Assert.Equal(7, a.GetValue("a"));
 
-            Assert.Throws<System.Exception>(() => a.GetValue("d"));
-            Assert.Throws<System.ArgumentNullException>(() => a.GetValue(null));
+            Assert.Throws<Exception>(() => a.GetValue("d"));
+            Assert.Throws<ArgumentNullException>(() => a.GetValue(null));
         }
 
         [Fact]
@@ -123,7 +123,7 @@ namespace Xamla.Robotics.Types.Tests
 
             Assert.True(b.Values.SequenceEqual(new double[] { 6, 5, 7 }));
 
-            Assert.Throws<System.ArgumentException>(() => a.Reorder(new JointSet("a", "b")));
+            Assert.Throws<ArgumentException>(() => a.Reorder(new JointSet("a", "b")));
         }
 
         [Fact]
@@ -137,14 +137,14 @@ namespace Xamla.Robotics.Types.Tests
 
             var b = a.Select(jointsB);
 
-            Assert.Throws<System.Exception>(() => b.GetValue("a"));
+            Assert.Throws<Exception>(() => b.GetValue("a"));
             Assert.Equal(6, b.GetValue("b"));
             Assert.Equal(5, b.GetValue("c"));
             // Assert that the new jointset defines the order
             Assert.Equal(5, b[0]);
             Assert.Equal(6, b[1]);
 
-            Assert.Throws<System.ArgumentException>(() => b.Select(jointsA));
+            Assert.Throws<ArgumentException>(() => b.Select(jointsA));
         }
 
         [Fact]
@@ -158,9 +158,8 @@ namespace Xamla.Robotics.Types.Tests
 
             Assert.True(b.Values.SequenceEqual(new double[] { 1, 2, 5 }));
 
-            Assert.Throws<System.ArgumentException>(() => a.SetValues(new JointSet("a", "d"), new double[] { 1, 2 }));
-            // Throws a System.IndexOutOfRangeException when not the same size
-            Assert.Throws<System.IndexOutOfRangeException>(() => a.SetValues(new JointSet("a"), new double[] { 1, 2 }));
+            Assert.Throws<ArgumentException>(() => a.SetValues(new JointSet("a", "d"), new double[] { 1, 2 }));
+            Assert.Throws<ArgumentException>(() => a.SetValues(new JointSet("a"), new double[] { 1, 2 }));
 
             var c = new JointValues(new JointSet("a", "b"), new double[] { 1, 2 });
             var d = a.SetValues(new JointSet("a", "b"), new double[] { 1, 2 });
@@ -179,8 +178,8 @@ namespace Xamla.Robotics.Types.Tests
 
             var c = a.WithValue(0, 2);
             Assert.Equal(2, c[0]);
-            Assert.Throws<System.IndexOutOfRangeException>(() => a.WithValue(3, 1));
-            Assert.Throws<System.Exception>(() => a.WithValue("d", 1));
+            Assert.Throws<IndexOutOfRangeException>(() => a.WithValue(3, 1));
+            Assert.Throws<Exception>(() => a.WithValue("d", 1));
         }
 
         [Fact]
@@ -233,14 +232,14 @@ namespace Xamla.Robotics.Types.Tests
                 Assert.True(a[1] <= maxPos[1]);
             }
 
-            Assert.Throws<System.ArgumentNullException>(() => JointValues.Random(null));
+            Assert.Throws<ArgumentNullException>(() => JointValues.Random(null));
             // assert that there must be a jointlimit for every name in jointset
             maxAcc = new double?[] { 10, 10 };
             maxVel = new double?[] { 50, 10 };
             minPos = new double?[] { null, 0 };
             maxPos = new double?[] { 50, 10 };
             jl = new JointLimits(joints, maxVel, maxAcc, minPos, maxPos);
-            Assert.Throws<System.ArgumentException>(() => JointValues.Random(jl));
+            Assert.Throws<ArgumentException>(() => JointValues.Random(jl));
         }
 
         [Fact]

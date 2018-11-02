@@ -13,8 +13,8 @@ namespace Xamla.Robotics.Motion
         public JointValues Start { get; }
 
         public IMoveGroup MoveGroup { get; }
-        public double VelocityScaling { get; }
-        public double AccelerationScaling { get; }
+        public double? VelocityScaling { get; }
+        public double? AccelerationScaling { get; }
         public PlanParameters Parameters { get; }
         public TaskSpacePlanParameters TaskSpaceParameters { get; }
 
@@ -36,8 +36,11 @@ namespace Xamla.Robotics.Motion
             this.AccelerationScaling = args.AccelerationScaling;
 
             this.Parameters = this.MoveGroup.BuildPlanParameters(args.VelocityScaling, args.CollisionCheck, args.MaxDeviation, args.AccelerationScaling, args.SampleResolution);
-            this.TaskSpaceParameters = this.EndEffector.BuildTaskSpacePlanParameters(args.VelocityScaling, args.CollisionCheck, args.MaxDeviation, args.AccelerationScaling, args.IkJumpThreshold)
-                .WithSampleResolution(args.SampleResolution);
+            this.TaskSpaceParameters = this.EndEffector.BuildTaskSpacePlanParameters(args.VelocityScaling, args.CollisionCheck, args.MaxDeviation, args.AccelerationScaling, args.IkJumpThreshold);
+            if (args.SampleResolution.HasValue)
+            {
+                this.TaskSpaceParameters = this.TaskSpaceParameters.WithSampleResolution(args.SampleResolution.Value);
+            }
         }
 
         protected virtual IMoveCartesianPathOperation Build(MoveCartesianPathArgs args) =>
@@ -49,17 +52,29 @@ namespace Xamla.Robotics.Motion
                 return new Plan(this.MoveGroup, JointTrajectory.Empty, this.Parameters);
 
             JointValues seed = this.Seed ?? this.MoveGroup.CurrentJointPositions;
-            var targetJoints = this.EndEffector.InverseKinematicMany(this.Waypoints, this.Parameters.CollisionCheck, seed);
+            IKResult targetJoints = this.EndEffector.InverseKinematicMany(this.Waypoints, this.Parameters.CollisionCheck, seed);
             if (!targetJoints.Succeeded)
                 throw new Exception("No inverse kinematic solution found for at least one pose of cartesian path.");
 
-            // TODO: Check IkJoump!
+            IJointPath path = targetJoints.Path;
+            double ikJumpThreshold = this.TaskSpaceParameters.IkJumpThreshold;
+            for (int i = 0, j = 1; j < path.Count; i = j, j += 1)
+            {
+                JointValues delta = path[i] - path[j];
+                if (delta.MaxNorm() > ikJumpThreshold)
+                    throw new DiscontinuityException($"The difference {delta.MaxNorm()} of two consecutive IK solutions for the given cartesian path at index {i} exceeded the IK jump threshold {ikJumpThreshold}.");
+            }
 
-            var path = targetJoints.Path;
             return this.MoveGroup.MoveJointPath(path)
                 .With(a => this.ToArgs())
                 .Plan();
         }
+
+        public IMoveCartesianPathOperation WithVelocityScaling(double? value) =>
+            this.VelocityScaling == value ? this : With(a => a.VelocityScaling = value);
+
+        public IMoveCartesianPathOperation WithAccelerationScaling(double? value) =>
+            this.AccelerationScaling == value ? this : With(a => a.AccelerationScaling = value);
 
         public IMoveCartesianPathOperation WithArgs(double? velocityScaling = null, bool? collisionCheck = null, double? maxDeviation = null, double? sampleResolution = null, double? accelerationScaling = null) =>
             this.With(a =>

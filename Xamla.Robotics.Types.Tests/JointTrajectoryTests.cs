@@ -41,7 +41,7 @@ namespace Xamla.Robotics.Types.Tests
             Assert.Equal(p1, t[0]);
             Assert.Equal(p2, t[1]);
             Assert.Equal(p3, t[2]);
-            Assert.Throws<System.ArgumentException>(() => new JointTrajectory(joints, new JointTrajectoryPoint[] { p1, p3, p2 }));
+            Assert.Throws<ArgumentException>(() => new JointTrajectory(joints, new JointTrajectoryPoint[] { p1, p3, p2 }));
         }
 
 
@@ -113,9 +113,9 @@ namespace Xamla.Robotics.Types.Tests
             Assert.Equal(1, t.Count);
 
             var t3 = new JointTrajectory(jointsB, new JointTrajectoryPoint[] { p2, p3 });
-            Assert.Throws<System.ArgumentException>(() => t1.Merge(t3));
+            Assert.Throws<ArgumentException>(() => t1.Merge(t3));
             var t4 = new JointTrajectory(jointsB, new JointTrajectoryPoint[] { p3 });       
-            Assert.Throws<System.Exception>(() => t1.Merge(t4));
+            Assert.Throws<Exception>(() => t1.Merge(t4));
 
         }
 
@@ -133,8 +133,8 @@ namespace Xamla.Robotics.Types.Tests
             // assert correct duration
             Assert.Equal(p2.WithTimeFromStart(new TimeSpan(200)), t[0]);
             Assert.Equal(p3.WithTimeFromStart(new TimeSpan(300)), t[1]);
-            Assert.Throws<System.ArgumentOutOfRangeException>(() => tBig.Sub(0, tBig.Count ));
-            Assert.Throws<System.ArgumentOutOfRangeException>(() => tBig.Sub(-1, tBig.Count-1 ));
+            Assert.Throws<ArgumentOutOfRangeException>(() => tBig.Sub(0, tBig.Count ));
+            Assert.Throws<ArgumentOutOfRangeException>(() => tBig.Sub(-1, tBig.Count-1 ));
         }
     }
 }
