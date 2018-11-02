@@ -47,6 +47,17 @@ namespace Xamla.Robotics.Types.Tests
         }
 
         [Fact]
+        public void TestToArray()
+        {
+            var jointsA = new JointSet("a", "b", "c");
+            var array = new double[] { 7, 6, 5 };
+
+            // test value clone in ctor
+            var a = new JointValues(jointsA, array);
+            Assert.Equal(array, a.ToArray());
+        }
+
+        [Fact]
         public void TestUpdateSingle()
         {
             var jointsA = new JointSet("a", "b", "c");
@@ -92,8 +103,8 @@ namespace Xamla.Robotics.Types.Tests
             Assert.Equal(7, a.GetValue("a"));
 
             Assert.Throws<System.Exception>(() => a.GetValue("d"));
-            // TODO: The function is derived of the documentation, which is not in accordance with the implementation
-            // Assert.Throws<System.ArgumentNullException>(() => a.GetValue(null));
+            // TODO: The following assertion is derived from the documentation, which is not in accordance with the implementation
+            Assert.Throws<System.ArgumentNullException>(() => a.GetValue(null));
         }
 
         [Fact]
@@ -231,6 +242,16 @@ namespace Xamla.Robotics.Types.Tests
             maxPos = new double?[] { 50, 10 };
             jl = new JointLimits(joints, maxVel, maxAcc, minPos, maxPos);
             Assert.Throws<System.ArgumentException>(() => JointValues.Random(jl));
+        }
+
+        [Fact]
+        public void TestInterpolate()
+        {
+            // first argument sets the order if the names in the jointset
+            var a = new JointValues(new JointSet("a", "b", "c"), new double[] { 2, 2, 2 });
+            var b = new JointValues(new JointSet("b", "a", "c"), new double[] { -2, 1, 3 });
+            Assert.Equal(new double[] { 1.5, 0, 2.5 }, JointValues.Interpolate(a, b).ToArray());
+            Assert.Equal(new double[] { 1.75, 1, 2.25 }, JointValues.Interpolate(a, b, 0.25).ToArray());
         }
     }
 }
