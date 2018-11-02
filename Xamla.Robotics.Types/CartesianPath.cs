@@ -94,7 +94,7 @@ namespace Xamla.Robotics.Types
             if (endIndex < startIndex || endIndex >= points.Count)
                 throw new ArgumentOutOfRangeException(nameof(endIndex));
 
-            for (int i = startIndex; i <= endIndex; ++i)
+            for (int i = startIndex; i < endIndex; ++i)
                 yield return points[i];
         }
 

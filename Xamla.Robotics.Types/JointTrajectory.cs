@@ -218,6 +218,18 @@ namespace Xamla.Robotics.Types
         }
 
         /// <summary>
+        /// Prepends the given collection of <c>JointTrajectoryPoint</c>s to the current trajectory.
+        /// </summary>
+        /// <param name="source">The collection of points that should be prepended to the current trajectory. The points need to fulfill the same criteria as described in the constructor of <see cref="JointTrajectory"/>.</param>
+        /// <returns>A new instance of <c>JointTrajectory</c>.</returns>
+        public IJointTrajectory Prepend(IEnumerable<JointTrajectoryPoint> source)
+        {
+            // Assuming the last index contains the largest timespan, since that is a criteria of the source parameter
+            var offset = source.Last().TimeFromStart;
+            return new JointTrajectory(joints, source.Concat(points.Select(x => x.AddTimeOffset(offset))), this.IsValid);
+        }
+
+        /// <summary>
         /// Concatenates the current joint trajectory and the given other joint trajectory.
         /// </summary>
         /// <param name="other">The joint trajectory that the current joint trajectory should be concatenated with.</param>
@@ -227,6 +239,23 @@ namespace Xamla.Robotics.Types
             var offset = this.Duration;
             return new JointTrajectory(joints, points.Concat(other.Select(x => x.AddTimeOffset(offset))), this.IsValid && other.IsValid);
         }
+
+
+
+        /// <summary>
+        /// Merges the current joint trajectory and the given other joint trajectory.
+        /// </summary>
+        /// <param name="other">The joint trajectory that the current joint trajectory should be merged with.</param>
+        /// <returns>A new instance of <c>JointTrajectory</c>.</returns>
+        /// <exception cref="System.ArgumentException">Thrown when the amount of <c>JointTrajectoryPoints</c> do not match.</exception>
+        /// <exception cref="System.Exception">Thrown when corresponding <c>JointTrajectoryPoints</c> do not have the same <c>TimeFromStart</c>.</exception>
+        public IJointTrajectory Merge(IJointTrajectory other)
+        {
+            if ( points.Count != other.Count)
+                throw new ArgumentException("The amount of JointTrajectoryPoints in the trajectories do not match.");
+            return new JointTrajectory(this.JointSet.Append(other.JointSet), points.Zip(other, (x, y) => x.Merge(y)), this.IsValid && other.IsValid);
+        }
+
 
         /// <summary>
         /// Returns an enumerator over the points of the current trajectory.
@@ -251,6 +280,7 @@ namespace Xamla.Robotics.Types
         /// <param name="startIndex">The index where the sub trajectory should begin.</param>
         /// <param name="endIndex">The index where the sub trajectory should end.</param>
         /// <returns>A new instance of <c>JointTrajectory</c></returns>
+        /// TODO: ADDED_DOCUMENTATION <exception cref="System.ArgumentOutOfRangeException">Thrown when either the <paramref name="startIndex"/> or <paramref name="endIndex"/> is not within the range of the available points.</exception>
         public IJointTrajectory Sub(int startIndex, int endIndex) =>
             new JointTrajectory(joints, Slice(startIndex, endIndex), this.IsValid);
 

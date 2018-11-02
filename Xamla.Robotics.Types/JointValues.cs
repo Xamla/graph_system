@@ -134,6 +134,7 @@ namespace Xamla.Robotics.Types
         /// </summary>
         /// <param name="newOrder">A <c>JointSet</c> with the same name of joints, but in a different order than the current <c>JointSet</c>.</param>
         /// <returns>A new instance of <c>JointValues</c>.</returns>
+        /// TODO: added documentation <exception cref="ArgumentException">Thrown when the given <paramref name="newOrder"/> is not a permutation of the names in the <c>JointSet</c>.</exception>
         public JointValues Reorder(JointSet newOrder)
         {
             if (!newOrder.IsSimilar(this.JointSet))
@@ -143,9 +144,11 @@ namespace Xamla.Robotics.Types
 
         /// <summary>
         /// Creates a new <c>JointValues</c> instance that contains only values for joints of the given <c>JointSet</c>.
+        /// TODO: ADDED_DOCUMENTATION The <paramref name="subset"/> parameter defines the new order of the joints in the resulting <c>JointValues</c> object. 
         /// </summary>
         /// <param name="subset">A <c>JointSet</c> with a subset of the joints.</param>
         /// <returns>A new instance of <c>JointValues</c>.</returns>
+        /// TODO: ADDED_DOCUMENTATION <exception cref="ArgumentException">Thrown when the given <paramref name="subset"/> is not a subset of the names the <c>JointSet</c>.</exception>
         public JointValues Select(JointSet subset)
         {
             if (!subset.IsSubset(this.JointSet))
@@ -159,6 +162,8 @@ namespace Xamla.Robotics.Types
         /// <param name="jointSet">The set of joints whose values should be changed.</param>
         /// <param name="values">The new values for the given joint set.</param>
         /// <returns>A new instance of <c>JointValues</c>.</returns>
+        /// TODO: ADDED_DOCUMENTATION <exception cref="ArgumentException">Thrown when the given <paramref name="jointSet"/> is not a subset of the names the <c>JointSet</c>.</exception>
+        /// TODO: System.IndexOutOfRangeException, when size of jointset parameter smaller than values. Should perhaps check if both are the same size, and throw a custom Exception
         public JointValues SetValues(JointSet jointSet, IReadOnlyList<double> values)
         {
             if (!jointSet.IsSubset(this.JointSet))
@@ -181,6 +186,7 @@ namespace Xamla.Robotics.Types
         /// <param name="name">Name of the joint whose value is to be modified.</param>
         /// <param name="value">New joint value in radians.</param>
         /// <returns>A new instance of <c>JointValues</c>.</returns>
+        /// TODO: ADDED_DOCUMENTATION <exception cref="System.Exception">Thrown when the given <paramref name="name"/> is not one of the names in the current <c>JointSet</c>.</exception>
         public JointValues WithValue(string name, double value) =>
             WithValue(JointSet.GetIndexOf(name), value);
 
@@ -190,6 +196,7 @@ namespace Xamla.Robotics.Types
         /// <param name="index">Index of the joint whose value is to be modified.</param>
         /// <param name="value">New joint value in radians.</param>
         /// <returns>A new instance of <c>JointValues</c>.</returns>
+        /// TODO: ADDED_DOCUMENTATION <exception cref="System.IndexOutOfRangeException">Thrown when the given <paramref name="index"/> is out of bound.</exception>
         public JointValues WithValue(int index, double value)
         {
             double[] newValues = this.ToArray();
@@ -257,6 +264,8 @@ namespace Xamla.Robotics.Types
         /// </summary>
         /// <param name="jv">The joint values to add.</param>
         /// <returns>A new object that represents the value of this instance plus the value of js.</returns>
+        /// TODO: ADDED_DOCUMENTATION <exception cref="ArgumentException">Thrown when the <c>JointSet</c> of <paramref name="jv"/> is not similar to the current <c>JointSet</c>.</exception>
+        /// TODO: ADDED_DOCUMENTATION <exception cref="ArgumentNullException">Thrown when <paramref name="jv"/> is null.</exception>
         public JointValues Add(JointValues jv)
         {
             if (jv == null)
@@ -283,6 +292,8 @@ namespace Xamla.Robotics.Types
         /// </summary>
         /// <param name="jv">The joint values to subtract.</param>
         /// <returns>A new object that represents the value of this instance minus the value of js.</returns>
+        /// TODO: ADDED_DOCUMENTATION <exception cref="ArgumentException">Thrown when the <c>JointSet</c> of <paramref name="jv"/> is not similar to the current <c>JointSet</c>.</exception>
+        /// TODO: ADDED_DOCUMENTATION <exception cref="ArgumentNullException">Thrown when <paramref name="jv"/> is null.</exception>
         public JointValues Subtract(JointValues jv)
         {
             if (jv == null)
@@ -331,6 +342,8 @@ namespace Xamla.Robotics.Types
         /// <param name="limits">The limits in which the values of the new <c>JointSet</c> should be. The names of the joints are taken from the <paramref name="limits"/>.</param>
         /// <returns>A new instance of <c>JointValues</c>.</returns>
         /// <seealso cref="JointLimits"/>
+        /// TODO: ADDED_DOCUMENTATION <exception cref="ArgumentException">Thrown when for at least one joint a limit is missing.</exception>
+        /// TODO: ADDED_DOCUMENTATION <exception cref="ArgumentNullException">Thrown when <paramref name="limits"/> is null.</exception>
         public static JointValues Random(JointLimits limits)
             => Random(limits, ThreadSafeRandom.Generator);
 

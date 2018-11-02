@@ -149,6 +149,9 @@ namespace Xamla.Robotics.Types
         /// <exception cref="System.Exception">Thrown when <paramref name="name"/> is not found in <c>JointSet</c>.</exception>
         public int GetIndexOf(string name)
         {
+            if(name == null){
+                throw new ArgumentNullException("Name must not be null.");
+            }
             if (!this.TryGetIndexOf(name, out int value))
                 throw new Exception($"Joint '{name}' is missing in JointSet.");
             return value;
@@ -163,6 +166,7 @@ namespace Xamla.Robotics.Types
         /// <summary>
         /// Accesses the joint name at the given index.
         /// </summary>
+        /// TODO: Added this. <exception cref="System.IndexOutOfRangeException">Thrown when index out of bound</exception>
         public string this[int index] =>
             jointNames[index];
 
