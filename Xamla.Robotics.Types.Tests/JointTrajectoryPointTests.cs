@@ -26,7 +26,6 @@ namespace Xamla.Robotics.Types.Tests
             Assert.Equal(timeSpan, p.TimeFromStart);
         }
 
-
         [Fact]
         public void TestAddTimeOffSet()
         {

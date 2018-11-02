@@ -74,7 +74,7 @@ namespace Xamla.Robotics.Types.Tests
         [Fact]
         public void TestPoseMatrixRoundTrip()
         {
-            foreach (var p in RandomPoses(100))
+            foreach (var p in poseHelper.RandomPoses(100))
             {
                 var m = p.TransformMatrix;
                 var p2 = new Pose(m, p.Frame);

@@ -52,7 +52,6 @@ namespace Xamla.Robotics.Types.Tests
             Assert.Equal(GetPoint(500, joints), t[2]);
         }
 
-
         [Fact]
         public void TestConcat()
         {
