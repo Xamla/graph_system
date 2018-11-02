@@ -3,19 +3,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using Xamla.Utilities;
+
 using Xunit;
 
 namespace Xamla.Robotics.Types.Tests
 {
     public class JointTrajectoryTests
     {
+        static Random rng = ThreadSafeRandom.Generator;
+
         private static JointTrajectoryPoint GetPoint(long ticks, JointSet joints)
         {
             var timeSpan = new TimeSpan(ticks);
-            var pos = new JointValues(joints, new double[] { 0, 1, 2 });
-            var vel = new JointValues(joints, new double[] { 3, 4, 5 });
-            var acc = new JointValues(joints, new double[] { 6, 7, 8 });
-            var eff = new JointValues(joints, new double[] { 9, 10, 11 });
+            int count = joints.Count;
+            var values = rng.Normal(0, 1).Take(count).ToArray();
+            var pos = new JointValues(joints, values);
+            values = rng.Normal(0, 1).Take(count).ToArray();
+            var vel = new JointValues(joints, values);
+            values = rng.Normal(0, 1).Take(count).ToArray();
+            var acc = new JointValues(joints, values);
+            values = rng.Normal(0, 1).Take(count).ToArray();
+            var eff = new JointValues(joints, values);
             var p = new JointTrajectoryPoint(timeSpan, pos, vel, acc, eff);
             return p;
         }
@@ -50,7 +59,7 @@ namespace Xamla.Robotics.Types.Tests
             Assert.Equal(p1, t[0]);
             Assert.Equal(p2, t[1]);
             // assert that duration of t1 gets added to t2
-            Assert.Equal(GetPoint(500, joints), t[2]);
+            Assert.Equal(p3.WithTimeFromStart(new TimeSpan(500)), t[2]);
         }
 
         [Fact]
@@ -67,7 +76,7 @@ namespace Xamla.Robotics.Types.Tests
             Assert.Equal(p1, t[0]);
             Assert.Equal(p2, t[1]);
             // assert that duration of t1 gets added to t2
-            Assert.Equal(GetPoint(500, joints), t[2]);
+            Assert.Equal(p3.WithTimeFromStart(new TimeSpan(500)), t[2]);
         }
 
         [Fact]
@@ -84,7 +93,30 @@ namespace Xamla.Robotics.Types.Tests
             Assert.Equal(p1, t[0]);
             Assert.Equal(p2, t[1]);
             // assert that duration of t1 gets added to t2
-            Assert.Equal(GetPoint(500, joints), t[2]);
+            Assert.Equal(p3.WithTimeFromStart(new TimeSpan(500)), t[2]);
+        }
+
+
+        [Fact]
+        public void TestMerge()
+        {
+            var timeSpan = new TimeSpan(100);
+            var jointsA = new JointSet("a", "b", "c");
+            var jointsB = new JointSet("e","f");
+
+            var p1 = GetPoint(100, jointsA);
+            var p2 = GetPoint(100, jointsB);
+            var p3 = GetPoint(300, jointsB);
+            var t1 = new JointTrajectory(jointsA, new JointTrajectoryPoint[] { p1 });
+            var t2 = new JointTrajectory(jointsB, new JointTrajectoryPoint[] { p2 });
+            var t = t1.Merge(t2);
+            Assert.Equal(1, t.Count);
+
+            var t3 = new JointTrajectory(jointsB, new JointTrajectoryPoint[] { p2, p3 });
+            Assert.Throws<System.ArgumentException>(() => t1.Merge(t3));
+            var t4 = new JointTrajectory(jointsB, new JointTrajectoryPoint[] { p3 });       
+            Assert.Throws<System.Exception>(() => t1.Merge(t4));
+
         }
 
         [Fact]
@@ -99,8 +131,8 @@ namespace Xamla.Robotics.Types.Tests
             var t = tBig.Sub(1, 3);
             Assert.Equal(2, t.Count);
             // assert correct duration
-            Assert.Equal(GetPoint(200, joints), t[0]);
-            Assert.Equal(GetPoint(300, joints), t[1]);
+            Assert.Equal(p2.WithTimeFromStart(new TimeSpan(200)), t[0]);
+            Assert.Equal(p3.WithTimeFromStart(new TimeSpan(300)), t[1]);
             Assert.Throws<System.ArgumentOutOfRangeException>(() => tBig.Sub(0, tBig.Count ));
             Assert.Throws<System.ArgumentOutOfRangeException>(() => tBig.Sub(-1, tBig.Count-1 ));
         }
