@@ -118,7 +118,7 @@ namespace Xamla.Robotics.Types
         /// <summary>
         /// Returns the value (in radians) for the given joint name.
         /// </summary>
-        /// <exception cref="ArgumentNullException">Thrown when <paramref name="jointName"/> is null TODO: Does not throw this exception when null.</exception>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="jointName"/> is null.</exception>
         /// <exception cref="Exception">Thrown when the given <paramref name="jointName"/> is not part of the <c>JointSet</c>.</exception>
         public double this[string jointName] =>
             this.GetValue(jointName);

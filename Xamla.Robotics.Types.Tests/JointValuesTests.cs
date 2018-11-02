@@ -103,7 +103,6 @@ namespace Xamla.Robotics.Types.Tests
             Assert.Equal(7, a.GetValue("a"));
 
             Assert.Throws<System.Exception>(() => a.GetValue("d"));
-            // TODO: The following assertion is derived from the documentation, which is not in accordance with the implementation
             Assert.Throws<System.ArgumentNullException>(() => a.GetValue(null));
         }
 
