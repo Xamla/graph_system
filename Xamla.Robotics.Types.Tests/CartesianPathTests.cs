@@ -83,9 +83,8 @@ namespace Xamla.Robotics.Types.Tests
             List<Pose> poses = poseHelper.RandomPoses(count).ToList();
             ICartesianPath pathBig = new CartesianPath(poses);
             int beg = 2;
-            int inclEnd = 4; // TODO: Is counterintuitively inclusive, while corr. functions in JointPath.Sub or JointTrajectory.Sub are not
             int end = 5;
-            ICartesianPath path = pathBig.Sub(beg, inclEnd);
+            ICartesianPath path = pathBig.Sub(beg, end);
             Assert.Equal(end - beg , path.Count());
             for (int i = 0; i < end  - beg; ++i)
             {

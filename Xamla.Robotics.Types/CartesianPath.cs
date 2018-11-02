@@ -94,7 +94,7 @@ namespace Xamla.Robotics.Types
             if (endIndex < startIndex || endIndex >= points.Count)
                 throw new ArgumentOutOfRangeException(nameof(endIndex));
 
-            for (int i = startIndex; i <= endIndex; ++i)
+            for (int i = startIndex; i < endIndex; ++i)
                 yield return points[i];
         }
 
@@ -102,7 +102,7 @@ namespace Xamla.Robotics.Types
         /// Creates a new <c>CartesianPath</c> containing the poses in the range of [<paramref name="startIndex"/>, <paramref name="endIndex"/>].
         /// </summary>
         /// <param name="startIndex">Index from which the sub path should start.</param>
-        /// <param name="endIndex">Index where the sub path should end. TODO: This is inclusive, which is counterintuitive, since in JointPath.Sub and JointTrajectory.Sub function it is exclusive index.</param>
+        /// <param name="endIndex">Index where the sub path should end.</param>
         /// <returns>A new <c>CartesianPath</c> containing the poses in the range of [<paramref name="startIndex"/>, <paramref name="endIndex"/>].</returns>
         /// <exception cref="System.ArgumentOutOfRangeException">Thrown when either the <paramref name="startIndex"/> or <paramref name="endIndex"/> is not within the range of the available points.</exception>
         public ICartesianPath Sub(int startIndex, int endIndex) =>
