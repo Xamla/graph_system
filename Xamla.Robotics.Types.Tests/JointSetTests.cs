@@ -5,7 +5,6 @@ using System.Text;
 
 using Xunit;
 
-
 namespace Xamla.Robotics.Types.Tests
 {
     public class JointSetTests
@@ -36,7 +35,6 @@ namespace Xamla.Robotics.Types.Tests
 
             // Check that exception is thrown when duplicate entry is given
             Assert.Throws<Xamla.Utilities.DuplicateElementException>(() => jointsA.Append(new JointSet("d", "e", "a")));
-
         }
 
         [Fact]
@@ -95,8 +93,8 @@ namespace Xamla.Robotics.Types.Tests
             Assert.Equal(0, joints.GetIndexOf("a"));
 
             Assert.Throws<System.Exception>(() => joints.GetIndexOf("d"));
-            // TODO: The function is derived of the documentation, which is not in accordance with the implementation
-            //Assert.Throws<System.ArgumentNullException>(() => joints.GetIndexOf(null));
+            // TODO: The following assertion is derived of the documentation, which is not in accordance with the implementation
+            Assert.Throws<System.ArgumentNullException>(() => joints.GetIndexOf(null));
         }
 
         [Fact]
@@ -110,7 +108,6 @@ namespace Xamla.Robotics.Types.Tests
             Assert.False(success);
             // Assert.Equal(-1, val2);
         }
-
 
         [Fact]
         public void TestCount()
@@ -127,7 +124,6 @@ namespace Xamla.Robotics.Types.Tests
             Assert.Throws<System.IndexOutOfRangeException>(() => joints[3]);
         }
 
-
         [Fact]
         public void TestContains()
         {
@@ -135,8 +131,5 @@ namespace Xamla.Robotics.Types.Tests
             Assert.True(joints.Contains("a"));
             Assert.False(joints.Contains("d"));
         }
-
-
-
     }
 }
