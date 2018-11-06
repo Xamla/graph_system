@@ -98,6 +98,40 @@ namespace Xamla.Robotics.Types.Tests
 
 
         [Fact]
+        public void TestEvaluateAt()
+        {
+            void AssertEqualPoints(JointTrajectoryPoint a, JointTrajectoryPoint b)
+            {
+                if(a.TimeFromStart == b.TimeFromStart && a.JointSet.Equals(b.JointSet))
+                    return;
+                else
+                    Assert.Equal("a", "b");
+            }
+            var joints = new JointSet("a", "b", "c");
+            JointTrajectoryPoint[] points = new JointTrajectoryPoint[10] ;
+            for (int i = 0; i < 10; ++i){
+                points[i] = GetPoint(i, joints);
+            }
+            Assert.Equal(points.Count(), 10);
+            var t = new JointTrajectory(joints, points);
+            for (int i = 0; i < 50; ++i)
+            {
+                int time = rng.Next(10);
+                var timeSpan = new TimeSpan(time);
+                int delay = rng.Next(-2, 2);
+                var delaySpan = new TimeSpan(delay);
+                var pA = t.EvaluateAt(timeSpan, TimeSpan.Zero);
+                AssertEqualPoints(pA, points[time]);
+                var pB = t.EvaluateAt(timeSpan, delaySpan);
+                int newTime = time-delay;
+                if (newTime >= 0 && newTime < 10 ){
+                    AssertEqualPoints(pA, points[newTime].WithTimeFromStart(new TimeSpan(time)));
+                }
+            }
+        }
+
+
+        [Fact]
         public void TestMerge()
         {
             var timeSpan = new TimeSpan(100);

@@ -29,6 +29,9 @@ namespace Xamla.Robotics.Types
         /// <returns>A new instance of <c>IJointTrajectory</c>.</returns>
         IJointTrajectory Append(IEnumerable<JointTrajectoryPoint> source);
 
+
+        JointTrajectoryPoint EvaluateAt(TimeSpan simulatedTime, TimeSpan delay);
+
         /// <summary>
         /// Returns the sub trajectory defined by the given start index and end index.
         /// </summary>

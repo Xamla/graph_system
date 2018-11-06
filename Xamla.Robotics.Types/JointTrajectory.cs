@@ -241,21 +241,65 @@ namespace Xamla.Robotics.Types
         }
 
 
+        /// <summary>
+        /// Evaluates the trajectory at a given time.
+        /// </summary>
+        /// <param name="simulatedTime">The simulated time</param>
+        /// <param name="delay">the </param>
+        /// <returns>An instance of <c>JointTrajectoryPoint</c> at the given time.</returns>
+        public JointTrajectoryPoint EvaluateAt(TimeSpan simulatedTime, TimeSpan delay)
+        {
+            int index = 0;
+            double time = Math.Max(simulatedTime.TotalSeconds - delay.TotalSeconds, 0);
+            int pointCount = this.Count;
+            while (index < pointCount - 1 && time >= this[Math.Min(index + 1, pointCount - 1)].TimeFromStart.TotalSeconds)
+                index += 1;
+
+            int k = Math.Min(index + 1, pointCount - 1);
+            JointTrajectoryPoint p0 = this[index];
+            JointTrajectoryPoint p1 = this[k];
+            JointTrajectoryPoint q = p0.InterpolateCubic(p1, time);
+            return q.WithTimeFromStart(simulatedTime);
+        }
+
+        public IJointTrajectory Merge(IJointTrajectory b) =>
+            this.Merge(b, TimeSpan.Zero, TimeSpan.Zero);
 
         /// <summary>
         /// Merges the current joint trajectory and the given other joint trajectory.
         /// </summary>
         /// <param name="other">The joint trajectory that the current joint trajectory should be merged with.</param>
+        /// <param name="delayA">The delay of the current <c>JointTrajectory</c>.</param>
+        /// <param name="delayB">The delay of the other <c>JointTrajectory</c>.</param>
         /// <returns>A new instance of <c>JointTrajectory</c>.</returns>
-        /// <exception cref="System.ArgumentException">Thrown when the amount of <c>JointTrajectoryPoints</c> do not match.</exception>
-        /// <exception cref="System.Exception">Thrown when corresponding <c>JointTrajectoryPoints</c> do not have the same <c>TimeFromStart</c>.</exception>
-        public IJointTrajectory Merge(IJointTrajectory other)
+        public IJointTrajectory Merge(IJointTrajectory other, TimeSpan delayA, TimeSpan delayB)
         {
-            if ( points.Count != other.Count)
-                throw new ArgumentException("The amount of JointTrajectoryPoints in the trajectories do not match.");
-            return new JointTrajectory(this.JointSet.Append(other.JointSet), points.Zip(other, (x, y) => x.Merge(y)), this.IsValid && other.IsValid);
-        }
+            var a = this;
+            var b = other;
+            JointSet unionJointSet = a.JointSet.Combine(b.JointSet);
+            int numPointsA = a.Count;
+            int numPointsB = b.Count;
 
+            TimeSpan durationA = a[numPointsA - 1].TimeFromStart + delayA;
+            TimeSpan durationB = b[numPointsB - 1].TimeFromStart + delayB;
+
+            TimeSpan duration = durationA > durationB ? durationA : durationB;
+
+            int maxNumberPoints = Math.Max(numPointsA, numPointsB);
+
+            var result = new List<JointTrajectoryPoint>();
+            for (int i = 0; i < maxNumberPoints; i++)
+            {
+                double t = i / (double)(maxNumberPoints - 1);
+                TimeSpan simulatedTime = duration * t;
+                JointTrajectoryPoint q_a = a.EvaluateAt(simulatedTime, delayA);
+                JointTrajectoryPoint q_b = b.EvaluateAt(simulatedTime, delayB);
+                JointTrajectoryPoint jtp = q_a.Merge(q_b);
+                result.Add(jtp);
+            }
+
+            return new JointTrajectory(unionJointSet, result);
+        }
 
         /// <summary>
         /// Returns an enumerator over the points of the current trajectory.
