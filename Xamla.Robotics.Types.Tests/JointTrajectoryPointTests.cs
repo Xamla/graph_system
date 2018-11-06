@@ -43,25 +43,10 @@ namespace Xamla.Robotics.Types.Tests
             {
                 bool Compare(JointValues aa, JointValues bb)
                 {
-                    bool equal = true;
-                    for(int i= 0; i < aa.Count; ++i)
-                    {   
-                        equal &= Math.Abs(aa[i] - bb[i]) < 1E-6 ;
-                        if(!equal)
-                        {
-                            Console.WriteLine(aa[i]); 
-                            Console.WriteLine(bb[i]); 
-                        }
-                    }
-                    if(!equal)
-                    {
-                        Console.WriteLine(aa); 
-                        Console.WriteLine(bb); 
-                    }
-                    return equal;
+                    double delta = Math.Abs(aa.MaxNorm() - bb.MaxNorm());
+                    return delta < 1E-6;
                 }
-
-                //Assert.Equal(a.TimeFromStart, b.TimeFromStart);
+                Assert.Equal(a.TimeFromStart, b.TimeFromStart);
                 Assert.True(a.JointSet == b.JointSet);
                 Assert.True(Compare(a.Positions, b.Positions));
                 Assert.True(Compare(a.Velocities, b.Velocities));
@@ -72,9 +57,9 @@ namespace Xamla.Robotics.Types.Tests
             var positionA = new JointValues(joints, new double[] { 0, 0, 0 });
             var positionB = new JointValues(joints, new double[] { 1, 1, 1 });
             var positionC = new JointValues(joints, new double[] { 2, 2, 2 });
-            var timeA = new TimeSpan(100000);
-            var timeB = new TimeSpan(200000);
-            var timeC = new TimeSpan(300000);
+            var timeA = TimeSpan.FromSeconds(1);
+            var timeB = TimeSpan.FromSeconds(2);
+            var timeC = TimeSpan.FromSeconds(3);
             var pointA = new JointTrajectoryPoint(timeA, positionA, velocity, acceleration);
             var pointB = new JointTrajectoryPoint(timeB, positionB, velocity, acceleration);
             var pointC = new JointTrajectoryPoint(timeC, positionC, velocity, acceleration);
@@ -90,9 +75,9 @@ namespace Xamla.Robotics.Types.Tests
             var timeAOut = new TimeSpan(0);
             var timeCOut = new TimeSpan(400000);
             JointTrajectoryPoint evalAOut = pointA.InterpolateCubic(pointC, timeAOut);
-            AssertEqualPoints(evalAOut, pointA);
+            AssertEqualPoints(evalAOut, pointA.WithTimeFromStart(timeAOut));
             JointTrajectoryPoint evalCOut = pointA.InterpolateCubic(pointC, timeCOut);
-            AssertEqualPoints(evalCOut, pointC.WithTimeFromStart(timeCOut));
+            AssertEqualPoints(evalCOut, pointA.WithTimeFromStart(timeCOut));
         }
 
         [Fact]

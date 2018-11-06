@@ -126,7 +126,7 @@ namespace Xamla.Robotics.Types
 
             // clip t to be between 0 and t1 - t0
             double t = Math.Max( (time - t0).TotalSeconds, 0);
-            t        = Math.Min( (time - t0 + t1).TotalSeconds, t);
+            t        = Math.Min( (t1 - t0).TotalSeconds, t);
 
             for (int i = 0; i < p0.Count; i++)
             {
