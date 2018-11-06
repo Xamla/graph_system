@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2046
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xamla.Robotics.Types", "Xamla.Robotics.Types\Xamla.Robotics.Types.csproj", "{9AF86039-C606-4DD3-9333-27B993DBEF42}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xamla.Utilities", "Xamla.Utilities\Xamla.Utilities.csproj", "{0E6BA897-67D2-4867-B803-BA8F636378A8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xamla.Robotics.Types.Tests", "Xamla.Robotics.Types.Tests\Xamla.Robotics.Types.Tests.csproj", "{AFB4E18E-F123-4A6B-8AC3-D7C8B5D53E4F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xamla.Types", "Xamla.Types\Xamla.Types.csproj", "{7CAE08FD-CA7D-4EC5-940D-B60461C64FB1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9AF86039-C606-4DD3-9333-27B993DBEF42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AF86039-C606-4DD3-9333-27B993DBEF42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9AF86039-C606-4DD3-9333-27B993DBEF42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9AF86039-C606-4DD3-9333-27B993DBEF42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E6BA897-67D2-4867-B803-BA8F636378A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E6BA897-67D2-4867-B803-BA8F636378A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E6BA897-67D2-4867-B803-BA8F636378A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E6BA897-67D2-4867-B803-BA8F636378A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFB4E18E-F123-4A6B-8AC3-D7C8B5D53E4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFB4E18E-F123-4A6B-8AC3-D7C8B5D53E4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFB4E18E-F123-4A6B-8AC3-D7C8B5D53E4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFB4E18E-F123-4A6B-8AC3-D7C8B5D53E4F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CAE08FD-CA7D-4EC5-940D-B60461C64FB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CAE08FD-CA7D-4EC5-940D-B60461C64FB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CAE08FD-CA7D-4EC5-940D-B60461C64FB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CAE08FD-CA7D-4EC5-940D-B60461C64FB1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8EAF3508-EE4A-448B-9F4C-05B8AF26DBC5}
+	EndGlobalSection
+EndGlobal

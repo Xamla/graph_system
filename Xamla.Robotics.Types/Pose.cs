@@ -78,6 +78,18 @@ namespace Xamla.Robotics.Types
         public Matrix4x4 RotationMatrix =>
             Matrix4x4.Transpose(Matrix4x4.CreateFromQuaternion(this.Rotation));
 
+        public Pose WithTranslation(Vector3 value)
+            => new Pose(value, this.Rotation, this.Frame, false);
+
+        public Pose WithTranslation(double x = 0, double y = 0, double z = 0) =>
+            WithTranslation(new Vector3((float)x, (float)y, (float)z));
+
+        public Pose WithRotation(Quaternion value, bool normalizeRotation = true)
+            => new Pose(this.Translation, value, this.Frame, normalizeRotation);
+
+        public Pose WithFrame(string value)
+            => new Pose(this.Translation, this.Rotation, value, false);
+
         /// <summary>
         /// A 4x4 matrix containing rotation and translation
         /// </summary>
@@ -108,8 +120,8 @@ namespace Xamla.Robotics.Types
         /// <param name="y">Translation in Y in meters.</param>
         /// <param name="z">Translation in Z in meters.</param>
         /// <returns>A new <c>Pose</c></returns>
-        public Pose Translate(float x = 0, float y = 0, float z = 0) =>
-            Translate(new Vector3(x, y, z));
+        public Pose Translate(double x = 0, double y = 0, double z = 0) =>
+            Translate(new Vector3((float)x, (float)y, (float)z));
 
         /// <summary>
         /// Creates a new <c>Pose</c> translated by the given vector.
