@@ -240,6 +240,16 @@ namespace Xamla.Robotics.Types
             return new JointTrajectory(joints, points.Concat(other.Select(x => x.AddTimeOffset(offset))), this.IsValid && other.IsValid);
         }
 
+        private class PointsCompare : IComparer<JointTrajectoryPoint>{
+            public int Compare(JointTrajectoryPoint a, JointTrajectoryPoint b)
+            {
+                if(a.TimeFromStartSeconds < b.TimeFromStartSeconds)
+                    return -1;
+                if(a.TimeFromStartSeconds > b.TimeFromStartSeconds)
+                    return 1;
+                return 0;
+            }
+        };
 
         /// <summary>
         /// Evaluates the trajectory at a given time.
@@ -249,13 +259,19 @@ namespace Xamla.Robotics.Types
         /// <returns>An instance of <c>JointTrajectoryPoint</c> at the given time.</returns>
         public JointTrajectoryPoint EvaluateAt(TimeSpan simulatedTime, TimeSpan delay)
         {
+
             int index = 0;
             double time = Math.Max(simulatedTime.TotalSeconds - delay.TotalSeconds, 0);
             int pointCount = this.Count;
-            while (index < pointCount - 1 && time >= this[Math.Min(index + 1, pointCount - 1)].TimeFromStart.TotalSeconds)
-                index += 1;
+
+            var comparePoint = this[0].WithTimeFromStart(TimeSpan.FromSeconds(time));
+
+            index = this.points.BinarySearch(comparePoint, new PointsCompare());
+            // while (index < pointCount - 1 && time >= this[Math.Min(index + 1, pointCount - 1)].TimeFromStart.TotalSeconds)
+            //     index += 1;
 
             int k = Math.Min(index + 1, pointCount - 1);
+
             JointTrajectoryPoint p0 = this[index];
             JointTrajectoryPoint p1 = this[k];
             JointTrajectoryPoint q = p0.InterpolateCubic(p1, time);
