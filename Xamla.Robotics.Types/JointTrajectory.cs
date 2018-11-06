@@ -252,28 +252,48 @@ namespace Xamla.Robotics.Types
         };
 
         /// <summary>
+        /// Returns the index of the point with a <c>TimeSpan</c> just before the given <c>TimeSpan</c>
+        /// </summary>
+        /// <param name="time">The <c>TimeSpan</c> object which is greater or equal than the return value.</param>
+        /// <returns>The index of the point.</returns>
+        private int GetPointBefore(TimeSpan time)
+        {
+            int index = 0;
+            int pointCount = this.Count;
+            while (index < pointCount - 1 && time.TotalSeconds >= this[Math.Min(index + 1, pointCount - 1)].TimeFromStart.TotalSeconds)
+                index += 1;
+            return index;
+        }
+
+        /// <summary>
         /// Evaluates the trajectory at a given time.
         /// </summary>
         /// <param name="time">The simulated time</param>
         /// <returns>An instance of <c>JointTrajectoryPoint</c> at the given time.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when  <paramref name="time"/> is not represented by this trajectory.</exception>
         public JointTrajectoryPoint EvaluateAt(TimeSpan time)
         {
-            int index = 0;
+           // int index = 0;
          //   double time = Math.Max(simulatedTime.TotalSeconds - delay.TotalSeconds, 0);
-            int pointCount = this.Count;
+          //  int pointCount = this.Count;
 
-            var comparePoint = this[0].WithTimeFromStart(time);
+          //  var comparePoint = this[0].WithTimeFromStart(time);
 
             //index = this.points.BinarySearch(comparePoint, new PointsCompare());
-            while (index < pointCount - 1 && time.TotalSeconds >= this[Math.Min(index + 1, pointCount - 1)].TimeFromStart.TotalSeconds)
-                index += 1;
+          //  while (index < pointCount - 1 && time.TotalSeconds >= this[Math.Min(index + 1, pointCount - 1)].TimeFromStart.TotalSeconds)
+          //      index += 1;
+            if(time < this[0].TimeFromStart || time > this[this.Count-1].TimeFromStart)
+                throw new ArgumentOutOfRangeException("Time is out of bounds.");
+            else
+            {
+                int index = GetPointBefore(time);
+                int k = Math.Min(index + 1, this.Count - 1);
 
-            int k = Math.Min(index + 1, pointCount - 1);
-
-            JointTrajectoryPoint p0 = this[index];
-            JointTrajectoryPoint p1 = this[k];
-            JointTrajectoryPoint q = p0.InterpolateCubic(p1, time);
-            return q.WithTimeFromStart(time);
+                JointTrajectoryPoint p0 = this[index];
+                JointTrajectoryPoint p1 = this[k];
+                JointTrajectoryPoint q = p0.InterpolateCubic(p1, time);
+                return q.WithTimeFromStart(time);
+            }
         }
 
         /// <summary>
