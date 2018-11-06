@@ -86,27 +86,32 @@ namespace Xamla.Robotics.Types
             WithTimeFromStart(TimeFromStart + offset);
 
 
-        public JointTrajectoryPoint InterpolateCubic(JointTrajectoryPoint point1, double t=0.5) =>
-            JointTrajectoryPoint.InterpolateCubic(this, point1, t);
+        public JointTrajectoryPoint InterpolateCubic(JointTrajectoryPoint point1, TimeSpan time) =>
+            JointTrajectoryPoint.InterpolateCubic(this, point1, time);
 
         /// <summary>
-        /// Cubic Interpolation between two JointTrajectoryPoints
+        /// Cubic Interpolation between two <c>JointTrajectoryPoints</c>
         /// </summary>
-        /// <param name="t"></param>
+        /// <param name="time"></param>
         /// <param name="point0">The first point to be interpolated.</param>
         /// <param name="point1">The second point to be interpolated.</param>
         /// <returns>The interpolated <c>JointTrajectoryPoint</c>.</returns>
-        public static JointTrajectoryPoint InterpolateCubic(JointTrajectoryPoint point0, JointTrajectoryPoint point1, double t=0.5)
+        /// <exception cref="ArgumentException">Thrown when the .</exception>
+        public static JointTrajectoryPoint InterpolateCubic(JointTrajectoryPoint point0, JointTrajectoryPoint point1, TimeSpan time)
         {
-            double t0 = point0.TimeFromStart.TotalSeconds;
-            double t1 = point1.TimeFromStart.TotalSeconds;
-            double dt = t1 - t0;
+            if (point0.TimeFromStart > point1.TimeFromStart)
+                throw new ArgumentException("Point0 must occur before point1.");
+        
+            TimeSpan t0 = point0.TimeFromStart;
+                     
+            TimeSpan t1 = point1.TimeFromStart;
+            TimeSpan deltaT = t1 - t0; 
 
             JointSet jointSet = point1.Positions.JointSet;
-            if (dt < 1e-6)
+            if (deltaT.TotalSeconds < 1e-6)
             {
                 return new JointTrajectoryPoint(
-                    timeFromStart: TimeSpan.FromSeconds(t0 + dt),
+                    timeFromStart: t0 + deltaT,
                     positions: point1.Positions,
                     velocities: JointValues.Zero(jointSet)
                 );
@@ -119,9 +124,13 @@ namespace Xamla.Robotics.Types
             JointValues v0 = point0.Velocities;
             JointValues v1 = point1.Velocities;
 
-            t = Math.Max(t - t0, 0);
+            // clip t to be between 0 and t1 - t0
+            double t = Math.Max( (time - t0).TotalSeconds, 0);
+            t        = Math.Min( (time - t0 + t1).TotalSeconds, t);
+
             for (int i = 0; i < p0.Count; i++)
             {
+                double dt = deltaT.TotalSeconds;
                 double a = p0[i];
                 double b = v0[i];
                 double c = (-3.0 * p0[i] + 3.0 * p1[i] - 2.0 * dt * v0[i] - dt * v1[i]) / Math.Pow(dt, 2);
@@ -131,7 +140,7 @@ namespace Xamla.Robotics.Types
             }
 
             return new JointTrajectoryPoint(
-                timeFromStart: TimeSpan.FromSeconds(t),
+                timeFromStart: time,
                 positions: new JointValues(jointSet, pos),
                 velocities: new JointValues(jointSet, vel)
             );

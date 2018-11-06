@@ -51,9 +51,8 @@ namespace Xamla.Robotics.Types
         /// Evaluates the trajectory at a given time.
         /// </summary>
         /// <param name="simulatedTime">The simulated time</param>
-        /// <param name="delay">The delay, which is remove from <paramref name="simulatedTime"/>  </param>
         /// <returns>An instance of <c>JointTrajectoryPoint</c> at the given time.</returns>
-        JointTrajectoryPoint EvaluateAt(TimeSpan simulatedTime, TimeSpan delay);
+        JointTrajectoryPoint EvaluateAt(TimeSpan simulatedTime);
 
         /// <summary>
         /// Returns the sub trajectory defined by the given start index and end index.
