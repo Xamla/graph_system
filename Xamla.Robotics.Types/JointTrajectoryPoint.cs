@@ -49,11 +49,7 @@ namespace Xamla.Robotics.Types
         /// <param name="velocities">Optional: The target velocity that each joint is required to have when the robot reaches the new point. Default: null.</param>
         /// <param name="accelerations">Optional: The target accelerations that each joint is required to have when the robot reaches the new point. Default: null.</param>
         /// <param name="efforts">Optional: The target effort that each joint is required to have when the robot reaches the new point. Default: null.</param>
-<<<<<<< HEAD
-        /// <exception cref="ArgumentException">Thrown when  <paramref name="positions"/>,  <paramref name="velocities"/>,  <paramref name="accelerations"/> or  <paramref name="efforts"/> have incompatible <c>JointSet</c>.</exception>
-=======
         /// <exception cref="ArgumentException">Thrown when <paramref name="positions"/>, <paramref name="velocities"/>, <paramref name="accelerations"/> or <paramref name="efforts"/> have incompatible <c>JointSet</c>.</exception>
->>>>>>> ec039312842f62c6d9d445bd0e60c96ad9d2f2ab
         public JointTrajectoryPoint(TimeSpan timeFromStart, JointValues positions, JointValues velocities = null, JointValues accelerations = null, JointValues efforts = null)
         {
             this.TimeFromStart = timeFromStart;

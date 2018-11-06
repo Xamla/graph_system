@@ -327,20 +327,6 @@ namespace Xamla.Robotics.Types
             }
 
             return new JointTrajectory(unionJointSet, result);
-       }
-
-        /// <summary>
-        /// Merges the current joint trajectory and the given other joint trajectory.
-        /// </summary>
-        /// <param name="other">The joint trajectory that the current joint trajectory should be merged with.</param>
-        /// <returns>A new instance of <c>JointTrajectory</c>.</returns>
-        /// <exception cref="ArgumentException">Thrown when the amount of <c>JointTrajectoryPoints</c> do not match.</exception>
-        /// <exception cref="Exception">Thrown when corresponding <c>JointTrajectoryPoints</c> do not have the same <c>TimeFromStart</c>.</exception>
-        public IJointTrajectory Merge(IJointTrajectory other)
-        {
-            if ( points.Count != other.Count)
-                throw new ArgumentException("The amount of JointTrajectoryPoints in the trajectories do not match.");
-            return new JointTrajectory(this.JointSet.Append(other.JointSet), points.Zip(other, (x, y) => x.Merge(y)), this.IsValid && other.IsValid);
         }
 
         /// <summary>
@@ -366,11 +352,7 @@ namespace Xamla.Robotics.Types
         /// <param name="startIndex">The index where the sub trajectory should begin.</param>
         /// <param name="endIndex">The index where the sub trajectory should end.</param>
         /// <returns>A new instance of <c>JointTrajectory</c></returns>
-<<<<<<< HEAD
-        /// <exception cref="System.ArgumentOutOfRangeException">Thrown when either the <paramref name="startIndex"/> or <paramref name="endIndex"/> is not within the range of the available points.</exception>
-=======
         /// <exception cref="ArgumentOutOfRangeException">Thrown when either the <paramref name="startIndex"/> or <paramref name="endIndex"/> is not within the range of the available points.</exception>
->>>>>>> ec039312842f62c6d9d445bd0e60c96ad9d2f2ab
         public IJointTrajectory Sub(int startIndex, int endIndex) =>
             new JointTrajectory(joints, Slice(startIndex, endIndex), this.IsValid);
 

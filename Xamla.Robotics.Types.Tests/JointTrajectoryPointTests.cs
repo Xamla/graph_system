@@ -5,11 +5,7 @@ using Xunit;
 namespace Xamla.Robotics.Types.Tests
 {
 
-<<<<<<< HEAD
     public class JointTrajectoryPointTests
-=======
-    public class JointTrajectoryPointsTests
->>>>>>> ec039312842f62c6d9d445bd0e60c96ad9d2f2ab
     {
         private static JointTrajectoryPoint GetPoint()
         {
@@ -41,7 +37,6 @@ namespace Xamla.Robotics.Types.Tests
         }
 
         [Fact]
-<<<<<<< HEAD
         public void TestInterpolation()
         {
             void AssertEqualPoints(JointTrajectoryPoint a, JointTrajectoryPoint b)
@@ -86,8 +81,6 @@ namespace Xamla.Robotics.Types.Tests
         }
 
         [Fact]
-=======
->>>>>>> ec039312842f62c6d9d445bd0e60c96ad9d2f2ab
         public void TestMerge()
         {
             var p1 = GetPoint();

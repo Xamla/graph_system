@@ -34,11 +34,7 @@ namespace Xamla.Robotics.Types
         /// </summary>
         /// <param name="start">Start point of the new <c>JointPath</c>.</param>
         /// <param name="goal">End point of the new <c>JointPath</c>.</param>
-<<<<<<< HEAD
-        /// <exception cref="ArgumentException">Thrown when there is a mismatch between the <c>JointSet</c> in <paramref name="start"/> and <paramref name="goal"/>.</exception>        
-=======
         /// <exception cref="ArgumentException">Thrown when there is a mismatch between the <c>JointSet</c> in <paramref name="start"/> and <paramref name="goal"/>.</exception>
->>>>>>> ec039312842f62c6d9d445bd0e60c96ad9d2f2ab
         public JointPath(JointValues start, JointValues goal)
             : this(start?.JointSet, start, goal)
         {
@@ -168,11 +164,7 @@ namespace Xamla.Robotics.Types
         /// <param name="startIndex">The index where the sub joint path should start.</param>
         /// <param name="endIndex">The index where the sub joint path should end.</param>
         /// <returns>A new instance of <c>JointPath</c>.</returns>
-<<<<<<< HEAD
-        /// <exception cref="ArgumentOutOfRangeException">Thrown when  <paramref name="startIndex"/>  or <paramref name="endIndex"/> are out of range.</exception>        
-=======
         /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="startIndex"/> or <paramref name="endIndex"/> are out of range.</exception>
->>>>>>> ec039312842f62c6d9d445bd0e60c96ad9d2f2ab
         public IJointPath Sub(int startIndex, int endIndex) =>
             new JointPath(joints, Slice(startIndex, endIndex));
 

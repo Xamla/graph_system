@@ -144,11 +144,7 @@ namespace Xamla.Robotics.Types
 
         /// <summary>
         /// Creates a new <c>JointValues</c> instance that contains only values for joints of the given <c>JointSet</c>.
-<<<<<<< HEAD
-        /// The <paramref name="subset"/> parameter defines the new order of the joints in the resulting <c>JointValues</c> object. 
-=======
         /// The <paramref name="subset"/> parameter defines the new order of the joints in the resulting <c>JointValues</c> object.
->>>>>>> ec039312842f62c6d9d445bd0e60c96ad9d2f2ab
         /// </summary>
         /// <param name="subset">A <c>JointSet</c> with a subset of the joints.</param>
         /// <returns>A new instance of <c>JointValues</c>.</returns>
