@@ -100,7 +100,6 @@ namespace Xamla.Robotics.Types.Tests
         [Fact]
         public void TestEvaluateAt()
         {
-
             void AssertEqualPoints(JointTrajectoryPoint a, JointTrajectoryPoint b)
             {
                 bool Compare(JointValues aa, JointValues bb)

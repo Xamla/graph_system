@@ -258,11 +258,16 @@ namespace Xamla.Robotics.Types
         /// <returns>The index of the point.</returns>
         private int GetPointBefore(TimeSpan time)
         {
-            int index = 0;
-            int pointCount = this.Count;
-            while (index < pointCount - 1 && time.TotalSeconds >= this[Math.Min(index + 1, pointCount - 1)].TimeFromStart.TotalSeconds)
-                index += 1;
-            return index;
+            var comparePoint = this[0].WithTimeFromStart(time);
+            int index = this.points.BinarySearch(comparePoint, new PointsCompare());
+            // int pointCount = this.Count;
+            // while (index < pointCount - 1 && time.TotalSeconds >= this[Math.Min(index + 1, pointCount - 1)].TimeFromStart.TotalSeconds)
+            //    index += 1;
+            // When time has not been matched exaxtly, the index is on less than the complement (per def of List<T> BinarySearch the complement of the next items index).
+            if(index < 0)
+                return ~index - 1;
+            else
+                return index;           
         }
 
         /// <summary>
@@ -273,15 +278,7 @@ namespace Xamla.Robotics.Types
         /// <exception cref="ArgumentOutOfRangeException">Thrown when  <paramref name="time"/> is not represented by this trajectory.</exception>
         public JointTrajectoryPoint EvaluateAt(TimeSpan time)
         {
-           // int index = 0;
-         //   double time = Math.Max(simulatedTime.TotalSeconds - delay.TotalSeconds, 0);
-          //  int pointCount = this.Count;
 
-          //  var comparePoint = this[0].WithTimeFromStart(time);
-
-            //index = this.points.BinarySearch(comparePoint, new PointsCompare());
-          //  while (index < pointCount - 1 && time.TotalSeconds >= this[Math.Min(index + 1, pointCount - 1)].TimeFromStart.TotalSeconds)
-          //      index += 1;
             if(time < this[0].TimeFromStart || time > this[this.Count-1].TimeFromStart)
                 throw new ArgumentOutOfRangeException("Time is out of bounds.");
             else
