@@ -177,8 +177,8 @@ namespace Xamla.Robotics.Types
         /// <summary>
         /// Create a new <c>PlanParameters</c> object from a <c>Builder</c> object.
         /// </summary>
-        /// <param name="builder"> The builder which builds the <c>PlanParameters</c> object</param>
-        /// <exception cref="System.ArgumentOutOfRangeException">Thrown when either <c>MaxVelocity</c> or <c>MaxAcceleration</c> does not match the <c>JointSet</c> size.</exception>
+        /// <param name="builder">The builder which builds the <c>PlanParameters</c> object.</param>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when either <c>MaxVelocity</c> or <c>MaxAcceleration</c> does not match the <c>JointSet</c> size.</exception>
         public PlanParameters(Builder builder)
         {
             if (builder.JointSet != null)

@@ -10,8 +10,14 @@ namespace Xamla.Robotics.Types.Tests
     public class PoseHelper
     {
         Random rng = ThreadSafeRandom.Generator;
+<<<<<<< HEAD
         public PoseHelper(){
 
+=======
+
+        public PoseHelper()
+        {
+>>>>>>> ec039312842f62c6d9d445bd0e60c96ad9d2f2ab
         }
 
         public Vector3 RandomVector(double sigma = 1)
@@ -27,7 +33,11 @@ namespace Xamla.Robotics.Types.Tests
             Quaternion.CreateFromAxisAngle(RandomAxis(), (float)((rng.NextDouble()-0.5) * 4 * Math.PI));
 
         public Pose RandomPose() =>
+<<<<<<< HEAD
             new Pose(RandomVector(100), RandomRotation());
+=======
+            new Pose(RandomVector(100), RandomRotation(), "world", true);
+>>>>>>> ec039312842f62c6d9d445bd0e60c96ad9d2f2ab
 
         public IEnumerable<Pose> RandomPoses()
         {

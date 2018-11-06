@@ -144,7 +144,11 @@ namespace Xamla.Robotics.Types
 
         /// <summary>
         /// Creates a new <c>JointValues</c> instance that contains only values for joints of the given <c>JointSet</c>.
+<<<<<<< HEAD
         /// The <paramref name="subset"/> parameter defines the new order of the joints in the resulting <c>JointValues</c> object. 
+=======
+        /// The <paramref name="subset"/> parameter defines the new order of the joints in the resulting <c>JointValues</c> object.
+>>>>>>> ec039312842f62c6d9d445bd0e60c96ad9d2f2ab
         /// </summary>
         /// <param name="subset">A <c>JointSet</c> with a subset of the joints.</param>
         /// <returns>A new instance of <c>JointValues</c>.</returns>
@@ -163,10 +167,14 @@ namespace Xamla.Robotics.Types
         /// <param name="values">The new values for the given joint set.</param>
         /// <returns>A new instance of <c>JointValues</c>.</returns>
         /// <exception cref="ArgumentException">Thrown when the given <paramref name="jointSet"/> is not a subset of the names the <c>JointSet</c>.</exception>
+        /// <exception cref="ArgumentException">Thrown when the number of elements in the <paramref name="values"/> list does not match the number of joints in the <paramref name="jointSet"/> argument.</exception>
         public JointValues SetValues(JointSet jointSet, IReadOnlyList<double> values)
         {
             if (!jointSet.IsSubset(this.JointSet))
                 throw new ArgumentException("The given joint set needs to be a subset of the current joint set.", nameof(jointSet));
+
+            if (jointSet.Count != values.Count)
+                throw new ArgumentException("Number of elements in values list does not match number of joints in joint set.", nameof(values));
 
             double[] newValues = this.ToArray();
             for (var i = 0; i < values.Count; i++)
@@ -185,7 +193,7 @@ namespace Xamla.Robotics.Types
         /// <param name="name">Name of the joint whose value is to be modified.</param>
         /// <param name="value">New joint value in radians.</param>
         /// <returns>A new instance of <c>JointValues</c>.</returns>
-        /// <exception cref="System.Exception">Thrown when the given <paramref name="name"/> is not one of the names in the current <c>JointSet</c>.</exception>
+        /// <exception cref="Exception">Thrown when the given <paramref name="name"/> is not one of the names in the current <c>JointSet</c>.</exception>
         public JointValues WithValue(string name, double value) =>
             WithValue(JointSet.GetIndexOf(name), value);
 
@@ -195,7 +203,7 @@ namespace Xamla.Robotics.Types
         /// <param name="index">Index of the joint whose value is to be modified.</param>
         /// <param name="value">New joint value in radians.</param>
         /// <returns>A new instance of <c>JointValues</c>.</returns>
-        /// <exception cref="System.IndexOutOfRangeException">Thrown when the given <paramref name="index"/> is out of bound.</exception>
+        /// <exception cref="IndexOutOfRangeException">Thrown when the given <paramref name="index"/> is out of bound.</exception>
         public JointValues WithValue(int index, double value)
         {
             double[] newValues = this.ToArray();

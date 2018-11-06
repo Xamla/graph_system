@@ -12,8 +12,8 @@ namespace Xamla.Robotics.Types.Tests
             var builder = new TaskSpacePlanParameters.Builder();
             builder.MaxAngularAcceleration = 1000;
             builder.MaxXYZAcceleration = -4;
-            Assert.Throws<System.ArgumentOutOfRangeException>(() => builder.ScaleAcceleration(1.1));
-            Assert.Throws<System.ArgumentOutOfRangeException>(() => builder.ScaleAcceleration(-0.1));
+            Assert.Throws<ArgumentOutOfRangeException>(() => builder.ScaleAcceleration(1.1));
+            Assert.Throws<ArgumentOutOfRangeException>(() => builder.ScaleAcceleration(-0.1));
             Assert.Equal(250, builder.ScaleAcceleration(0.25).MaxAngularAcceleration);
             Assert.Equal(-0.25, builder.ScaleAcceleration(0.25).MaxXYZAcceleration);
         }
@@ -24,8 +24,8 @@ namespace Xamla.Robotics.Types.Tests
             var builder = new TaskSpacePlanParameters.Builder();
             builder.MaxAngularVelocity = 1000;
             builder.MaxXYZVelocity = -4;
-            Assert.Throws<System.ArgumentOutOfRangeException>(() => builder.ScaleVelocity(1.1));
-            Assert.Throws<System.ArgumentOutOfRangeException>(() => builder.ScaleVelocity(-0.1));
+            Assert.Throws<ArgumentOutOfRangeException>(() => builder.ScaleVelocity(1.1));
+            Assert.Throws<ArgumentOutOfRangeException>(() => builder.ScaleVelocity(-0.1));
             Assert.Equal(250, builder.ScaleVelocity(0.25).MaxAngularVelocity);
             Assert.Equal(-0.25, builder.ScaleVelocity(0.25).MaxXYZVelocity);
         }

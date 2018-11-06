@@ -41,7 +41,11 @@ namespace Xamla.Robotics.Types.Tests
             Assert.Equal(p1, t[0]);
             Assert.Equal(p2, t[1]);
             Assert.Equal(p3, t[2]);
+<<<<<<< HEAD
             Assert.Throws<System.ArgumentException>(() => new JointTrajectory(joints, new JointTrajectoryPoint[] { p1, p3, p2 }));
+=======
+            Assert.Throws<ArgumentException>(() => new JointTrajectory(joints, new JointTrajectoryPoint[] { p1, p3, p2 }));
+>>>>>>> ec039312842f62c6d9d445bd0e60c96ad9d2f2ab
         }
 
 
@@ -98,6 +102,7 @@ namespace Xamla.Robotics.Types.Tests
 
 
         [Fact]
+<<<<<<< HEAD
         public void TestEvaluateAt()
         {
             void AssertEqualPoints(JointTrajectoryPoint a, JointTrajectoryPoint b)
@@ -166,10 +171,13 @@ namespace Xamla.Robotics.Types.Tests
         }
 
         [Fact]
+=======
+>>>>>>> ec039312842f62c6d9d445bd0e60c96ad9d2f2ab
         public void TestMerge()
         {
             var timeSpan = new TimeSpan(100);
             var jointsA = new JointSet("a", "b", "c");
+<<<<<<< HEAD
             var jointsB = new JointSet("e", "f");
 
             var pA1 = GetPoint(0, jointsA);
@@ -183,6 +191,23 @@ namespace Xamla.Robotics.Types.Tests
             var t2 = new JointTrajectory(jointsB, new JointTrajectoryPoint[] { pB1, pB2, pB3 });
             var t = t1.Merge(t2);
             Assert.True(Math.Abs(t[1].TimeFromStartSeconds - 0.0000150) < 1E-9);
+=======
+            var jointsB = new JointSet("e","f");
+
+            var p1 = GetPoint(100, jointsA);
+            var p2 = GetPoint(100, jointsB);
+            var p3 = GetPoint(300, jointsB);
+            var t1 = new JointTrajectory(jointsA, new JointTrajectoryPoint[] { p1 });
+            var t2 = new JointTrajectory(jointsB, new JointTrajectoryPoint[] { p2 });
+            var t = t1.Merge(t2);
+            Assert.Equal(1, t.Count);
+
+            var t3 = new JointTrajectory(jointsB, new JointTrajectoryPoint[] { p2, p3 });
+            Assert.Throws<ArgumentException>(() => t1.Merge(t3));
+            var t4 = new JointTrajectory(jointsB, new JointTrajectoryPoint[] { p3 });       
+            Assert.Throws<Exception>(() => t1.Merge(t4));
+
+>>>>>>> ec039312842f62c6d9d445bd0e60c96ad9d2f2ab
         }
 
         [Fact]
@@ -199,8 +224,13 @@ namespace Xamla.Robotics.Types.Tests
             // assert correct duration
             Assert.Equal(p2.WithTimeFromStart(new TimeSpan(200)), t[0]);
             Assert.Equal(p3.WithTimeFromStart(new TimeSpan(300)), t[1]);
+<<<<<<< HEAD
             Assert.Throws<System.ArgumentOutOfRangeException>(() => tBig.Sub(0, tBig.Count));
             Assert.Throws<System.ArgumentOutOfRangeException>(() => tBig.Sub(-1, tBig.Count - 1));
+=======
+            Assert.Throws<ArgumentOutOfRangeException>(() => tBig.Sub(0, tBig.Count ));
+            Assert.Throws<ArgumentOutOfRangeException>(() => tBig.Sub(-1, tBig.Count-1 ));
+>>>>>>> ec039312842f62c6d9d445bd0e60c96ad9d2f2ab
         }
     }
 }

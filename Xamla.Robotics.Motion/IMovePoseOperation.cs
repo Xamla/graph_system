@@ -9,7 +9,7 @@ namespace Xamla.Robotics.Motion
         public IEndEffector EndEffector { get; set; }
         public JointValues Seed { get; set; }
         public Pose TargetPose { get; set; }
-        public double IkJumpThreshold { get; set; }
+        public double? IkJumpThreshold { get; set; }
 
         /// <summary>
         /// Optional. If not specified current end effector pose is used.
@@ -32,6 +32,9 @@ namespace Xamla.Robotics.Motion
         Pose StartPose { get; }
         JointValues Seed { get; }
         JointValues Start { get; }
+
+        IMovePoseOperation WithVelocityScaling(double? value);
+        IMovePoseOperation WithAccelerationScaling(double? value);
 
         IMovePoseOperation With(Func<MovePoseArgs, MovePoseArgs> mutator);
         IMovePoseOperation With(Action<MovePoseArgs> mutator);

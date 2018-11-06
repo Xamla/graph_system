@@ -19,8 +19,11 @@ namespace Xamla.Robotics.Types
         /// </summary>
         public static readonly Pose Identity = new Pose(Vector3.Zero, Quaternion.Identity);
 
+        /// <summary>
+        /// Creates a <c>Pose</c> with zero vector (0, 0, 0) and unit quaternion (0, 0, 0, 1).
+        /// </summary>
         public Pose()
-            : this(new Vector3(), new Quaternion())
+            : this(new Vector3(), Quaternion.Identity)
         {
         }
 
@@ -30,7 +33,7 @@ namespace Xamla.Robotics.Types
         /// <param name="translation">Translation in X, Y and Z axis in meters.</param>
         /// <param name="rotation">Rotation as quaternion.</param>
         /// <param name="frame">Name of the ROS TF parent frame. Default: empty string.</param>
-        /// <param name="normalizeRotation">If true the rotation quaternion gets normalized.</param>
+        /// <param name="normalizeRotation">If true the rotation quaternion is normalized (Length = 1 and W > 0).</param>
         public Pose(Vector3 translation, Quaternion rotation, string frame = "", bool normalizeRotation = false)
         {
             this.Frame = frame;
@@ -147,8 +150,8 @@ namespace Xamla.Robotics.Types
         /// </summary>
         /// <param name="other">Another <c>object</c> that should be tested for similarity.</param>
         /// <returns>True if the <c>Poses</c> and the given <c> object</c>are the same object or if their values are equal. False otherwise.</returns>
-        public override bool Equals(object obj) =>
-            Equals(obj as Pose);
+        public override bool Equals(object other) =>
+            Equals(other as Pose);
 
         /// <summary>
         /// Creates a hash code over Frame, Translation and Rotation.
@@ -173,7 +176,7 @@ namespace Xamla.Robotics.Types
             if (b == null)
                 throw new ArgumentNullException(nameof(b));
             if (a.Frame != b.Frame)
-                throw new Exception("Poses have different parent frame.");
+                throw new Exception("Poses have different parent frames.");
 
             return new Pose(Vector3.Lerp(a.Translation, b.Translation, (float)t), Quaternion.Slerp(a.Rotation, b.Rotation, (float)t), a.Frame);
         }

@@ -10,9 +10,8 @@ namespace Xamla.Robotics.Motion
         public JointValues Target { get; }
 
         public IMoveGroup MoveGroup { get; }
-        public double VelocityScaling { get; }
-        public double AccelerationScaling { get; }
-        public double SampleResolution { get; }
+        public double? VelocityScaling { get; }
+        public double? AccelerationScaling { get; }
         public PlanParameters Parameters { get; }
 
         public MoveJointsOperationBase(MoveJointsArgs args)
@@ -35,8 +34,11 @@ namespace Xamla.Robotics.Motion
         public IMoveJointsOperation WithCollisionCheck(bool value = true) =>
             this.Parameters.CollisionCheck == value ? this : With(a => a.CollisionCheck = value);
 
-        public IMoveJointsOperation WithVelocityScaling(double value) =>
+        public IMoveJointsOperation WithVelocityScaling(double? value) =>
             this.VelocityScaling == value ? this : With(a => a.VelocityScaling = value);
+
+        public IMoveJointsOperation WithAccelerationScaling(double? value) =>
+            this.AccelerationScaling == value ? this : With(a => a.AccelerationScaling = value);
 
         public IMoveJointsOperation WithArgs(double? velocityScaling = null, bool? collisionCheck = null, double? maxDeviation = null, double? sampleResolution = null, double? accelerationScaling = null) =>
             this.With(a =>
