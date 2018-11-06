@@ -30,6 +30,29 @@ namespace Xamla.Robotics.Types
         IJointTrajectory Append(IEnumerable<JointTrajectoryPoint> source);
 
 
+        /// <summary>
+        /// Merges the current joint trajectory and the given other joint trajectory.
+        /// </summary>
+        /// <param name="other">The joint trajectory that the current joint trajectory should be merged with.</param>
+        /// <returns>A new instance of <c>JointTrajectory</c>.</returns>
+        IJointTrajectory Merge(IJointTrajectory b);
+
+        /// <summary>
+        /// Merges the current joint trajectory and the given other joint trajectory.
+        /// </summary>
+        /// <param name="other">The joint trajectory that the current joint trajectory should be merged with.</param>
+        /// <param name="delayA">The delay of the current <c>JointTrajectory</c>.</param>
+        /// <param name="delayB">The delay of the other <c>JointTrajectory</c>.</param>
+        /// <returns>A new instance of <c>JointTrajectory</c>.</returns>
+        IJointTrajectory Merge(IJointTrajectory other, TimeSpan delayA, TimeSpan delayB);
+
+
+        /// <summary>
+        /// Evaluates the trajectory at a given time.
+        /// </summary>
+        /// <param name="simulatedTime">The simulated time</param>
+        /// <param name="delay">The delay, which is remove from <paramref name="simulatedTime"/>  </param>
+        /// <returns>An instance of <c>JointTrajectoryPoint</c> at the given time.</returns>
         JointTrajectoryPoint EvaluateAt(TimeSpan simulatedTime, TimeSpan delay);
 
         /// <summary>

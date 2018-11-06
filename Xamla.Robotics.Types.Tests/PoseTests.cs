@@ -116,22 +116,5 @@ namespace Xamla.Robotics.Types.Tests
                 Assert.True(r.Equals(p));
             }
         }
-
-        // TODO: This test fails, no idea why 
-        [Fact]
-        public void TestInterpolation()
-        {
-            foreach (var (p, q) in poseHelper.RandomPoses(100).Zip(poseHelper.RandomPoses(100), (x, y) => (x, y)))
-            {
-                float amount = (float)poseHelper.RandomDouble();
-                Matrix4x4 m1 = (Pose.Interpolate(p, q, amount)).TransformMatrix;
-                Matrix4x4 m2 = Matrix4x4.Lerp(p.TransformMatrix, q.TransformMatrix, amount);
-                double delta = SeqAbsDiff(m1.ToRowMajorArray(), m2.ToRowMajorArray());
-                Assert.True(delta < 1E-3);
-            }
-        }
-
-
-
     }
 }

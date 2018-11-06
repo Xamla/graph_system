@@ -255,11 +255,10 @@ namespace Xamla.Robotics.Types
         /// Evaluates the trajectory at a given time.
         /// </summary>
         /// <param name="simulatedTime">The simulated time</param>
-        /// <param name="delay">the </param>
+        /// <param name="delay">The delay, which is remove from <paramref name="simulatedTime"/>  </param>
         /// <returns>An instance of <c>JointTrajectoryPoint</c> at the given time.</returns>
         public JointTrajectoryPoint EvaluateAt(TimeSpan simulatedTime, TimeSpan delay)
         {
-
             int index = 0;
             double time = Math.Max(simulatedTime.TotalSeconds - delay.TotalSeconds, 0);
             int pointCount = this.Count;
@@ -278,6 +277,11 @@ namespace Xamla.Robotics.Types
             return q.WithTimeFromStart(simulatedTime);
         }
 
+        /// <summary>
+        /// Merges the current joint trajectory and the given other joint trajectory.
+        /// </summary>
+        /// <param name="other">The joint trajectory that the current joint trajectory should be merged with.</param>
+        /// <returns>A new instance of <c>JointTrajectory</c>.</returns>
         public IJointTrajectory Merge(IJointTrajectory b) =>
             this.Merge(b, TimeSpan.Zero, TimeSpan.Zero);
 
@@ -290,14 +294,12 @@ namespace Xamla.Robotics.Types
         /// <returns>A new instance of <c>JointTrajectory</c>.</returns>
         public IJointTrajectory Merge(IJointTrajectory other, TimeSpan delayA, TimeSpan delayB)
         {
-            var a = this;
-            var b = other;
-            JointSet unionJointSet = a.JointSet.Combine(b.JointSet);
-            int numPointsA = a.Count;
-            int numPointsB = b.Count;
+            JointSet unionJointSet = this.JointSet.Combine(other.JointSet);
+            int numPointsA = this.Count;
+            int numPointsB = other.Count;
 
-            TimeSpan durationA = a[numPointsA - 1].TimeFromStart + delayA;
-            TimeSpan durationB = b[numPointsB - 1].TimeFromStart + delayB;
+            TimeSpan durationA = this[numPointsA - 1].TimeFromStart + delayA;
+            TimeSpan durationB = other[numPointsB - 1].TimeFromStart + delayB;
 
             TimeSpan duration = durationA > durationB ? durationA : durationB;
 
@@ -308,8 +310,8 @@ namespace Xamla.Robotics.Types
             {
                 double t = i / (double)(maxNumberPoints - 1);
                 TimeSpan simulatedTime = duration * t;
-                JointTrajectoryPoint q_a = a.EvaluateAt(simulatedTime, delayA);
-                JointTrajectoryPoint q_b = b.EvaluateAt(simulatedTime, delayB);
+                JointTrajectoryPoint q_a = this.EvaluateAt(simulatedTime, delayA);
+                JointTrajectoryPoint q_b = other.EvaluateAt(simulatedTime, delayB);
                 JointTrajectoryPoint jtp = q_a.Merge(q_b);
                 result.Add(jtp);
             }

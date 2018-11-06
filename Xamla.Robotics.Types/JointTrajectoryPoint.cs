@@ -74,9 +74,6 @@ namespace Xamla.Robotics.Types
         {
         }
 
-        
-
-
         public JointTrajectoryPoint WithTimeFromStart(TimeSpan timeFromStart) =>
             new JointTrajectoryPoint(timeFromStart, Positions, Velocities, Accelerations, Efforts);
 
@@ -92,14 +89,13 @@ namespace Xamla.Robotics.Types
         public JointTrajectoryPoint InterpolateCubic(JointTrajectoryPoint point1, double t=0.5) =>
             JointTrajectoryPoint.InterpolateCubic(this, point1, t);
 
-
         /// <summary>
         /// Cubic Interpolation between two JointTrajectoryPoints
         /// </summary>
         /// <param name="t"></param>
         /// <param name="point0">The first point to be interpolated.</param>
         /// <param name="point1">The second point to be interpolated.</param>
-        /// <returns></returns>
+        /// <returns>The interpolated <c>JointTrajectoryPoint</c>.</returns>
         public static JointTrajectoryPoint InterpolateCubic(JointTrajectoryPoint point0, JointTrajectoryPoint point1, double t=0.5)
         {
             double t0 = point0.TimeFromStart.TotalSeconds;
