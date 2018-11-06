@@ -340,7 +340,7 @@ namespace Xamla.Robotics.Types
         /// <param name="startIndex">The index where the sub trajectory should begin.</param>
         /// <param name="endIndex">The index where the sub trajectory should end.</param>
         /// <returns>A new instance of <c>JointTrajectory</c></returns>
-        /// TODO: ADDED_DOCUMENTATION <exception cref="System.ArgumentOutOfRangeException">Thrown when either the <paramref name="startIndex"/> or <paramref name="endIndex"/> is not within the range of the available points.</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">Thrown when either the <paramref name="startIndex"/> or <paramref name="endIndex"/> is not within the range of the available points.</exception>
         public IJointTrajectory Sub(int startIndex, int endIndex) =>
             new JointTrajectory(joints, Slice(startIndex, endIndex), this.IsValid);
 

@@ -49,7 +49,7 @@ namespace Xamla.Robotics.Types
         /// <param name="velocities">Optional: The target velocity that each joint is required to have when the robot reaches the new point. Default: null.</param>
         /// <param name="accelerations">Optional: The target accelerations that each joint is required to have when the robot reaches the new point. Default: null.</param>
         /// <param name="efforts">Optional: The target effort that each joint is required to have when the robot reaches the new point. Default: null.</param>
-        /// TODO: ADDED_DOCUMENTATION <exception cref="ArgumentException">Thrown when  <paramref name="positions"/>,  <paramref name="velocities"/>,  <paramref name="accelerations"/> or  <paramref name="efforts"/> have incompatible <c>JointSet</c>.</exception>
+        /// <exception cref="ArgumentException">Thrown when  <paramref name="positions"/>,  <paramref name="velocities"/>,  <paramref name="accelerations"/> or  <paramref name="efforts"/> have incompatible <c>JointSet</c>.</exception>
         public JointTrajectoryPoint(TimeSpan timeFromStart, JointValues positions, JointValues velocities = null, JointValues accelerations = null, JointValues efforts = null)
         {
             this.TimeFromStart = timeFromStart;
@@ -146,7 +146,7 @@ namespace Xamla.Robotics.Types
         /// </summary>
         /// <param name="other">TrajectoryPoints to merge with the current TrajectoryPoint</param>
         /// <returns>New instance of JointTrajectoryPoint which contains the merged JointTrajectoryPoints</returns>
-        /// TODO: ADDED_DOCUMENTATION <exception cref="Exception">Thrown when TimeFromStart of the points do not match.</exception>
+        /// <exception cref="Exception">Thrown when TimeFromStart of the points do not match.</exception>
         public JointTrajectoryPoint Merge(JointTrajectoryPoint other)
         {
             if (this.TimeFromStart != other.TimeFromStart)

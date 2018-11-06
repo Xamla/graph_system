@@ -166,7 +166,7 @@ namespace Xamla.Robotics.Types
         /// <summary>
         /// Accesses the joint name at the given index.
         /// </summary>
-        /// TODO: Added this. <exception cref="System.IndexOutOfRangeException">Thrown when index out of bound</exception>
+        /// <exception cref="System.IndexOutOfRangeException">Thrown when index out of bound</exception>
         public string this[int index] =>
             jointNames[index];
 

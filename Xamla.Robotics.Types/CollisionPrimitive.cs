@@ -215,7 +215,7 @@ namespace Xamla.Robotics.Types
         /// <exception cref="ArgumentException">Thrown when the amount of given parameters does not match the expectation for the given kind.</exception>
         /// <exception cref="ArgumentException">Thrown when the null vector is given as parameter for a plane.</exception>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when negative parameters are given.</exception>
-       /// TODO: ADDED_DOCUMENTATION <exception cref="ArgumentNullException">Thrown when <paramref name="parameters"/> equals null.</exception>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="parameters"/> equals null.</exception>
         public CollisionPrimitive(CollisionPrimitiveKind kind, double[] parameters, Pose pose = null)
         {
             if (parameters == null)

@@ -150,7 +150,6 @@ namespace Xamla.Robotics.Types.Tests
             Assert.Throws<System.ArgumentException>(() => t1.Merge(t3));
             var t4 = new JointTrajectory(jointsB, new JointTrajectoryPoint[] { p3 });       
             Assert.Throws<System.Exception>(() => t1.Merge(t4));
-
         }
 
         [Fact]
