@@ -151,7 +151,6 @@ namespace Xamla.Robotics.Types
         {
             if (name == null)
                 throw new ArgumentNullException(nameof(name), "Name must not be null.");
-
             if (!this.TryGetIndexOf(name, out int value))
                 throw new Exception($"Joint '{name}' is missing in JointSet.");
             return value;

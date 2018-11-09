@@ -5,7 +5,7 @@ using Xunit;
 namespace Xamla.Robotics.Types.Tests
 {
 
-    public class JointTrajectoryPointsTests
+    public class JointTrajectoryPointTests
     {
         private static JointTrajectoryPoint GetPoint()
         {
@@ -34,6 +34,50 @@ namespace Xamla.Robotics.Types.Tests
             var p = GetPoint();
             var q = p.AddTimeOffset(timeSpan);
             Assert.Equal(q.TimeFromStart - timeSpan, p.TimeFromStart);
+        }
+
+        [Fact]
+        public void TestInterpolation()
+        {
+            void AssertEqualPoints(JointTrajectoryPoint a, JointTrajectoryPoint b)
+            {
+                bool Compare(JointValues aa, JointValues bb)
+                {
+                    double delta = Math.Abs(aa.MaxNorm() - bb.MaxNorm());
+                    return delta < 1E-6;
+                }
+                Assert.Equal(a.TimeFromStart, b.TimeFromStart);
+                Assert.True(a.JointSet == b.JointSet);
+                Assert.True(Compare(a.Positions, b.Positions));
+                Assert.True(Compare(a.Velocities, b.Velocities));
+            }
+            var joints = new JointSet("a", "b", "c");
+            var velocity = new JointValues(joints, new double[] { 1, 1, 1 });
+            var acceleration = new JointValues(joints, new double[] { 0, 0, 0 });
+            var positionA = new JointValues(joints, new double[] { 0, 0, 0 });
+            var positionB = new JointValues(joints, new double[] { 1, 1, 1 });
+            var positionC = new JointValues(joints, new double[] { 2, 2, 2 });
+            var timeA = TimeSpan.FromSeconds(1);
+            var timeB = TimeSpan.FromSeconds(2);
+            var timeC = TimeSpan.FromSeconds(3);
+            var pointA = new JointTrajectoryPoint(timeA, positionA, velocity, acceleration);
+            var pointB = new JointTrajectoryPoint(timeB, positionB, velocity, acceleration);
+            var pointC = new JointTrajectoryPoint(timeC, positionC, velocity, acceleration);
+            JointTrajectoryPoint evalA = pointA.InterpolateCubic(pointC, timeA);
+            AssertEqualPoints(evalA, pointA);
+            JointTrajectoryPoint evalC = pointA.InterpolateCubic(pointC, timeC);
+            AssertEqualPoints(evalC, pointC);
+            // This one is interpolated between A and C
+            JointTrajectoryPoint evalB = pointA.InterpolateCubic(pointC, timeB);
+            AssertEqualPoints(evalB, pointB);
+
+            // Assert that value out of boundaries are clipped
+            var timeAOut = new TimeSpan(0);
+            var timeCOut = new TimeSpan(400000);
+            JointTrajectoryPoint evalAOut = pointA.InterpolateCubic(pointC, timeAOut);
+            AssertEqualPoints(evalAOut, pointA.WithTimeFromStart(timeAOut));
+            JointTrajectoryPoint evalCOut = pointA.InterpolateCubic(pointC, timeCOut);
+            AssertEqualPoints(evalCOut, pointA.WithTimeFromStart(timeCOut));
         }
 
         [Fact]

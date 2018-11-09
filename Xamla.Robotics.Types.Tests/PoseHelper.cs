@@ -10,9 +10,8 @@ namespace Xamla.Robotics.Types.Tests
     public class PoseHelper
     {
         Random rng = ThreadSafeRandom.Generator;
+        public PoseHelper(){
 
-        public PoseHelper()
-        {
         }
 
         public Vector3 RandomVector(double sigma = 1)

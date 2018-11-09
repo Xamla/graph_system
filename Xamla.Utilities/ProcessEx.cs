@@ -13,21 +13,21 @@ namespace Xamla.Utilities
      */
     public static class ProcessEx
     {
-        public static Process BeginOutputReadLine(this Process process, StringReceivedEventHandler handler, CancellationToken token)
+        public static Process BeginOutputReadLine(this Process process, StringReceivedEventHandler handler, CancellationToken cancel = default(CancellationToken))
         {
-            BeginRead(process, process.StandardOutput, handler, token);
+            BeginRead(process, process.StandardOutput, handler, cancel);
             return process;
         }
 
-        public static Process BeginErrorReadLine(this Process process, StringReceivedEventHandler handler, CancellationToken token)
+        public static Process BeginErrorReadLine(this Process process, StringReceivedEventHandler handler, CancellationToken cancel = default(CancellationToken))
         {
-            BeginRead(process, process.StandardError, handler, token);
+            BeginRead(process, process.StandardError, handler, cancel);
             return process;
         }
 
-        private static async void BeginRead(Process process, StreamReader streamReader, StringReceivedEventHandler handler, CancellationToken token)
+        private static async void BeginRead(Process process, StreamReader streamReader, StringReceivedEventHandler handler, CancellationToken cancel = default(CancellationToken))
         {
-            while (!token.IsCancellationRequested)
+            while (!cancel.IsCancellationRequested)
             {
                 string data = null;
                 try

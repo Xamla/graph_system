@@ -85,6 +85,67 @@ namespace Xamla.Robotics.Types
         public JointTrajectoryPoint AddTimeOffset(TimeSpan offset) =>
             WithTimeFromStart(TimeFromStart + offset);
 
+
+        public JointTrajectoryPoint InterpolateCubic(JointTrajectoryPoint point1, TimeSpan time) =>
+            JointTrajectoryPoint.InterpolateCubic(this, point1, time);
+
+        /// <summary>
+        /// Cubic Interpolation between two <c>JointTrajectoryPoints</c>
+        /// </summary>
+        /// <param name="time"></param>
+        /// <param name="point0">The first point to be interpolated.</param>
+        /// <param name="point1">The second point to be interpolated.</param>
+        /// <returns>The interpolated <c>JointTrajectoryPoint</c>.</returns>
+        /// <exception cref="ArgumentException">Thrown when the .</exception>
+        public static JointTrajectoryPoint InterpolateCubic(JointTrajectoryPoint point0, JointTrajectoryPoint point1, TimeSpan time)
+        {
+            if (point0.TimeFromStart > point1.TimeFromStart)
+                throw new ArgumentException("Point0 must occur before point1.");
+        
+            TimeSpan t0 = point0.TimeFromStart;
+                     
+            TimeSpan t1 = point1.TimeFromStart;
+            TimeSpan deltaT = t1 - t0; 
+
+            JointSet jointSet = point1.Positions.JointSet;
+            if (deltaT.TotalSeconds < 1e-6)
+            {
+                return new JointTrajectoryPoint(
+                    timeFromStart: t0 + deltaT,
+                    positions: point1.Positions,
+                    velocities: JointValues.Zero(jointSet)
+                );
+            }
+
+            double[] pos = point0.Positions.ToArray();
+            double[] vel = point0.Velocities.ToArray();
+            JointValues p0 = point0.Positions;
+            JointValues p1 = point1.Positions;
+            JointValues v0 = point0.Velocities;
+            JointValues v1 = point1.Velocities;
+
+            // clip t to be between 0 and t1 - t0
+            double t = Math.Max( (time - t0).TotalSeconds, 0);
+            t        = Math.Min( (t1 - t0).TotalSeconds, t);
+
+            for (int i = 0; i < p0.Count; i++)
+            {
+                double dt = deltaT.TotalSeconds;
+                double a = p0[i];
+                double b = v0[i];
+                double c = (-3.0 * p0[i] + 3.0 * p1[i] - 2.0 * dt * v0[i] - dt * v1[i]) / Math.Pow(dt, 2);
+                double d = (2.0 * p0[i] - 2.0 * p1[i] + dt * v0[i] + dt * v1[i]) / Math.Pow(dt, 3);
+                pos[i] = a + b * t + c * Math.Pow(t, 2) + d * Math.Pow(t, 3);
+                vel[i] = b + 2.0 * c * t + 3.0 * d * Math.Pow(t, 2);
+            }
+
+            return new JointTrajectoryPoint(
+                timeFromStart: time,
+                positions: new JointValues(jointSet, pos),
+                velocities: new JointValues(jointSet, vel)
+            );
+        }
+
         /// <summary>
         /// Creates a new instance of JointTrajectory as a result of the merge operation.
         /// </summary>
