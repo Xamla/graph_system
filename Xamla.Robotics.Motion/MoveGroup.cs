@@ -222,6 +222,12 @@ namespace Xamla.Robotics.Motion
             jointSet;
 
         /// <summary>
+        /// <c>JointLimits</c> of the <c>MoveGroup</c>
+        /// </summary>
+        public JointLimits JointLimits =>
+            motionService.QueryJointLimits(jointSet);
+
+        /// <summary>
         /// Current <c>JointStates</c> of the of the <c>MoveGroup</c> joints
         /// </summary>
         public JointStates CurrentJointStates =>

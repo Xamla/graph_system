@@ -82,6 +82,11 @@ namespace Xamla.Robotics.Motion
         JointSet JointSet { get; }
 
         /// <summary>
+        /// <c>JointLimits</c> of the <c>IMoveGroup</c>
+        /// </summary>
+        JointLimits JointLimits { get; }
+
+        /// <summary>
         /// Current <c>JointStates</c> of the of the <c>IMoveGroup</c> joints
         /// </summary>
         JointStates CurrentJointStates { get; }
