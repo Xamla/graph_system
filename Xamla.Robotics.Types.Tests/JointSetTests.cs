@@ -17,7 +17,6 @@ namespace Xamla.Robotics.Types.Tests
 
             Assert.True(jointsB.ToArray().SequenceEqual(new string[] { "test_a", "test_b", "test_c" }));
             Assert.False(jointsB.ToArray().SequenceEqual(new string[] { "Test_a", "Test_b", "Test_c" }));
-
         }
 
         [Fact]

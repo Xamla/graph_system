@@ -32,7 +32,6 @@ namespace Xamla.Robotics.Types.Tests
             Assert.Equal(goal, p4[1]);
         }
 
-
         [Fact]
         public void TestAppend()
         {
@@ -61,7 +60,6 @@ namespace Xamla.Robotics.Types.Tests
             Assert.Equal(val1, p[2]);
         }
 
-
         [Fact]
         public void TestConcat()
         {
@@ -77,7 +75,6 @@ namespace Xamla.Robotics.Types.Tests
             Assert.Equal(val2, p[1]);
             Assert.Equal(val3, p[2]);
         }
-
 
         [Fact]
         public void TestSub()
@@ -112,6 +109,5 @@ namespace Xamla.Robotics.Types.Tests
             Assert.Equal(new JointValues(joints, new double[] { 2, 2, 2 }), p[2]);
 
         }
-
     }
 }

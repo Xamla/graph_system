@@ -6,7 +6,6 @@ using Xamla.Types;
 using Xamla.Utilities;
 using Xunit;
 
-
 namespace Xamla.Robotics.Types.Tests
 {
     public class PoseTests

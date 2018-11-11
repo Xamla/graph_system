@@ -3,7 +3,6 @@ using Xunit;
 
 namespace Xamla.Robotics.Types.Tests
 {
-
     public class PlanParametersBuilderTests
     {
         [Fact]

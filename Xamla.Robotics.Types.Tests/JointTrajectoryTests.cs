@@ -11,7 +11,7 @@ namespace Xamla.Robotics.Types.Tests
 {
     public class JointTrajectoryTests
     {
-        static Random rng = ThreadSafeRandom.Generator;
+        static readonly Random rng = ThreadSafeRandom.Generator;
 
         private static JointTrajectoryPoint GetPoint(double seconds, JointSet joints)
         {
@@ -43,7 +43,6 @@ namespace Xamla.Robotics.Types.Tests
             Assert.Equal(p3, t[2]);
             Assert.Throws<ArgumentException>(() => new JointTrajectory(joints, new JointTrajectoryPoint[] { p1, p3, p2 }));
         }
-
 
         [Fact]
         public void TestPrepend()
@@ -96,6 +95,48 @@ namespace Xamla.Robotics.Types.Tests
             Assert.Equal(p3.WithTimeFromStart(TimeSpan.FromSeconds(500)), t[2]);
         }
 
+        [Fact]
+        public void TestEvaluateAt()
+        {
+            void AssertEqualPoints(JointTrajectoryPoint a, JointTrajectoryPoint b)
+            {
+                bool Compare(JointValues aa, JointValues bb)
+                {
+                    double delta = Math.Abs(aa.MaxNorm() - bb.MaxNorm());
+                    return delta < 1E-6;
+                }
+                Assert.Equal(a.TimeFromStart, b.TimeFromStart);
+                Assert.True(a.JointSet == b.JointSet);
+                Assert.True(Compare(a.Positions, b.Positions));
+                Assert.True(Compare(a.Velocities, b.Velocities));
+            }
+            var joints = new JointSet("a", "b", "c");
+            JointTrajectoryPoint[] points = new JointTrajectoryPoint[10];
+            for (int i = 0; i < 10; ++i)
+            {
+                points[i] = GetPoint(i, joints);
+            }
+            Assert.Equal(10, points.Count());
+            var traj = new JointTrajectory(joints, points);
+            for (int i = 0; i < 50; ++i)
+            {
+                // Create negative and out of bound time values, to assure exceptions are thrown accordingly
+                double time = rng.NextDouble() * 12 - 2;
+                var index = (int)time;
+                var k = Math.Min(index + 1, 9);
+                var timeSpan = TimeSpan.FromSeconds(time);
+                if (time < 0 || time > 9)
+                    Assert.Throws<ArgumentOutOfRangeException>(() => traj.EvaluateAt(timeSpan));
+                else
+                {
+                    var pointGT = traj[index].InterpolateCubic(traj[k], TimeSpan.FromSeconds(time));
+                    // time = Math.Min(time, 9);
+                    // time = Math.Max(time, 0);
+                    var pointEval = traj.EvaluateAt(timeSpan);
+                    AssertEqualPoints(pointGT, pointEval);
+                }
+            }
+        }
 
         [Fact]
         public void TestEvaluateAt()

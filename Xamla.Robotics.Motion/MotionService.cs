@@ -998,6 +998,7 @@ namespace Xamla.Robotics.Motion
             request.seed = jointPositionSeed?.ToJointValuesPointMessage();
             request.group_name = moveGroupName;
             request.const_seed = constSeed;
+            request.collision_check = avoidCollision;
             request.points = points
                 .Select(x => new xamlamoveit.EndEffectorPoses { poses = x.Select(y => y.Pose.ToPoseStampedMessage()).ToArray(), link_names = x.Select(y => y.LinkName).ToArray() })
                 .ToArray();
@@ -1068,6 +1069,7 @@ namespace Xamla.Robotics.Motion
             request.seed = jointPositionSeed?.ToJointValuesPointMessage();
             request.group_name = moveGroupName;
             request.const_seed = constSeed;
+            request.collision_check = avoidCollision;
             request.points = points
                 .Select(x => new xamlamoveit.EndEffectorPoses { poses = x.Select(y => y.Pose.ToPoseStampedMessage()).ToArray(), link_names = x.Select(y => y.LinkName).ToArray() })
                 .ToArray();

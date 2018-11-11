@@ -3,15 +3,16 @@ using Xunit;
 
 namespace Xamla.Robotics.Types.Tests
 {
-
     public class TaskSpaceTaskSpacePlanParametersBuilderTests
     {
         [Fact]
         public void TestScaleAcceleration()
         {
-            var builder = new TaskSpacePlanParameters.Builder();
-            builder.MaxAngularAcceleration = 1000;
-            builder.MaxXYZAcceleration = -4;
+            var builder = new TaskSpacePlanParameters.Builder
+            {
+                MaxAngularAcceleration = 1000,
+                MaxXYZAcceleration = -4
+            };
             Assert.Throws<ArgumentOutOfRangeException>(() => builder.ScaleAcceleration(1.1));
             Assert.Throws<ArgumentOutOfRangeException>(() => builder.ScaleAcceleration(-0.1));
             Assert.Equal(250, builder.ScaleAcceleration(0.25).MaxAngularAcceleration);
@@ -21,9 +22,11 @@ namespace Xamla.Robotics.Types.Tests
         [Fact]
         public void TestScaleVelocity()
         {
-            var builder = new TaskSpacePlanParameters.Builder();
-            builder.MaxAngularVelocity = 1000;
-            builder.MaxXYZVelocity = -4;
+            var builder = new TaskSpacePlanParameters.Builder
+            {
+                MaxAngularVelocity = 1000,
+                MaxXYZVelocity = -4
+            };
             Assert.Throws<ArgumentOutOfRangeException>(() => builder.ScaleVelocity(1.1));
             Assert.Throws<ArgumentOutOfRangeException>(() => builder.ScaleVelocity(-0.1));
             Assert.Equal(250, builder.ScaleVelocity(0.25).MaxAngularVelocity);
@@ -38,8 +41,8 @@ namespace Xamla.Robotics.Types.Tests
         {
             var builder = new TaskSpacePlanParameters.Builder();
             var parameters = new TaskSpacePlanParameters(builder);
-            Assert.Equal(true, parameters.WithCollisionCheck(true).CollisionCheck);
-            Assert.Equal(false, parameters.WithCollisionCheck(false).CollisionCheck);
+            Assert.True(parameters.WithCollisionCheck(true).CollisionCheck);
+            Assert.False(parameters.WithCollisionCheck(false).CollisionCheck);
         }
 
         [Fact]
